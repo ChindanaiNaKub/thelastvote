@@ -7,6 +7,7 @@
 
 import { useEffect, useRef } from 'react'
 import type { Candidate, ConversationEntry } from '../../types/game'
+import { stripMarkdown } from '../../lib/textUtils'
 import './DialogueBox.css'
 
 // ----------------------------------------------------------------------------
@@ -76,7 +77,7 @@ export function DialogueBox({ entries, candidates, isProcessing = false }: Dialo
               )}
 
               {/* Message content */}
-              <div className="dialogue-entry__message">{entry.content}</div>
+              <div className="dialogue-entry__message">{stripMarkdown(entry.content)}</div>
 
               {/* Timestamp */}
               <div className="dialogue-entry__timestamp">

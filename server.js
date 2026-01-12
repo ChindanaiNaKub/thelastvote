@@ -67,7 +67,7 @@ app.post('/api/chat', async (req, res) => {
     const startTime = Date.now()
     const response = await anthropic.messages.create({
       model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 500,
+      max_tokens: 150,
       system: candidatePrompt,
       messages: messages,
     })
