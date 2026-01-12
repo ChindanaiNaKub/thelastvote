@@ -1245,6 +1245,162 @@ addConversationEntry: (entry: Omit<ConversationEntry, 'id' | 'timestamp'>): Game
 
 ---
 
+## Phase 2.2-2.3 Complete ✅
+
+**Date:** 2026-01-12
+
+**Entry:** Backend Setup - Local Dev Server + Vercel Deployment
+
+### Actions Completed
+
+- Installed backend dependencies (@anthropic-ai/sdk, express, cors, dotenv)
+- Created `/server.js` - Local development Express server
+- Created `/api/chat.ts` - Vercel serverless function
+- Created `/vercel.json` - Vercel deployment configuration
+- Updated `/vite.config.ts` - Added API proxy configuration
+- Updated `.env.example` - Complete API key setup instructions
+- Updated `.env.local` - Local environment configuration
+- Updated `/src/lib/api.ts` - Fixed API mode detection and request format
+- Verified TypeScript compilation (no errors)
+
+### Files Created
+
+```
+/home/prab/Documents/thelastvote/
+├── server.js                 # Local dev server (Express)
+├── api/
+│   └── chat.ts              # Vercel serverless function
+├── vercel.json              # Vercel deployment config
+└── .env.example             # Updated with API key instructions
+```
+
+### Files Modified
+
+```
+/home/prab/Documents/thelastvote/
+├── package.json             # Added dev:server and dev:all scripts
+├── vite.config.ts           # Added API proxy configuration
+├── .env.local               # Updated with ANTHROPIC_API_KEY
+└── src/lib/api.ts           # Fixed API mode detection and request format
+```
+
+### Backend Setup Features
+
+**Local Development Server (`/server.js`):**
+- Express server on port 3001
+- POST `/api/chat` endpoint for AI responses
+- Anthropic Claude integration
+- CORS enabled for frontend
+- Health check endpoint at `/api/health`
+- Graceful shutdown handling
+- Console logging for debugging
+
+**Vercel Serverless Function (`/api/chat.ts`):**
+- Node.js 20.x runtime
+- Same API interface as local server
+- Server-side API key (secure, not exposed to browser)
+- Error handling with detailed logging
+
+**Vite Proxy Configuration:**
+- Proxies `/api/*` requests to `http://localhost:3001`
+- Seamless integration during development
+- No CORS issues
+
+**Environment Configuration:**
+- `ANTHROPIC_API_KEY` - Server-side API key (required for API mode)
+- `API_PORT` - Local server port (default: 3001)
+- `VITE_API_MODE` - API mode selection (fallback/mock/api)
+- `VITE_API_URL` - Production API URL (optional, uses proxy for local)
+
+### New NPM Scripts
+
+```bash
+# Start frontend only
+npm run dev
+
+# Start backend server only
+npm run dev:server
+
+# Start both frontend and backend
+npm run dev:all
+```
+
+### API Mode Selection
+
+**Option 1: FALLBACK (default - no API key)**
+- Uses pre-written Thai responses
+- Works offline, no costs
+- Comment out `VITE_API_MODE`
+
+**Option 2: MOCK (testing UI states)**
+- Simulated delays (1-3 seconds)
+- Tests loading states
+- Set `VITE_API_MODE=mock`
+
+**Option 3: API (real AI)**
+- Requires `ANTHROPIC_API_KEY`
+- Real Claude-generated responses
+- Set `VITE_API_MODE=api`
+
+### Setup Instructions
+
+**Local Development:**
+1. Get API key from https://console.anthropic.com/
+2. Add to `.env.local`: `ANTHROPIC_API_KEY=sk-ant-...`
+3. Set `VITE_API_MODE=api` in `.env.local`
+4. Run: `npm run dev:all` (starts both servers)
+5. Open http://localhost:5173/
+
+**Production Deployment (Vercel):**
+1. Push code to Git repository
+2. Connect repository to Vercel
+3. Set environment variable in Vercel dashboard:
+   - `ANTHROPIC_API_KEY` = your API key
+4. Deploy - Vercel automatically builds and deploys
+5. Game will use serverless API for AI responses
+
+### Test Results
+
+✅ TypeScript compilation succeeds with no errors
+✅ Backend server starts successfully
+✅ Vite proxy configuration verified
+✅ API mode detection works correctly
+✅ Graceful degradation (API → MOCK → FALLBACK)
+✅ Environment variables properly configured
+✅ `.gitignore` excludes `.env.local`
+
+### Deployment Readiness
+
+**Current Status:**
+- ✅ Local development with real AI
+- ✅ Vercel serverless function configured
+- ✅ API keys secured (server-side only)
+- ✅ Graceful fallback for API failures
+
+**Next Steps for Deployment:**
+1. Set `ANTHROPIC_API_KEY` in Vercel dashboard
+2. Deploy to Vercel (`vercel` command or GitHub integration)
+3. Test production environment
+4. Monitor API costs and usage
+
+### API Key Security
+
+**NEVER Commit API Keys:**
+- `.env.local` is in `.gitignore`
+- `.env.example` shows placeholder only
+- Production keys go in Vercel dashboard (server-side)
+- Frontend never sees real API key
+
+### Current State
+
+- **Phase:** Phase 2 - AI Integration (Tasks 2.2-2.3 COMPLETE ✅)
+- **Foundation Status:** Phase 1 COMPLETE ✅
+- **AI Integration Status:** Phase 2 SUBSTANTIAL COMPLETE (prompts + API client + backend)
+- **Core Mechanics Status:** Phase 3 COMPLETE ✅ (question limit, voting, consequences, replay)
+- **Game Status:** PRODUCTION READY - Fully playable with real AI or fallback modes
+
+---
+
 ## Development Log
 
 | Date | Phase | Description |
@@ -1264,6 +1420,7 @@ addConversationEntry: (entry: Omit<ConversationEntry, 'id' | 'timestamp'>): Game
 | 2026-01-12 | Phase 2.1 | AI System Prompts created ✅ |
 | 2026-01-12 | Phase 2.5 | API Client created ✅ (FALLBACK/MOCK/API modes) |
 | 2026-01-12 | Phase 3.5 | Consequence System COMPLETE ✅ (5 consequence sets + staged reveals) |
+| 2026-01-12 | Phase 2.2-2.3 | Backend Setup COMPLETE ✅ (Local server + Vercel deployment) |
 
 ---
 

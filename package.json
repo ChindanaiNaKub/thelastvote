@@ -5,12 +5,20 @@
   "description": "เกมเบราว์เซอร์แนวจิตวิทยาที่เล่าเรื่องด้วยบทสนทนา เกี่ยวกับความไว้วางใจ การโน้มน้าว และการตัดสินใจที่เปลี่ยนแปลงไม่ได้",
   "scripts": {
     "dev": "vite",
+    "dev:server": "node server.js",
+    "dev:all": "npm run dev:server & vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\""
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.2",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

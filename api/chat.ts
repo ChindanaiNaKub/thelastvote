@@ -1,0 +1,87 @@
+// ============================================================================
+// Vercel Serverless Function - Chat Endpoint
+// ============================================================================
+// Handles AI-powered candidate responses for production deployment.
+// ============================================================================
+
+import Anthropic from '@anthropic-ai/sdk'
+
+export const config = {
+  runtime: 'nodejs20.x',
+}
+
+export default async function handler(req, res) {
+  // Only allow POST requests
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' })
+  }
+
+  try {
+    const { question, candidatePrompt, conversationHistory, candidateId } = req.body
+
+    // Validate request
+    if (!question || !candidatePrompt) {
+      return res.status(400).json({
+        error: 'Missing required fields: question, candidatePrompt'
+      })
+    }
+
+    // Initialize Anthropic client with server-side API key
+    const anthropic = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+    })
+
+    if (!process.env.ANTHROPIC_API_KEY) {
+      return res.status(500).json({
+        error: 'API key not configured'
+      })
+    }
+
+    // Format conversation history for Claude
+    const messages = []
+
+    // Add conversation history if present
+    if (conversationHistory && conversationHistory.length > 0) {
+      conversationHistory.forEach((entry) => {
+        if (entry.type === 'question') {
+          messages.push({ role: 'user', content: entry.content })
+        } else if (entry.type === 'response') {
+          messages.push({ role: 'assistant', content: entry.content })
+        }
+      })
+    }
+
+    // Add current question
+    messages.push({ role: 'user', content: question })
+
+    // Call Claude API
+    const startTime = Date.now()
+    const response = await anthropic.messages.create({
+      model: 'claude-3-5-sonnet-20241022',
+      max_tokens: 500,
+      system: candidatePrompt,
+      messages: messages,
+    })
+    const duration = Date.now() - startTime
+
+    const aiResponse = response.content[0].text
+
+    // Return response
+    res.json({
+      success: true,
+      response: aiResponse,
+      candidateId: candidateId,
+      mode: 'api',
+      duration: duration,
+    })
+
+  } catch (error) {
+    console.error('Vercel API Error:', error)
+
+    // Return error with details
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    })
+  }
+}

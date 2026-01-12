@@ -179,14 +179,21 @@ function detectApiMode(requestedMode: string): ApiMode {
   }
 
   // Auto-detect based on environment variables
+  const apiMode = import.meta.env.VITE_API_MODE
   const apiUrl = import.meta.env.VITE_API_URL
-  const mockMode = import.meta.env.VITE_API_MODE
 
+  // Check explicit API mode first (for Vite proxy setup)
+  if (apiMode === 'api') {
+    return 'api'
+  }
+
+  // Check for explicit API URL (for production deployment)
   if (apiUrl) {
     return 'api'
   }
 
-  if (mockMode === 'mock') {
+  // Check for mock mode
+  if (apiMode === 'mock') {
     return 'mock'
   }
 
@@ -273,7 +280,11 @@ async function generateApiResponse(
   request: CandidateResponseRequest
 ): Promise<CandidateResponse> {
   const startTime = Date.now()
-  const apiUrl = import.meta.env.VITE_API_URL
+
+  // Determine API URL
+  // - If VITE_API_URL is set, use it (production deployment)
+  // - Otherwise, use /api/chat (Vite proxy to local backend)
+  const apiUrl = import.meta.env.VITE_API_URL || '/api/chat'
 
   // Build prompt using existing function from candidate-prompts.ts
   const prompt = buildCandidatePrompt(candidate, {
@@ -285,7 +296,7 @@ async function generateApiResponse(
 
   // Call backend with retry logic
   const responseText = await fetchWithRetry(
-    () => callBackendApi(apiUrl, prompt),
+    () => callBackendApi(apiUrl, prompt, candidate.id),
     { timeout: 10000, maxRetries: 3 }
   )
 
@@ -306,14 +317,16 @@ async function generateApiResponse(
  */
 async function callBackendApi(
   apiUrl: string,
-  prompt: BuiltPrompt
+  prompt: BuiltPrompt,
+  candidateId: string
 ): Promise<string> {
   const response = await fetch(apiUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      systemPrompt: prompt.systemPrompt,
-      userPrompt: prompt.userPrompt,
+      question: prompt.userPrompt,
+      candidatePrompt: prompt.systemPrompt,
+      candidateId: candidateId,
     }),
   })
 
@@ -322,7 +335,7 @@ async function callBackendApi(
   }
 
   const data = await response.json()
-  return data.content
+  return data.response || data.content
 }
 
 /**
