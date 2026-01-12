@@ -7,9 +7,11 @@
 import { useGame } from '../../context/GameContext'
 import { gameActions } from '../../context/GameContext'
 import { CandidateCard } from '../ui/CandidateCard'
+import { useConsequences } from '../../hooks/useConsequences'
 
 export function VotingPhase() {
   const { state, dispatch } = useGame()
+  const { generateConsequences } = useConsequences()
 
   const handleVote = (candidateId: string) => {
     const confirmed = window.confirm(
@@ -18,6 +20,11 @@ export function VotingPhase() {
 
     if (confirmed) {
       dispatch(gameActions.setVote(candidateId))
+
+      // Generate consequences BEFORE phase transition
+      const consequences = generateConsequences(candidateId, state.candidates)
+      dispatch(gameActions.setConsequences(consequences))
+
       dispatch(gameActions.setPhase('consequence'))
     }
   }

@@ -1148,6 +1148,103 @@ addConversationEntry: (entry: Omit<ConversationEntry, 'id' | 'timestamp'>): Game
 
 ---
 
+## Phase 3.5 Complete ✅
+
+**Date:** 2026-01-12
+
+**Entry:** Implement Consequence System with static Thai templates
+
+### Actions Completed
+
+- Created `/src/data/consequences.ts` with 5 consequence sets (~440 lines)
+- Created `/src/hooks/useConsequences.ts` wrapper hook
+- Updated `VotingPhase.tsx` to generate consequences before phase transition
+- Updated `ConsequencePhase.tsx` with 4-phase staged reveals (125 lines)
+- Implemented alternative paths display
+- Verified TypeScript compilation (no errors)
+- Tested dev server runs successfully (http://localhost:5178/)
+
+### Files Created
+
+```
+/home/prab/Documents/thelastvote/src/
+├── data/
+│   └── consequences.ts         # 5 consequence sets (440+ lines)
+└── hooks/
+    └── useConsequences.ts      # Wrapper hook (60+ lines)
+```
+
+### Files Modified
+
+```
+/home/prab/Documents/thelastvote/src/components/screens/
+├── VotingPhase.tsx            # Added consequence generation
+└── ConsequencePhase.tsx       # Implemented staged reveals (125 lines)
+```
+
+### Consequence System Features
+
+**Data Structure (/src/data/consequences.ts):**
+- 5 complete consequence sets (one per candidate)
+- Thai language throughout
+- Each set includes:
+  - `immediateAftermath` - Short-term results (6 months later)
+  - `hiddenTruths` - Secrets about chosen + others + "question never asked"
+  - `longTermConsequences` - Mixed outcomes (3 years later)
+  - `alternativePaths` - What-if scenarios for other 4 candidates
+
+**Consequence Display (/src/components/screens/ConsequencePhase.tsx):**
+- 4-phase staged reveals with "Continue" buttons
+- Phase 1: Immediate aftermath (expected vs unexpected outcomes)
+- Phase 2: Hidden truths (chosen candidate secret + 4 other secrets)
+- Phase 3: Long-term consequences (good outcomes • bad outcomes • final reflection)
+- Phase 4: Alternative paths + Play Again button
+
+**Design Principles Applied:**
+- Every choice has downsides (no "perfect" answer)
+- Creates "I never asked about that" moments
+- Makes alternative paths tempting
+- Leverages existing candidate data (hiddenMotivation, activeLie, etc.)
+
+### Example Consequence (ดร. ธีรภัทร์ วีรวัฒน์ - Charismatic Reformer)
+
+**Immediate Aftermath:**
+- Changes rapidly, creates chaos
+- Expected: Bold changes and hope
+- Unexpected: Protests and resistance
+
+**Hidden Truths:**
+- Secret: Never had a real plan, just wanted power (building statue)
+- Other candidates' secrets: Dr. Chen predicted this, Dr. Kanokwan had welfare systems
+- Question never asked: "You never asked about 'specific plans', just listened to pretty words about the future"
+
+**Long-term Consequences:**
+- Old system destroyed, new system unstable
+- Good outcomes: Old structures gone, youth get opportunities, new ideas emerge
+- Bad outcomes: Political instability, vulnerable left behind
+- Final reflection: "Change has a price, and you paid with others' peace"
+
+### Test Results
+
+✅ TypeScript compilation succeeds with no errors
+✅ Dev server runs at http://localhost:5178/
+✅ Consequences generate when voting
+✅ ConsequencePhase displays all 3 reveal phases
+✅ Alternative paths show all 4 other candidates
+✅ "Play Again" resets game completely
+✅ No console errors
+✅ Thai text displays correctly
+
+### Current State
+
+- **Phase:** Phase 3 - Core Mechanics (Task 3.5-3.6 COMPLETE ✅)
+- **Foundation Status:** Phase 1 COMPLETE ✅
+- **AI Integration Status:** Phase 2 PARTIAL (prompts + API client with FALLBACK/MOCK)
+- **Core Mechanics Status:** Question limit ✅, Candidate selection ✅, Voting ✅, Consequences ✅, Replay ✅
+- **Game Status:** FULLY PLAYABLE - Complete emotional arc achieved
+
+---
+
 ## Development Log
 
 | Date | Phase | Description |
@@ -1166,6 +1263,7 @@ addConversationEntry: (entry: Omit<ConversationEntry, 'id' | 'timestamp'>): Game
 | 2026-01-12 | Localization | Thai localization COMPLETE ✅ (12 files translated) |
 | 2026-01-12 | Phase 2.1 | AI System Prompts created ✅ |
 | 2026-01-12 | Phase 2.5 | API Client created ✅ (FALLBACK/MOCK/API modes) |
+| 2026-01-12 | Phase 3.5 | Consequence System COMPLETE ✅ (5 consequence sets + staged reveals) |
 
 ---
 

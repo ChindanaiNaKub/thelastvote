@@ -4,52 +4,185 @@
 // Reveals the aftermath of the player's choice. Creates doubt and regret.
 // ============================================================================
 
+import { useState, useEffect } from 'react'
 import { useGame } from '../../context/GameContext'
 import { gameActions } from '../../context/GameContext'
 
 export function ConsequencePhase() {
   const { state, dispatch } = useGame()
+  const [revealPhase, setRevealPhase] = useState(0)
+
   const chosenCandidate = state.candidates.find(c => c.id === state.playerVote)
+  const consequences = state.consequences
+
+  // Start with reveal phase 0 (chosen candidate display)
+  // Auto-advance to phase 1 after a brief delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setRevealPhase(1)
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [])
 
   const handlePlayAgain = () => {
     dispatch(gameActions.resetGame())
     dispatch(gameActions.setPhase('introduction'))
   }
 
+  // Guard clause - if no consequences, show loading
+  if (!consequences) {
+    return (
+      <div className="screen consequence-screen">
+        <h2>ผลที่ตามมา</h2>
+        <p className="placeholder">กำลังคำนวณผลลัพธ์...</p>
+      </div>
+    )
+  }
+
   return (
     <div className="screen consequence-screen">
       <h2>ผลที่ตามมา</h2>
 
-      <div className="consequence-content">
-        <p className="your-choice">
-          คุณลงคะแนนให้: <strong>{chosenCandidate?.name}</strong>
-        </p>
-
-        <div className="consequence-section">
-          <h3>ผลลัพธ์ทันที</h3>
-          <p className="placeholder">
-            [ผลทันทีจะแสดงที่นี่]
-          </p>
-        </div>
-
-        <div className="consequence-section">
-          <h3>ความจริงที่ซ่อนอยู่</h3>
-          <p className="placeholder">
-            [ความลับจะเปิดเผยที่นี่]
-          </p>
-        </div>
-
-        <div className="consequence-section">
-          <h3>ผลกระทบในระยะยาว</h3>
-          <p className="placeholder">
-            [ผลลัพธ์สุดท้ายจะแสดงที่นี่]
-          </p>
-        </div>
+      {/* Chosen candidate display */}
+      <div
+        className="chosen-candidate"
+        style={{ borderColor: chosenCandidate?.colorTheme }}
+      >
+        <span className="chosen-candidate__portrait">{chosenCandidate?.portrait}</span>
+        <strong className="chosen-candidate__name">{chosenCandidate?.name}</strong>
       </div>
 
-      <button onClick={handlePlayAgain} className="btn-primary">
-        เล่นอีกครั้ง
-      </button>
+      {/* Phase 1: Immediate Aftermath */}
+      {revealPhase >= 1 && (
+        <div className="consequence-section">
+          <h3 className="consequence-section__title">
+            ผลลัพธ์ทันที
+            <span className="consequence-section__timeframe">
+              ({consequences.immediateAftermath.timeframe})
+            </span>
+          </h3>
+          <p className="consequence-section__content">
+            {consequences.immediateAftermath.outcome}
+          </p>
+          <div className="consequence-section__details">
+            <p className="consequence-section__expected">
+              <strong>ที่คาดหวัง:</strong> {consequences.immediateAftermath.expectedOutcome}
+            </p>
+            <p className="consequence-section__unexpected">
+              <strong>ที่เกิดขึ้นจริง:</strong> {consequences.immediateAftermath.unexpectedOutcome}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {revealPhase === 1 && (
+        <button
+          onClick={() => setRevealPhase(2)}
+          className="btn-primary consequence-screen__continue-btn"
+        >
+          ดำเนินการต่อ
+        </button>
+      )}
+
+      {/* Phase 2: Hidden Truths */}
+      {revealPhase >= 2 && (
+        <div className="consequence-section">
+          <h3 className="consequence-section__title">ความจริงที่ซ่อนอยู่</h3>
+          <p className="consequence-section__content secret">
+            {consequences.hiddenTruths.chosenCandidateSecret}
+          </p>
+          <div className="consequence-section__other-secrets">
+            <p className="consequence-section__question">
+              <em>{consequences.hiddenTruths.questionNeverAsked}</em>
+            </p>
+            {consequences.hiddenTruths.otherCandidateSecrets.map((secret) => (
+              <p
+                key={secret.candidateId}
+                className={`consequence-section__other-secret ${
+                  secret.makesPlayerRethink ? 'consequence-section__other-secret--rethink' : ''
+                }`}
+              >
+                {state.candidates.find(c => c.id === secret.candidateId)?.name}: {secret.secret}
+              </p>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {revealPhase === 2 && (
+        <button
+          onClick={() => setRevealPhase(3)}
+          className="btn-primary consequence-screen__continue-btn"
+        >
+          ดำเนินการต่อ
+        </button>
+      )}
+
+      {/* Phase 3: Long-term Consequences */}
+      {revealPhase >= 3 && (
+        <div className="consequence-section">
+          <h3 className="consequence-section__title">
+            ผลกระทบในระยะยาว
+            <span className="consequence-section__timeframe">
+              ({consequences.longTermConsequences.timeframe})
+            </span>
+          </h3>
+          <p className="consequence-section__content">
+            {consequences.longTermConsequences.outcome}
+          </p>
+          <div className="consequence-section__reflection">
+            <p className="consequence-section__good">
+              <span className="consequence-section__label">สิ่งที่ดี:</span>{' '}
+              {consequences.longTermConsequences.goodOutcomes.join(' • ')}
+            </p>
+            <p className="consequence-section__bad">
+              <span className="consequence-section__label">สิ่งที่เสีย:</span>{' '}
+              {consequences.longTermConsequences.badOutcomes.join(' • ')}
+            </p>
+            <p className="consequence-section__final">
+              <em>{consequences.longTermConsequences.finalReflection}</em>
+            </p>
+          </div>
+        </div>
+      )}
+
+      {revealPhase === 3 && (
+        <button
+          onClick={() => setRevealPhase(4)}
+          className="btn-primary consequence-screen__continue-btn"
+        >
+          ดูสิ่งที่อาจเกิดขึ้น
+        </button>
+      )}
+
+      {/* Phase 4: Alternative Paths + Play Again */}
+      {revealPhase >= 4 && (
+        <>
+          <div className="consequence-section consequence-section--alternatives">
+            <h3 className="consequence-section__title">หากคุณเลือกคนอื่น...</h3>
+            {consequences.alternativePaths.map((path) => {
+              const candidate = state.candidates.find(c => c.id === path.candidateId)
+              return (
+                <p key={path.candidateId} className="consequence-section__alternative">
+                  <span
+                    className="consequence-section__alternative-portrait"
+                    style={{ color: candidate?.colorTheme }}
+                  >
+                    {candidate?.portrait}
+                  </span>{' '}
+                  {path.wouldHaveHappened}
+                </p>
+              )
+            })}
+          </div>
+
+          <div className="consequence-screen__actions">
+            <button onClick={handlePlayAgain} className="btn-primary">
+              เล่นอีกครั้ง
+            </button>
+          </div>
+        </>
+      )}
     </div>
   )
 }
