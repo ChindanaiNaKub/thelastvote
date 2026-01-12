@@ -9,6 +9,7 @@ import { useGame } from '../../context/GameContext'
 import { gameActions } from '../../context/GameContext'
 import { DialogueBox } from '../ui/DialogueBox'
 import { QuestionInput } from '../ui/QuestionInput'
+import { generateCandidateResponse } from '../../lib/api'
 
 export function QuestioningPhase() {
   const { state, dispatch } = useGame()
@@ -32,30 +33,59 @@ export function QuestioningPhase() {
     // Decrement questions remaining
     dispatch(gameActions.decrementQuestions())
 
-    // Set processing state (for future AI integration)
+    // Set processing state (for AI integration)
     dispatch(gameActions.setProcessing(true))
 
-    // Note: In Phase 2 (AI Integration), this will:
-    // 1. Call the AI API with the question and conversation history
-    // 2. Add candidate responses to the conversation
-    // 3. Clear the processing state
-    //
-    // For now, we simulate a response delay for testing
-    setTimeout(() => {
-      dispatch(gameActions.setProcessing(false))
+    // Generate candidate response using API client
+    const generateResponse = async () => {
+      try {
+        // Determine which candidate should respond
+        const responderId = targetCandidateId || state.candidates[0].id
+        const responder = state.candidates.find(c => c.id === responderId)
 
-      // Demo: Add a mock response from targeted candidate (or all if none targeted)
-      const responderId = targetCandidateId || state.candidates[0].id
-      const responder = state.candidates.find(c => c.id === responderId)
+        if (!responder) {
+          throw new Error('Candidate not found')
+        }
 
-      if (responder) {
+        // Call API to generate response
+        const response = await generateCandidateResponse({
+          candidateId: responderId,
+          question: question,
+          conversationHistory: state.conversationHistory,
+          mode: 'auto', // Automatically detect best mode
+        })
+
+        // Clear processing state
+        dispatch(gameActions.setProcessing(false))
+
+        // Add response to conversation
         dispatch(gameActions.addConversationEntry({
           type: 'response',
           speaker: responder.id,
-          content: `[This is a placeholder response from ${responder.name}. AI integration will be added in Phase 2.]`,
+          content: response.content,
+        }))
+
+        console.log(`[API] Response generated using ${response.modeUsed} mode`)
+
+      } catch (error) {
+        // This should rarely happen due to fallbacks, but handle gracefully
+        console.error('[API] Fatal error:', error)
+        dispatch(gameActions.setProcessing(false))
+
+        // Determine responder for fallback
+        const responderId = targetCandidateId || state.candidates[0].id
+        const responder = state.candidates.find(c => c.id === responderId)
+
+        // Last resort: Use hardcoded fallback
+        dispatch(gameActions.addConversationEntry({
+          type: 'response',
+          speaker: responder?.id || state.candidates[0].id,
+          content: 'ขอโทษที่มีปัญหาทางเทคนิค แต่ฉันได้ยินคำถามของคุณ',
         }))
       }
-    }, 1000)
+    }
+
+    generateResponse()
   }
 
   // Handle candidate selection

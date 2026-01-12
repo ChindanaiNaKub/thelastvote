@@ -933,6 +933,221 @@ addConversationEntry: (entry: Omit<ConversationEntry, 'id' | 'timestamp'>): Game
 
 ---
 
+## Phase 2.1 Complete ✅
+
+**Date:** 2026-01-12
+
+**Entry:** Create AI System Prompts for Phase 2 Integration
+
+### Actions Completed
+
+- Created `/src/prompts/` directory
+- Created `/src/prompts/candidate-prompts.ts` with prompt building functions
+- Implemented `buildCandidatePrompt()` main function
+- Implemented `buildSystemPrompt()` for character definitions
+- Implemented `buildConversationHistory()` for context formatting
+- Implemented `buildCurrentQuestion()` for question formatting
+- Implemented `getArchetypeLabel()` for Thai archetype labels
+- Added TypeScript interfaces: `PromptOptions`, `BuiltPrompt`
+- Verified TypeScript compilation (no errors)
+
+### Files Created
+
+```
+/home/prab/Documents/thelastvote/src/
+└── prompts/
+    └── candidate-prompts.ts     # AI prompt builder (250+ lines)
+```
+
+### Features Implemented
+
+**Main Function:**
+- `buildCandidatePrompt(candidate, options)` - Builds complete AI prompts
+- Parameters: candidate, question, conversation history
+- Returns: systemPrompt, userPrompt, fullPrompt, metadata
+
+**Helper Functions:**
+- `buildSystemPrompt()` - Creates character definition with hidden data
+- `buildConversationHistory()` - Formats previous dialogue (max 10 entries)
+- `buildCurrentQuestion()` - Formats player's current question
+- `getArchetypeLabel()` - Returns Thai archetype labels
+
+**TypeScript Interfaces:**
+- `PromptOptions` - Configuration for prompt building
+- `BuiltPrompt` - Structured prompt output with metadata
+
+**Prompt Structure (Thai Language):**
+```
+=== คำสั่งระบบ ===
+คุณคือ [NAME], [ARCHETYPE]
+บุคลิก: [personality]
+รูปแบบการพูด: [speakingStyle]
+นโยบายประกาศ: [publicStance]
+
+=== ข้อมูลลับ (สำหรับ AI เท่านั้น) ===
+แรงจูงใจที่ซ่อนอยู่: [hiddenMotivation]
+ความจริงที่คุณเชื่อ: [coreTruth]
+สิ่งที่ยอมรับบิดเบือน: [partialTruth]
+สิ่งที่ปกป้องอยู่: [activeLie]
+ความลับที่จะไม่เล่า: [hiddenSecret]
+
+=== กฎการสนทนา ===
+1. อยู่ในบทบาทตลอดเวลา
+2. พูดเป็นภาษาไทยเสมอ
+3. ตอบสั้น 2-3 ประโยค
+...
+
+=== ประวัติการสนทนา ===
+[Previous dialogue]
+
+=== คำถามปัจจุบัน ===
+ผู้เล่นถาม: "[QUESTION]"
+คำตอบของคุณ:
+```
+
+### Test Results
+
+✅ TypeScript compilation succeeds with no errors
+✅ File created at `/src/prompts/candidate-prompts.ts`
+✅ Exports `buildCandidatePrompt()` function
+✅ Exports `PromptOptions` and `BuiltPrompt` types
+✅ All 5 Thai candidates supported
+✅ Conversation history formatting implemented
+✅ Token estimation included in metadata
+✅ Ready for testing with console.log in QuestioningPhase
+✅ Pure frontend - no API keys, no backend, no costs
+
+### Design Decisions
+
+**Frontend-Only Approach:**
+- No backend needed yet
+- No API keys required
+- Can test without AI (console.log prompts)
+- Zero dependencies
+
+**Thai Language Throughout:**
+- All prompt text in Thai
+- Archetype labels translated
+- Candidate names in Thai
+- Conversation history formatted in Thai
+
+**Token Estimation:**
+- Rough estimate: 1 token ≈ 3 characters for Thai
+- Helps track potential costs
+- Can adjust `maxHistoryEntries` to control usage
+
+**Separation of Concerns:**
+- System prompt (character definition)
+- User prompt (question + context)
+- Metadata (tracking info)
+- Easy to modify individual sections
+
+### Current State
+
+- **Phase:** Phase 2 - AI Integration (Task 2.1 complete)
+- **Progress:** 1 of 8 Phase 2 tasks complete
+- **Next Step:** Test prompts with console.log in QuestioningPhase (optional) OR create API client
+
+---
+
+## Phase 2.5 Complete ✅
+
+**Date:** 2026-01-12
+
+**Entry:** Create API Client with Three-Tier Mode System
+
+### Actions Completed
+
+- Created `/src/lib/` directory
+- Created `/src/lib/api.ts` with three-tier API client (~400 lines)
+- Implemented `generateCandidateResponse()` main function
+- Implemented three modes: FALLBACK (offline), MOCK (testing), API (production)
+- Added Thai fallback responses for all 5 candidate archetypes
+- Implemented retry logic with exponential backoff
+- Implemented graceful degradation (API → MOCK → FALLBACK)
+- Updated QuestioningPhase.tsx to integrate API client
+- Replaced setTimeout mock (lines 44-58) with async API calls
+- Created environment configuration files (.env.example, .env.local)
+- Verified TypeScript compilation (no errors)
+- Tested dev server runs successfully
+
+### Files Created
+
+```
+/home/prab/Documents/thelastvote/
+├── src/
+│   └── lib/
+│       └── api.ts                    # API client with three-tier mode system (400+ lines)
+├── .env.example                       # Environment configuration template
+└── .env.local                         # Local development configuration
+```
+
+### Files Modified
+
+```
+/home/prab/Documents/thelastvote/
+└── src/
+    └── components/
+        └── screens/
+            └── QuestioningPhase.tsx  # Integrated API client, replaced mock
+```
+
+### API Client Features
+
+**Three-Tier Mode System:**
+1. **FALLBACK mode** (default) - Instant Thai responses, no backend required, works offline
+2. **MOCK mode** (development) - Simulated 1-3 second delays, tests loading states
+3. **API mode** (production) - Real AI-generated responses, requires backend URL
+
+**Thai Fallback Responses:**
+- 3 responses per archetype (15 total)
+- Hash-based selection (consistent for same question)
+- Examples:
+  - Charismatic Reformer: "ผมเชื่อว่าสิ่งที่เมืองเราต้องการคือการเปลี่ยนแปลงที่กล้าหาญ..."
+  - Pragmatic Technocrat: "ข้อมูลแสดงให้เห็นว่าแนวทางที่มีประสิทธิภาพที่สุดคือ X..."
+  - Healer/Protector: "ห่วงใยที่ถามนะ แต่อย่ากังวลไป... ฉันจะดูแลให้ทุกคนปลอดภัย..."
+  - Cynical Realist: "มาซื่อสุจิตกันเถอะ... ไม่มีทางออกที่ดีนะ..."
+  - Radical Outsider: "พวกเขาโกหกกันหมด! ระบบทั้งระบบเน่าทั้งเป็น..."
+
+### Test Results
+
+✅ TypeScript compilation succeeds with no errors
+✅ Dev server runs successfully (http://localhost:5178/)
+✅ QuestioningPhase integration works
+✅ FALLBACK mode returns instant Thai responses
+✅ MOCK mode ready for testing (configured in .env.local)
+✅ API mode structure ready for backend
+✅ Game never breaks - always shows something to player
+
+### Design Decisions
+
+**Frontend-First Approach:**
+- Game works immediately without backend
+- No API keys required
+- Zero dependencies (uses native fetch)
+- Can deploy frontend-only to Vercel/Netlify
+
+**Three-Tier Architecture:**
+- FALLBACK mode for instant offline play
+- MOCK mode for testing UI states
+- API mode for production with real AI
+- Automatic degradation between modes
+
+### Current State
+
+- **Phase:** Phase 2 - AI Integration (Task 2.5 complete)
+- **Progress:** 2 of 8 Phase 2 tasks complete
+- **Game Status:** Playable with Thai responses in FALLBACK/MOCK modes
+- **Next Step:** Phase 2.2 (Set up Backend) OR continue with other Phase 2 tasks
+- **Backend Status:** NOT REQUIRED for game to work
+
+### Deployment Readiness
+
+**Current:** Game can be deployed immediately with FALLBACK/MOCK modes
+**Future:** Add backend, set `VITE_API_URL`, automatic switch to API mode
+
+---
+
 ## Development Log
 
 | Date | Phase | Description |
@@ -949,6 +1164,8 @@ addConversationEntry: (entry: Omit<ConversationEntry, 'id' | 'timestamp'>): Game
 | 2026-01-12 | Phase 1.6 (part 3) | QuestionInput UI component created |
 | 2026-01-12 | Phase 1.6 | Phase 1 Foundation COMPLETE ✅ |
 | 2026-01-12 | Localization | Thai localization COMPLETE ✅ (12 files translated) |
+| 2026-01-12 | Phase 2.1 | AI System Prompts created ✅ |
+| 2026-01-12 | Phase 2.5 | API Client created ✅ (FALLBACK/MOCK/API modes) |
 
 ---
 
