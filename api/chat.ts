@@ -5,12 +5,13 @@
 // ============================================================================
 
 import Anthropic from '@anthropic-ai/sdk'
+import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 export const config = {
-  runtime: 'nodejs20.x',
+  runtime: 'nodejs',
 }
 
-export default async function handler(req, res) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
@@ -38,11 +39,11 @@ export default async function handler(req, res) {
     }
 
     // Format conversation history for Claude
-    const messages = []
+    const messages: Anthropic.MessageParam[] = []
 
     // Add conversation history if present
     if (conversationHistory && conversationHistory.length > 0) {
-      conversationHistory.forEach((entry) => {
+      conversationHistory.forEach((entry: { type: string; content: string }) => {
         if (entry.type === 'question') {
           messages.push({ role: 'user', content: entry.content })
         } else if (entry.type === 'response') {
@@ -64,7 +65,9 @@ export default async function handler(req, res) {
     })
     const duration = Date.now() - startTime
 
-    const aiResponse = response.content[0].text
+    // Get text response from content blocks
+    const contentBlock = response.content[0]
+    const aiResponse = contentBlock.type === 'text' ? contentBlock.text : 'ไม่สามารถสร้างคำตอบได้'
 
     // Return response
     res.json({
@@ -75,13 +78,13 @@ export default async function handler(req, res) {
       duration: duration,
     })
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Vercel API Error:', error)
 
     // Return error with details
     res.status(500).json({
       success: false,
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Unknown error',
     })
   }
 }
