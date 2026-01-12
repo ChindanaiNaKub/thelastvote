@@ -50,6 +50,15 @@ export function CandidateCard({
   // Get first name for voting button
   const firstName = candidate.name.split(' ')[0]
 
+  // Truncate personality to 3 sentences for compact view
+  const getCompactPersonality = (text: string): string => {
+    // Split by sentence endings (period, exclamation, question mark)
+    const sentences = text.split(/(?<=[.!?])\s+/)
+    const maxSentences = 3
+    if (sentences.length <= maxSentences) return text
+    return sentences.slice(0, maxSentences).join(' ')
+  }
+
   return (
     <div
       className={cardClasses}
@@ -74,7 +83,7 @@ export function CandidateCard({
       {showDescription && variant !== 'voting' && (
         <p className="candidate-card__personality">
           {variant === 'compact'
-            ? `${candidate.personality.slice(0, 150)}...`
+            ? getCompactPersonality(candidate.personality)
             : candidate.personality}
         </p>
       )}
@@ -90,7 +99,7 @@ export function CandidateCard({
             onClick()
           }}
         >
-          Vote for {firstName}
+          ลงคะแนนให้ {firstName}
         </button>
       )}
     </div>

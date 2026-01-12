@@ -17,17 +17,17 @@ export function CreditsScreen() {
 
   return (
     <div className="screen credits-screen">
-      <h1>The End</h1>
+      <h1>จบ</h1>
 
       <div className="credits-content">
-        <p>Thank you for playing The Last Vote.</p>
+        <p>ขอบคุณที่มาเล่น The Last Vote</p>
         <p className="reflection">
-          Every choice has consequences. Every vote matters.
+          ทุกทางเลือกมีผลที่ตามมา ทุกเสียงมีความสำคัญ
         </p>
       </div>
 
       <button onClick={handlePlayAgain} className="btn-primary">
-        Play Again
+        เล่นอีกครั้ง
       </button>
     </div>
   )

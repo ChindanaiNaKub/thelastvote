@@ -17,9 +17,9 @@ export function CandidateRosterScreen() {
 
   return (
     <div className="screen roster-screen">
-      <h2>Meet the Candidates</h2>
+      <h2>พบกับ Candidates</h2>
       <p className="subtitle">
-        Five people seek your vote. Get to know them.
+        ห้าคนที่ต่างตามหาคะแนนเสียงจากคุณ มารู้จักพวกเขา
       </p>
 
       <div className="candidates-grid">
@@ -33,7 +33,7 @@ export function CandidateRosterScreen() {
       </div>
 
       <button onClick={handleContinue} className="btn-primary">
-        Continue to Questioning
+        ไปยังการถามคำถาม
       </button>
     </div>
   )

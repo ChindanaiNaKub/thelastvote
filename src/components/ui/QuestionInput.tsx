@@ -59,9 +59,9 @@ export function QuestionInput({
 
   // Get submit button text
   const getSubmitText = () => {
-    if (questionsRemaining === 0) return 'No questions remaining'
-    if (isProcessing) return 'Asking...'
-    return questionsRemaining === 1 ? 'Ask (1 left)' : `Ask (${questionsRemaining} left)`
+    if (questionsRemaining === 0) return 'ไม่มีคำถามเหลือแล้ว'
+    if (isProcessing) return 'กำลังถาม...'
+    return questionsRemaining === 1 ? 'ถาม (เหลือ 1)' : `ถาม (เหลือ ${questionsRemaining})`
   }
 
   // Handle text input change
@@ -108,14 +108,14 @@ export function QuestionInput({
       {/* Selected candidate display */}
       {selectedCandidate && (
         <div className="question-input__target" style={{ color: selectedCandidate.colorTheme }}>
-          Asking: {selectedCandidate.name} {selectedCandidate.portrait}
+          กำลังถาม: {selectedCandidate.name} {selectedCandidate.portrait}
         </div>
       )}
 
       {/* Warning when 1 question remaining */}
       {questionsRemaining === 1 && !isDisabled && (
         <div className="question-input__warning">
-          ⚠️ This is your last question. Make it count!
+          ⚠️ นี่เป็นคำถามสุดท้ายของคุณ ทำให้มีคุณค่า!
         </div>
       )}
 
@@ -126,7 +126,7 @@ export function QuestionInput({
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         disabled={isDisabled}
-        placeholder={selectedCandidate ? `Ask ${selectedCandidate.name.split(' ')[0]} a question...` : 'Ask the candidates a question...'}
+        placeholder={selectedCandidate ? `ถาม ${selectedCandidate.name.split(' ')[0]} คำถาม...` : 'ถาม candidates คำถาม...'}
         rows={3}
         maxLength={MAX_CHARS}
       />
@@ -146,7 +146,7 @@ export function QuestionInput({
               className="question-input__clear"
               disabled={isDisabled}
             >
-              Clear
+              ล้าง
             </button>
           )}
 
@@ -165,7 +165,7 @@ export function QuestionInput({
       {/* Keyboard shortcut hint */}
       {!isDisabled && (
         <div className="question-input__hint">
-          Press Ctrl+Enter to submit
+          กด Ctrl+Enter เพื่อส่ง
         </div>
       )}
     </div>

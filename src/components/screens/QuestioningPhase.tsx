@@ -74,9 +74,9 @@ export function QuestioningPhase() {
   return (
     <div className="screen questioning-screen">
       <div className="question-header">
-        <h2>Ask Your Questions</h2>
+        <h2>ถามคำถามของคุณ</h2>
         <p className={`questions-remaining ${state.questionsRemaining <= 1 ? 'urgent' : ''}`}>
-          Questions Remaining: <strong>{state.questionsRemaining}</strong>
+          คำถามที่เหลือ: <strong>{state.questionsRemaining}</strong>
         </p>
       </div>
 
@@ -95,7 +95,7 @@ export function QuestioningPhase() {
       />
 
       <div className="candidates-list">
-        <h3>Candidates {selectedCandidate && `(Click to deselect ${selectedCandidate.name})`}</h3>
+        <h3>Candidates {selectedCandidate && `(คลิกเพื่อยกเลิกเลือก ${selectedCandidate.name})`}</h3>
         {state.candidates.map((candidate) => (
           <div
             key={candidate.id}
@@ -117,7 +117,7 @@ export function QuestioningPhase() {
           disabled={state.questionsRemaining > 0}
           className="btn-primary"
         >
-          {state.questionsRemaining > 0 ? 'Ask more questions first' : 'Vote Now'}
+          {state.questionsRemaining > 0 ? 'ถามคำถามเพิ่มเติมก่อน' : 'ลงคะแนนทันที'}
         </button>
       </div>
     </div>

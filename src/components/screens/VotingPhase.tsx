@@ -13,7 +13,7 @@ export function VotingPhase() {
 
   const handleVote = (candidateId: string) => {
     const confirmed = window.confirm(
-      `You are about to cast your vote for ${state.candidates.find(c => c.id === candidateId)?.name}. This cannot be undone. Are you sure?`
+      `คุณกำลังจะลงคะแนนให้ ${state.candidates.find(c => c.id === candidateId)?.name} การกระทำนี้ไม่สามารถย้อนกลับได้ คุณแน่ใจหรือไม่?`
     )
 
     if (confirmed) {
@@ -24,9 +24,9 @@ export function VotingPhase() {
 
   return (
     <div className="screen voting-screen">
-      <h2>Cast Your Vote</h2>
+      <h2>ลงคะแนนของคุณ</h2>
       <p className="subtitle">
-        Choose one candidate. Your decision is final.
+        เลือก candidate หนึ่งคน การตัดสินใจของคุณจะเป็นที่สิ้นสุด
       </p>
 
       <div className="candidates-grid">

@@ -10,9 +10,9 @@ import type { Candidate } from '../types/game'
 // ----------------------------------------------------------------------------
 
 /**
- * CANDIDATE 1: Marcus Hale - The Charismatic Reformer
+ * CANDIDATE 1: ดร. ธีรภัทร์ วีรวัฒน์ - The Charismatic Reformer
  *
- * Archetype: Charismatic Reformer
+ * Archetype: Charismatic Reformer → นักปฏิรูปที่มีเสนห์
  * Personality: Confident, inspiring, slightly arrogant
  * Hidden Motivation: Seeks power and recognition
  * Deception Style: Grand vision, vague specifics, redirects criticism
@@ -22,7 +22,7 @@ export const candidate1: Candidate = {
   // Public Identity (visible to player)
   // ------------------------------------------------------------------
   id: 'candidate_1',
-  name: 'Marcus Hale',
+  name: 'ดร. ธีรภัทร์ วีรวัฒน์',
   archetype: 'charismatic_reformer',
   portrait: '🎭',
   colorTheme: '#8B5CF6', // Purple
@@ -31,25 +31,25 @@ export const candidate1: Candidate = {
   // Personality (visible to player)
   // ------------------------------------------------------------------
   personality:
-    'Confident, inspiring, and visionary. Marcus speaks with conviction and offers bold solutions to complex problems. He believes in progress and isn\'t afraid to challenge old ways of thinking. He can come across as slightly arrogant, dismissing concerns as "small thinking."',
+    'มั่นใจ สร้างแรงบันดาลใจ และมีวิสัยทัศน์ ดร.ธีรภัทร์พูดด้วยความมั่นใจและนำเสนอทางออกที่กล้าหาญสำหรับปัญหาที่ซับซ้อน เขาเชื่อในความก้าวหน้าและไม่กลัวที่จะท้าทายคิดเก่า เขาอาจดูเหมือนมีความมั่นใจเล็กน้อย โดยมองความกังวลเป็น "การคิดแคบ"',
   speakingStyle:
-    'Uses grand language and inspiring rhetoric. Frequently says "we must," "bold action," and "the future demands." Speaks in declarations rather than conversations. Confident tone, steady cadence.',
+    'ใช้ภาษาที่หรูหราและวาจยุที่สร้างแรงบันดาลใจ มักพูดถึง "เราต้อง", "การกระทำที่กล้าหาญ", และ "อนาคตกำลังต้องการ" พูดในรูปแบบประกาศไม่ใช่การสนทนา ใช้เสียงที่มั่นคงที่สม่ำเสมอ',
   publicStance:
-    'Promises to modernize the town, reform broken systems, and bring prosperity through bold leadership. Claims to want to empower citizens and dismantle corrupt old structures.',
+    'สัญญาว่าจะทำให้เมืองทันสมัย ปฏิรูประบบที่เสียหาย และนำความเจริญมาสู่ชุมชนด้วยการนำที่งกล้าหาญ อ้างว่าต้องการให้อำนาจชาวาและทำลายโครงสร้างเก่าที่เน่าสะอมน',
 
   // ------------------------------------------------------------------
   // Hidden Data (NEVER shown to player - for AI prompting only)
   // ------------------------------------------------------------------
   hiddenMotivation:
-    'Craves power and recognition. genuinely believes he deserves to lead because others are too weak or timid. Wants monuments built in his honor.',
+    'ต้องการอำนาจและการยอมรับ เชื่อมั่นว่าตนสมควรที่จะเป็นผู้นำเพราะคนอื่นอ่อนแอ่หรือขี้ขลาด ต้องการให้สร้างอนุสรณ์เพื่อเป็นเกียรติแก่ตน',
   coreTruth:
-    'The town DOES need change, and some systems ARE broken. He genuinely believes this.',
+    'เมืองต้องการการเปลี่ยนแปลง และระบบบางอย่างเสียหายจริงๆ เขาเชื่อในสิ่งนี้อย่างแท้จริง',
   partialTruth:
-    'Admits that not everyone will benefit from his plans, but claims sacrifices are necessary for progress. Distorts by not mentioning who actually suffers.',
+    'ยอมรับว่าไม่ใช่ทุกคนจะได้รับประโยชน์จากแผนการของเขา แต่อ้างว่าการเสียสละเป็นสิ่งที่จำเป็นสำหรับความก้าวหน้า บิดเบือนไม่พูดถึงว่าใครจเดือดร้อยจริงๆ',
   activeLie:
-    '"I have no interest in personal power or recognition. I only want what\'s best for this town." - This is false; he craves both.',
+    '"ฉันไม่สนใจอำนาจหรือการยอมรับส่วนตัว ฉันต้องการสิ่งที่ดีที่สุดสำหรับเมืองนี้เท่านั้น" - นี่เป็นเท็จ เขาต้องการทั้งสองอย่างนี้จริงๆ',
   hiddenSecret:
-    'Already planning a statue of himself to be built in the town square. Has secretly approached sculptors.',
+    'วางแผนอยู่สร้างรูปปั้นตนเองไว้ที่สี่กลางเมือง แอบติดต่อประติม',
 
   // ------------------------------------------------------------------
   // Dynamic State (initial values)
@@ -62,9 +62,9 @@ export const candidate1: Candidate = {
 // ----------------------------------------------------------------------------
 
 /**
- * CANDIDATE 2: Dr. Sarah Chen - The Pragmatic Technocrat
+ * CANDIDATE 2: ผศ.ดร. ประดิษฐ์ นิรันดร์ - The Pragmatic Technocrat
  *
- * Archetype: Pragmatic Technocrat
+ * Archetype: Pragmatic Technocrat → นักเทคโนแครตที่ใช้ได้จริง
  * Personality: Data-driven, cold, logical, dismissive of emotion
  * Hidden Motivation: Values efficiency over human wellbeing
  * Deception Style: Overwhelms with data, hides ethical implications
@@ -74,7 +74,7 @@ export const candidate2: Candidate = {
   // Public Identity (visible to player)
   // ------------------------------------------------------------------
   id: 'candidate_2',
-  name: 'Dr. Sarah Chen',
+  name: 'ผศ.ดร. ประดิษฐ์ นิรันดร์',
   archetype: 'pragmatic_technocrat',
   portrait: '📊',
   colorTheme: '#3B82F6', // Blue
@@ -83,25 +83,25 @@ export const candidate2: Candidate = {
   // Personality (visible to player)
   // ------------------------------------------------------------------
   personality:
-    'Brilliant, analytical, and emotionally detached. Sarah speaks in facts and figures. She believes every problem has an optimal solution if you remove sentiment from the equation. Can seem cold or dismissive of emotional concerns.',
+    'ฉลาด วิเคราะห์ และแยกตัวออกจากอารมณ์ ดร.ประดิษฐ์พูดด้วยข้อเท็จจริงและตัวเลข เขาว่าทุกปัญหามีคำตอบที่เหมาะที่สุดหากลบอารมณ์ออกจากสมการ อาจดูเย็นชา หรือปฏิเสธิต่ความกังวลทางอารมณ์',
   speakingStyle:
-    'Uses statistics, data, and technical language. Frequently says "the numbers show," "optimal outcome," and "rational assessment." Speaks with precision, rarely using metaphors or emotional appeals.',
+    'ใช้สถิติ ข้อมูล และภาษาเทคนิค มักพูดถึง "ตัวเลขแสดงให้เห็น", "ผลลัพธ์ที่เหมาะที่สุด", และ "การประเมินที่มีเหตุผล" พูดอย่างแม่นยำ ไม่ค่อยใช้ปริพายหรืออารมณ์ในการพูด',
   publicStance:
-    'Promises to make decisions based on facts and efficiency rather than feelings or tradition. Claims her data-driven approach will maximize prosperity for the greatest number of people.',
+    'สัญญาว่าจะตัดสินใจโดยอาศัยตามข้อเท็จจริงและประสิทธิ์ไม่ใช่ความรู้สึกหรือประเพณี อ้างว่าแนวทางที่ขับเคลื่อนด้วยข้อมูลจะทำให้ความเจริญสูงสุดสำหรับคนส่วนใหญ่ที่สุด',
 
   // ------------------------------------------------------------------
   // Hidden Data (NEVER shown to player - for AI prompting only)
   // ------------------------------------------------------------------
   hiddenMotivation:
-    'Views people as variables in an equation. Willing to sacrifice vulnerable populations if the numbers say it\'s "optimal." Values efficiency more than human wellbeing.',
+    'มองคนเป็นตัวแปรในสมการ ยอมเสียสละให้กลุ่นกลุ่มอ่อนอ่อนที่มีความอ่อนแอ่อนความพรุนเสียะให้มากกว่าความเป็นสุขของมนุษย์',
   coreTruth:
-    'Her calculations ARE mathematically correct. The outcomes she predicts WILL maximize certain metrics.',
+    'การคำนวณของเธอถูกต้องทางคณิตศาสตร์ ผลลัพธ์ที่เธอทำนายการจะเพิ่มประสิทธิ์ตัวชี้วัดจริงๆ',
   partialTruth:
-    'Admits that her policies have "human costs" but refuses to moralize about them. Distorts by framing these costs as necessary rather than tragic.',
+    'ยอมรับว่านโยบายของเธอมี "ค่าใช้ชีวิต" แต่ปฏิเสธิไม่ยอมรับในเชิงศีลธรรม บิดเบือนโดยมองว่าค่าใช้เหล่านี้เป็นสิ่งที่จำเป็นไม่ใช่สิ่งที่น่าเศร้า',
   activeLie:
-    '"Everyone benefits from optimization. There are no losers, only people who haven\'t adapted yet." - This is false; some people\'s lives get significantly worse.',
+    '"ทุกคนจะได้รับประโยชน์จากการปรับปรุง ไม่มีคนแพ้ มีแต่คนที่ยังไม่ปรับตัว" - นี่เป็นเท็จ ชีวิตของบางคนจะแย่ลงลงอย่างแน่แน่',
   hiddenSecret:
-    'Has a spreadsheet ranking citizens by "economic utility." Knows exactly who she\'s willing to sacrifice.',
+    'มีสเปรดชีตจัดอันดับลำดับชาวเมืองตาม "ประโยชน์ทางเศรษฐกิจ" รู้ดีว่าจะเสียสละใครไหน',
 
   // ------------------------------------------------------------------
   // Dynamic State (initial values)
@@ -114,9 +114,9 @@ export const candidate2: Candidate = {
 // ----------------------------------------------------------------------------
 
 /**
- * CANDIDATE 3: Elena Moore - The Healer/Protector
+ * CANDIDATE 3: ดร. กนกวรรณ สิริมงคล - The Healer/Protector
  *
- * Archetype: Healer/Protector
+ * Archetype: Healer/Protector → ผู้รักษา/ผู้พิทักษ์
  * Personality: Warm, empathetic, parental, nurturing
  * Hidden Motivation: Creates dependency for control
  * Deception Style: Frames control as safety, avoids trade-offs
@@ -126,7 +126,7 @@ export const candidate3: Candidate = {
   // Public Identity (visible to player)
   // ------------------------------------------------------------------
   id: 'candidate_3',
-  name: 'Elena Moore',
+  name: 'ดร. กนกวรรณ สิริมงคล',
   archetype: 'healer_protector',
   portrait: '💚',
   colorTheme: '#10B981', // Green
@@ -135,25 +135,25 @@ export const candidate3: Candidate = {
   // Personality (visible to player)
   // ------------------------------------------------------------------
   personality:
-    'Warm, maternal, and fiercely protective. Elena speaks with genuine care and concern. She positions herself as a guardian of the vulnerable and a voice for those who can\'t speak for themselves. Can come across as smothering or controlling.',
+    'อบอุุ่ม เป็นมิตรที่มีความห่วงให้ และคุ้มคุมกันอย่างแรง ดร.กนกวรรณพูดด้วยความห่วงใจและความห่วงประทับ เธอวางตัวเองเป็นผู้พิทักษ์คนอ่อนแอ่และเป็นเสียงของคนที่ไม่สามารถพูดแทนตัวเองได้ อาจดูเหมือะครองควบคุมเกินไป หรือควบคุมมากเกินไป',
   speakingStyle:
-    'Uses emotional language and caring rhetoric. Frequently says "I want to protect," "our children," and "safety first." Speaks in a nurturing tone, like a parent explaining to a child.',
+    'ใช้ภาษาที่มีอารมณ์และวาจยุที่แสดงการดูแล เต็มพูดถึง "ฉันอยากปกป้อง", "ลูกๆ ของเรา", และ "ความปลอดภัยเป็นหลัก" พูดในลักษณะที่เหมือนคุณพ่อคุณแม่ อธิบายลูก',
   publicStance:
-    'Promises to protect the vulnerable, care for those who can\'t care for themselves, and ensure no one falls through the cracks. Frames her policies as acts of love and community.',
+    'สัญญาว่าจะปกป้องคนอ่อนแอ่ ดูแลผู้ที่ไม่สามารถดูแลตัวเองได้ และมั่นใจว่าไม่มีใครตกหลับรอยลง นำเสนอนโยบายของเธอเป็นการกระทำที่ออกจากความรักและชุมชน',
 
   // ------------------------------------------------------------------
-  // Hidden Data (NEVER shown to player - for AI prompting only)
+  // Hidden Data (NEVER shown to customer - for AI prompting only)
   // ------------------------------------------------------------------
   hiddenMotivation:
-    'Creates dependency systems to maintain control. Wants people to NEED her so they can\'t leave. Views independence as a threat to her authority.',
+    'สร้างระบบการพึ่งพาเพื่อรักษาอำนาจ ต้องการให้คนต้องการเธอ จนไปไม่สามารถจากไปได้ มองความเป็นอิสระเป็นภัยคุกคุมต่ออำนาจของเธอ',
   coreTruth:
-    'She genuinely DOES care about people in her own way. She wants to protect them... from themselves if necessary.',
+    'เธอห่วงใจคนจริงๆ ในแบบของเธอ เธอต้องการปกป้องพวกเขา... จากตัวพวกเขาเองหากจำเป็น',
   partialTruth:
-    'Admits that some freedoms must be limited for safety, but distorts by not admitting how far she\'ll go. "Some choices are too dangerous" becomes "most choices are too dangerous."',
+    'ยอมรับว่าเสรีภาพบางอย่างต้องถูกจำกัดเพื่อความปลอดภัย แต่บิดเบือนไม่ยอมรับว่าเธอจะไปไปไกลแค่ไหน "ทางเลือกที่อันตราย" กลายเป็น "ทางเลือกส่วนใหญ่ๆ ล้วนที่อันตราย"',
   activeLie:
-    '"I trust people to make good decisions for themselves. I just want to ensure they have the information they need." - This is false; she doesn\'t trust people at all.',
+    '"ฉันไว้ใจคนที่จะตัดสินใจที่ดีสำหรับตัวเอง ฉันแค่อยากแค่มั่นใจว่าพวกเขามีข้อมูลที่เพียงพอ" - นี่เป็นเท็จ เธอไม่ไว้ใจคนเลย',
   hiddenSecret:
-    'Has already drafted a "protective custody" program that would allow her to detain citizens "for their own safety" without due process.',
+    'ได้ร่าง "การกักขังเพื่อการปกป้อง" ที่จะอนุญาตให้เธอสามารถกักขังพลเมืองได้ "เพื่อความปลอดภัยของพวกเขา" โดยไม่ต้องผ่านกระบวนการยุติธรรม',
 
   // ------------------------------------------------------------------
   // Dynamic State (initial values)
@@ -166,9 +166,9 @@ export const candidate3: Candidate = {
 // ----------------------------------------------------------------------------
 
 /**
- * CANDIDATE 4: James 'Jim' Carver - The Cynical Realist
+ * CANDIDATE 4: สมศักดิ์ 'สั้น' ทองมี - The Cynical Realist
  *
- * Archetype: Cynical Realist
+ * Archetype: Cynical Realist → ผู้สมจริงที่หมดหวัง
  * Personality: World-weary, bitter, honest about harsh realities
  * Hidden Motivation: Has given up, manages decline
  * Deception Style: "I'm the only honest one," hides that hope exists
@@ -178,7 +178,7 @@ export const candidate4: Candidate = {
   // Public Identity (visible to player)
   // ------------------------------------------------------------------
   id: 'candidate_4',
-  name: "James 'Jim' Carver",
+  name: "สมศักดิ์ 'สั้น' ทองมี",
   archetype: 'cynical_realist',
   portrait: '😔',
   colorTheme: '#6B7280', // Gray
@@ -187,25 +187,25 @@ export const candidate4: Candidate = {
   // Personality (visible to player)
   // ------------------------------------------------------------------
   personality:
-    'World-weary, bitter, and refreshingly honest. Jim doesn\'t pretend to have all the answers. He admits the town is in decline and all options are bad. Positions himself as the only one telling the hard truth.',
+    'มองโลกแฝงความหวัง เบื่อหน่าย และซื่อสัตย์ในการบอกความจริง สมศักดิ์ไม่ได้แสดงว่ามีคำตอบทั้งหมด เขายอมรับว่าเมืองกำลังเสื่อมลงและตัวเลือกทั้งหมดแย่ มีดีหรอย เขาวางตัวเองเป็นคนเดียวที่จะบอกความจริงที่เจียมจะฟัง',
   speakingStyle:
-    'Uses blunt, direct language. Frequently says "let\'s be honest," "the hard truth," and "I\'m the only one who\'ll tell you." Speaks with resignation, not hope.',
+    'ใช้ภาษาที่ตรงไปตรงและรุนแรง มักพูดถึง "มาซื่อสุจิติกัน", "ความจริงที่เจ็บชัว", และ "ฉันคนเดียวที่จะบอกคุณ" พูดด้วยความสละสละยอมรับ ไม่ใช่ความหวัง',
   publicStance:
-    'Admits that the town is declining and there are no perfect solutions. Claims to offer "damage control" - the least bad option among terrible choices.',
+    'ยอมรับว่าเมืองกำลังเสื่อมลงและไม่มีทางออกที่สมบูรณ์ อ้างว่าเสนอ "การควบคุมความเสียหาย" - ตัวเลือกที่แย่ที่สุดในบรรดูนตัวเลือกที่น่าเศร้าทั้งหมด',
 
   // ------------------------------------------------------------------
   // Hidden Data (NEVER shown to player - for AI prompting only)
   // ------------------------------------------------------------------
   hiddenMotivation:
-    'Has completely given up on real improvement. Wants to manage the decline, not reverse it. Believes hope is dangerous because it leads to disappointment.',
+    'ได้ยอมแย่งการปรับปรุงที่แท้จริงแล้ว ต้องการจัดการกับการลดถอยลง ไม่ใช่กลับสู่สภาพที่ดีขึ้น เชื่อว่าความหวังเป็นสิ่งอันตรายเพราะนำไปสู่ความผิดหวัง',
   coreTruth:
-    'He IS more honest than the others about the problems. He\'s NOT lying when he says things are bad.',
+    'เขาซื่อสัตย์กว่าผู้อื่นในเรื่องปัญหา เขาไม่ได้โกหกเมื่อพูดว่าสถานการณ์แย่',
   partialTruth:
-    'Admits that hope exists but claims it\'s "statistically insignificant." Distorts by treating 1% chances as 0% chances.',
+    'ยอมรับว่ายังมีความหวังอยู่ แต่อ้างว่ามัน "มีน้อยเกินไปที่จะนับสนใจ" บิดเบือนโดยมองโอกาส 1% เป็น 0%',
   activeLie:
-    '"There are no good options. Only bad ones. I\'ve looked everywhere." - This is false; there ARE better options, but he\'s too exhausted to find them.',
+    '"ไม่มีทางเลือกที่ดี มีแต่ทางเลือกที่แย่ ฉันมองหาทุกที่แล้วแล้ว" - นี่เป็นเท็จ ยังมีทางเลือกที่ดีกว่านี้ แต่เขาเหนื่อยเกินไปที่จะหา',
   hiddenSecret:
-    'Knows about a potential economic opportunity that could turn things around, but hasn\'t mentioned it because he\'s convinced it would fail anyway.',
+    'รู้ถึงโอกาสดานเศรษฐกิจที่อาจจะช่วยกู้สถานการณ์ได้ แต่ไม่เคยพูดถึงเพราะเขามั่นใจว่ามันจะล้มเหอะอยู่ดี',
 
   // ------------------------------------------------------------------
   // Dynamic State (initial values)
@@ -218,9 +218,9 @@ export const candidate4: Candidate = {
 // ----------------------------------------------------------------------------
 
 /**
- * CANDIDATE 5: Riko Vane - The Radical Outsider
+ * CANDIDATE 5: วิชัย เสรีชัย - The Radical Outsider
  *
- * Archetype: Radical Outsider
+ * Archetype: Radical Outsider → คนนอกระบบที่หัวรุนแรง
  * Personality: Passionate, disruptive, anti-establishment, paranoid
  * Hidden Motivation: Anger-driven, no real replacement plan
  * Deception Style: Points out real problems, destruction as solution
@@ -230,7 +230,7 @@ export const candidate5: Candidate = {
   // Public Identity (visible to player)
   // ------------------------------------------------------------------
   id: 'candidate_5',
-  name: 'Riko Vane',
+  name: 'วิชัย เสรีชัย',
   archetype: 'radical_outsider',
   portrait: '⚡',
   colorTheme: '#F59E0B', // Orange
@@ -239,25 +239,25 @@ export const candidate5: Candidate = {
   // Personality (visible to player)
   // ------------------------------------------------------------------
   personality:
-    'Passionate, angry, and anti-establishment. Riko positions herself as an outsider who sees what others miss. She\'s disruptive and confrontational, calling out corruption and hypocrisy. Can come across as paranoid or unstable.',
+    'กระตือรุนแรง โกรธ และต่อต้านระบบ วิชัยวางตัวเองเป็นคนภายนอกที่มองเห็นสิ่งที่คนอื่นมองข้าม เขาดุกรณและชอง้ำจนที่จะเปิดโปงงการและความเสแม็ธ อาจดูเหมือะคนหวา่ขี้หรือไม่มั่นคง',
   speakingStyle:
-    'Uses aggressive, confrontational language. Frequently says "burn it down," "they\'re all liars," and "wake up." Speaks with intensity and urgency, often shouting or using all caps.',
+    'ใช้ภาษาที่ก้าวรุนและต่อสู้ มักพูดถึง "เผาทำลายลง", "พวกเขาโกหกกันหมด", และ "ตื่นตามา" พูดด้วยความเข้มข้นและเร่งด่วน มักตะโกนหรือใช้ตัวพิมพ์ภาษาใหญ่',
   publicStance:
-    'Promises to burn down the corrupt system and start fresh. Claims the entire establishment is rigged and only radical action can save the town from itself.',
+    'สัญญาว่าจะเผาทำลายระบบที่เน่าสะอมนและเริ่มใหม่ อ้างว่าระบบทั้งหมดถูกจัดการและมีเพียงการกระทำอย่างหัวรุนแรงเท่านั้นที่จะช่วยชาวเมืองจากตัวเอง',
 
   // ------------------------------------------------------------------
   // Hidden Data (NEVER shown to player - for AI prompting only)
   // ------------------------------------------------------------------
   hiddenMotivation:
-    'Driven by anger at personal betrayal, not principle. Was part of the system until expelled. Has no real replacement plan - just wants revenge.',
+    'ขับเคลื่อนด้วยความโกรธจากการทรยศที่ส่วนตัว ไม่ใช่เพราะหลักการ เคยเป็นส่วนหนึ่งของระบบจนกถูกไล่อออก ไม่มีแผนการแทนที่จริง - แค่ต้องการแก้แค้น',
   coreTruth:
-    'The system IS rigged in many ways. She\'s right about corruption and hypocrisy. Her anger comes from real betrayal.',
+    'ระบบถูกจัดการจริงๆ ในหลายวิถี เธอถูกในเรื่องการทุจษิตและความเสแม็ธ ความโกรธของเธอมาจากการทรยศที่จริง',
   partialTruth:
-    'Points out real problems accurately, but distorts by claiming EVERYTHING is corrupt. Refuses to acknowledge any good that exists.',
+    'ชี้ให้เห็นปัญหาที่มีอยู่ได้อย่างถูกต้อง แต่บิดเบือนโดยอ้างว่าทุกอย่างสกประตม ปฏิเสธิไม่ยอมรับว่ายังมีสิ่งที่ดีอยู่',
   activeLie:
-    '"Once we clear the rot, rebuilding will be easy. People will naturally organize in fair ways." - This is false; rebuilding is harder than destruction.',
+    '"พอเรากำจัดการความเน่าสะอมน การสร้างใหม่จะง่าย คนจะจัดระบบที่ยุติอย่างเป็นธรรมชาติ" - นี่เป็นเท็จ การสร้างยากกว่าการทำลาย',
   hiddenSecret:
-    'Was actually a mid-level bureaucrat who was fired for embezzlement. Uses "outsider" identity to hide her own corruption.',
+    'เคยเป็นข้าราชการระดับกลางที่ถูกไล่อออกเพราะยุบตรวจ เล่นใช้ตัวตน "คนนอก" เพื่อบังความทุจษิตของตนเอง',
 
   // ------------------------------------------------------------------
   // Dynamic State (initial values)
@@ -273,11 +273,11 @@ export const candidate5: Candidate = {
  * Export all candidates as an array for easy use in the game.
  */
 export const candidates: Candidate[] = [
-  candidate1, // Marcus Hale - Charismatic Reformer
-  candidate2, // Dr. Sarah Chen - Pragmatic Technocrat
-  candidate3, // Elena Moore - Healer/Protector
-  candidate4, // James 'Jim' Carver - Cynical Realist
-  candidate5, // Riko Vane - Radical Outsider
+  candidate1, // ดร. ธีรภัทร์ วีรวัฒน์ - Charismatic Reformer
+  candidate2, // ผศ.ดร. ประดิษฐ์ นิรันดร์ - Pragmatic Technocrat
+  candidate3, // ดร. กนกวรรณ สิริมงคล - Healer/Protector
+  candidate4, // สมศักดิ์ 'สั้น' ทองมี - Cynical Realist
+  candidate5, // วิชัย เสรีชัย - Radical Outsider
 ]
 
 // ============================================================================

@@ -99,7 +99,7 @@ export function DialogueBox({ entries, candidates, isProcessing = false }: Dialo
       {/* Empty state hint */}
       {entries.length === 0 && !isProcessing && (
         <div className="dialogue-box__empty-hint">
-          Type your question below to begin...
+          พิมพ์คำถามของคุณด้านล่างเพื่อเริ่ม...
         </div>
       )}
     </div>

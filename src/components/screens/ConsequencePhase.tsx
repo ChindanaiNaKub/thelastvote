@@ -18,37 +18,37 @@ export function ConsequencePhase() {
 
   return (
     <div className="screen consequence-screen">
-      <h2>The Aftermath</h2>
+      <h2>ผลที่ตามมา</h2>
 
       <div className="consequence-content">
         <p className="your-choice">
-          You voted for: <strong>{chosenCandidate?.name}</strong>
+          คุณลงคะแนนให้: <strong>{chosenCandidate?.name}</strong>
         </p>
 
         <div className="consequence-section">
-          <h3>Immediate Outcome</h3>
+          <h3>ผลลัพธ์ทันที</h3>
           <p className="placeholder">
-            [Immediate consequences will be revealed here]
+            [ผลทันทีจะแสดงที่นี่]
           </p>
         </div>
 
         <div className="consequence-section">
-          <h3>Hidden Truths</h3>
+          <h3>ความจริงที่ซ่อนอยู่</h3>
           <p className="placeholder">
-            [Secrets will be revealed here]
+            [ความลับจะเปิดเผยที่นี่]
           </p>
         </div>
 
         <div className="consequence-section">
-          <h3>Long-Term Consequences</h3>
+          <h3>ผลกระทบในระยะยาว</h3>
           <p className="placeholder">
-            [The ultimate outcome will be shown here]
+            [ผลลัพธ์สุดท้ายจะแสดงที่นี่]
           </p>
         </div>
       </div>
 
       <button onClick={handlePlayAgain} className="btn-primary">
-        Play Again
+        เล่นอีกครั้ง
       </button>
     </div>
   )

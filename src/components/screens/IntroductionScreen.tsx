@@ -20,21 +20,21 @@ export function IntroductionScreen() {
 
       <div className="intro-content">
         <p className="lead">
-          You are the final voter in a fictional town. Five candidates seek your trust.
+          คุณเป็นผู้ลงคะแนนคนสุดท้ายในเมืองสมมติ ห้า candidates ต่างมองหาความไว้วางใจจากคุณ
         </p>
         <p className="lead">
-          Some lie. Some tell the truth. None reveal everything.
+          บางคนโกหก บางคนบอกความจริง แต่ไม่มีใครเปิดเผยทุกอย่าง
         </p>
         <p className="warning">
-          You may ask only <strong>three questions</strong> before your vote becomes final.
+          คุณสามารถถามได้เพียง <strong>สามคำถาม</strong> ก่อนที่การลงคะแนนจะเป็นที่สิ้นสุด
         </p>
         <p className="reflection">
-          Choose wisely.
+          เลือกอย่างรอบคอบ
         </p>
       </div>
 
       <button onClick={handleBegin} className="btn-primary">
-        Begin
+        เริ่มเกม
       </button>
     </div>
   )
