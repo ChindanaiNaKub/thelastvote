@@ -4,7 +4,6 @@
 // The main gameplay loop. Player asks questions and candidates respond.
 // ============================================================================
 
-import { useMemo } from 'react'
 import { useGame } from '../../context/GameContext'
 import { gameActions } from '../../context/GameContext'
 import { DialogueBox } from '../ui/DialogueBox'
@@ -39,47 +38,47 @@ export function QuestioningPhase() {
     // Generate candidate response using API client
     const generateResponse = async () => {
       try {
-        // Determine which candidate should respond
-        const responderId = targetCandidateId || state.candidates[0].id
-        const responder = state.candidates.find(c => c.id === responderId)
-
-        if (!responder) {
-          throw new Error('Candidate not found')
-        }
-
-        // Call API to generate response
-        const response = await generateCandidateResponse({
-          candidateId: responderId,
-          question: question,
-          conversationHistory: state.conversationHistory,
-          mode: 'auto', // Automatically detect best mode
+        // Generate responses from ALL 5 candidates simultaneously
+        const responsePromises = state.candidates.map(async (candidate) => {
+          const response = await generateCandidateResponse({
+            candidateId: candidate.id,
+            question: question,
+            conversationHistory: state.conversationHistory,
+            mode: 'auto', // Automatically detect best mode
+          })
+          return {
+            candidateId: candidate.id,
+            content: response.content,
+            modeUsed: response.modeUsed,
+          }
         })
+
+        // Wait for all responses (parallel execution for speed)
+        const allResponses = await Promise.all(responsePromises)
 
         // Clear processing state
         dispatch(gameActions.setProcessing(false))
 
-        // Add response to conversation
-        dispatch(gameActions.addConversationEntry({
-          type: 'response',
-          speaker: responder.id,
-          content: response.content,
-        }))
+        // Add all responses to conversation
+        allResponses.forEach((response) => {
+          dispatch(gameActions.addConversationEntry({
+            type: 'response',
+            speaker: response.candidateId,
+            content: response.content,
+          }))
+        })
 
-        console.log(`[API] Response generated using ${response.modeUsed} mode`)
+        console.log(`[API] Generated ${allResponses.length} responses from all candidates`)
 
       } catch (error) {
         // This should rarely happen due to fallbacks, but handle gracefully
         console.error('[API] Fatal error:', error)
         dispatch(gameActions.setProcessing(false))
 
-        // Determine responder for fallback
-        const responderId = targetCandidateId || state.candidates[0].id
-        const responder = state.candidates.find(c => c.id === responderId)
-
-        // Last resort: Use hardcoded fallback
+        // Last resort: Use hardcoded fallback from first candidate
         dispatch(gameActions.addConversationEntry({
           type: 'response',
-          speaker: responder?.id || state.candidates[0].id,
+          speaker: state.candidates[0].id,
           content: 'ขอโทษที่มีปัญหาทางเทคนิค แต่ฉันได้ยินคำถามของคุณ',
         }))
       }
@@ -88,23 +87,11 @@ export function QuestioningPhase() {
     generateResponse()
   }
 
-  // Handle candidate selection
-  const handleCandidateClick = (candidateId: string) => {
-    const currentSelection = state.selectedCandidate
-    // Toggle: if already selected, deselect; otherwise select
-    dispatch(gameActions.selectCandidate(currentSelection === candidateId ? null : candidateId))
-  }
-
-  // Get selected candidate object for QuestionInput
-  const selectedCandidate = useMemo(() => {
-    if (!state.selectedCandidate) return null
-    return state.candidates.find(c => c.id === state.selectedCandidate) || null
-  }, [state.selectedCandidate, state.candidates])
-
   return (
     <div className="screen questioning-screen">
       <div className="question-header">
         <h2>ถามคำถามของคุณ</h2>
+        <p className="subtitle">ทุกคนจะตอบคำถามของคุณ</p>
         <p className={`questions-remaining ${state.questionsRemaining <= 1 ? 'urgent' : ''}`}>
           คำถามที่เหลือ: <strong>{state.questionsRemaining}</strong>
         </p>
@@ -121,22 +108,18 @@ export function QuestioningPhase() {
         disabled={state.questionsRemaining === 0}
         isProcessing={state.isProcessing}
         questionsRemaining={state.questionsRemaining}
-        selectedCandidate={selectedCandidate}
       />
 
       <div className="candidates-list">
-        <h3>Candidates {selectedCandidate && `(คลิกเพื่อยกเลิกเลือก ${selectedCandidate.name})`}</h3>
+        <h3>ผู้สมัครทั้งหมด</h3>
         {state.candidates.map((candidate) => (
           <div
             key={candidate.id}
-            className={`candidate-item ${state.selectedCandidate === candidate.id ? 'candidate-item--selected' : ''}`}
-            onClick={() => handleCandidateClick(candidate.id)}
-            style={{ cursor: 'pointer', border: state.selectedCandidate === candidate.id ? `2px solid ${candidate.colorTheme}` : 'none' }}
+            className="candidate-item"
+            style={{ borderLeft: `4px solid ${candidate.colorTheme}` }}
           >
             <span className="candidate-emoji">{candidate.portrait}</span>
             <span>{candidate.name}</span>
-            {candidate.hasSpoken && <span className="spoken-indicator">✓</span>}
-            {state.selectedCandidate === candidate.id && <span className="selected-indicator">🎯</span>}
           </div>
         ))}
       </div>
