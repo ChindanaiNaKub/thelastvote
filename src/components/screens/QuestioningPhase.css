@@ -1,0 +1,164 @@
+/* ============================================================================
+ * Questioning Phase Screen Styles
+ * ============================================================================
+ */
+
+.questioning-screen {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.question-header {
+  text-align: center;
+}
+
+.question-header h2 {
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+  color: inherit;
+}
+
+.question-header .subtitle {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin: 0 0 1rem 0;
+}
+
+.questions-remaining {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.questions-remaining.urgent {
+  background: rgba(255, 87, 34, 0.2);
+  color: #ff5722;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Suggested Questions */
+.suggested-questions {
+  background: rgba(100, 108, 255, 0.1);
+  border: 2px solid rgba(100, 108, 255, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.suggested-questions__title {
+  font-size: 1rem;
+  margin: 0 0 1rem 0;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.suggested-questions__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.suggested-question-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 0.875rem 1.25rem;
+  font-size: 0.95rem;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  font-family: inherit;
+}
+
+.suggested-question-btn:hover {
+  background: rgba(100, 108, 255, 0.2);
+  border-color: rgba(100, 108, 255, 0.5);
+  transform: translateX(4px);
+}
+
+.suggested-question-btn:active {
+  transform: translateX(2px);
+}
+
+/* Candidates List */
+.candidates-list {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.candidates-list h3 {
+  font-size: 1rem;
+  margin: 0 0 0.75rem 0;
+  opacity: 0.7;
+}
+
+.candidate-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.candidate-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.candidate-emoji {
+  font-size: 1.5rem;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.actions button {
+  font-size: 1.1rem;
+  padding: 0.875rem 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .questioning-screen {
+    padding: 1rem 0.5rem;
+  }
+
+  .question-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .suggested-questions {
+    padding: 1rem;
+  }
+
+  .suggested-question-btn {
+    font-size: 0.9rem;
+    padding: 0.75rem 1rem;
+  }
+}

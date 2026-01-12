@@ -9,6 +9,7 @@ import { gameActions } from '../../context/GameContext'
 import { DialogueBox } from '../ui/DialogueBox'
 import { QuestionInput } from '../ui/QuestionInput'
 import { generateCandidateResponse } from '../../lib/api'
+import './QuestioningPhase.css'
 
 export function QuestioningPhase() {
   const { state, dispatch } = useGame()
@@ -87,6 +88,22 @@ export function QuestioningPhase() {
     generateResponse()
   }
 
+  // Suggested questions for players who need ideas
+  const suggestedQuestions = [
+    'คุณจะแก้ปัญหาเศรษฐกิจอย่างไร',
+    'เหตุผลที่คุณควรได้รับเลือกคืออะไร',
+    'คุณมีแผนอะไรสำหรับอนาคตเมืองนี้บ้าง',
+  ]
+
+  // Count how many questions have been asked
+  const questionsAsked = state.conversationHistory.filter(entry => entry.type === 'question').length
+
+  const handleSuggestedQuestion = (question: string) => {
+    if (!state.isProcessing && state.questionsRemaining > 0) {
+      handleQuestionSubmit(question)
+    }
+  }
+
   return (
     <div className="screen questioning-screen">
       <div className="question-header">
@@ -96,6 +113,24 @@ export function QuestioningPhase() {
           คำถามที่เหลือ: <strong>{state.questionsRemaining}</strong>
         </p>
       </div>
+
+      {/* Suggested questions - show for first 3 rounds */}
+      {state.questionsRemaining > 0 && !state.isProcessing && questionsAsked < 3 && (
+        <div className="suggested-questions">
+          <p className="suggested-questions__title">💡 คำถามแนะนำ:</p>
+          <div className="suggested-questions__list">
+            {suggestedQuestions.map((question, index) => (
+              <button
+                key={index}
+                className="suggested-question-btn"
+                onClick={() => handleSuggestedQuestion(question)}
+              >
+                {question}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <DialogueBox
         entries={state.conversationHistory}
