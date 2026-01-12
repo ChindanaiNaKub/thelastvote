@@ -1,0 +1,207 @@
+/* ============================================================================
+   DialogueBox Component Styles
+   ============================================================================ */
+
+/* Main dialogue container */
+.dialogue-box {
+  background: var(--color-bg-card, #1a1a1a);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Scrollbar styling */
+.dialogue-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dialogue-box::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.dialogue-box::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.dialogue-box::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Individual dialogue entries */
+.dialogue-entry {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Player entries (right-aligned) */
+.dialogue-entry--player {
+  flex-direction: row-reverse;
+}
+
+.dialogue-entry--player .dialogue-entry__content {
+  align-items: flex-end;
+}
+
+.dialogue-entry--player .dialogue-entry__message {
+  background: rgba(100, 150, 255, 0.15);
+  border: 1px solid rgba(100, 150, 255, 0.3);
+}
+
+/* Candidate entries (left-aligned) */
+.dialogue-entry--candidate {
+  flex-direction: row;
+}
+
+.dialogue-entry--candidate .dialogue-entry__content {
+  align-items: flex-start;
+}
+
+.dialogue-entry--candidate .dialogue-entry__message {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Entry type variations */
+.dialogue-entry--question {
+  /* Player question styling inherited from --player */
+}
+
+.dialogue-entry--response {
+  /* Candidate response styling inherited from --candidate */
+}
+
+.dialogue-entry--interruption {
+  /* Special styling for interruptions */
+}
+
+.dialogue-entry--interruption .dialogue-entry__message {
+  background: rgba(255, 150, 50, 0.1);
+  border: 1px solid rgba(255, 150, 50, 0.3);
+  font-style: italic;
+}
+
+.dialogue-entry--system {
+  justify-content: center;
+}
+
+.dialogue-entry--system .dialogue-entry__content {
+  align-items: center;
+}
+
+.dialogue-entry--system .dialogue-entry__message {
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted, #a0a0a0);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* Portrait emoji */
+.dialogue-entry__portrait {
+  font-size: 2rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* Content container */
+.dialogue-entry__content {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+}
+
+/* Speaker name */
+.dialogue-entry__speaker {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Message text */
+.dialogue-entry__message {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+/* Timestamp */
+.dialogue-entry__timestamp {
+  font-size: 0.7rem;
+  color: var(--color-text-muted, #a0a0a0);
+  margin-top: 0.25rem;
+}
+
+/* Empty state hint */
+.dialogue-box__empty-hint {
+  text-align: center;
+  color: var(--color-text-muted, #a0a0a0);
+  font-style: italic;
+  padding: 2rem;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Thinking indicator */
+.dialogue-box__thinking {
+  display: flex;
+  gap: 0.4rem;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.thinking-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--color-text-muted, #a0a0a0);
+  border-radius: 50%;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.thinking-dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.thinking-dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}

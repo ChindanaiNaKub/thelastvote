@@ -1,0 +1,252 @@
+// ============================================================================
+// Game State Manager - React Context + useReducer
+// ============================================================================
+// This is the central state management system for the game.
+// All game state flows through this context. All components use the useGame hook.
+// ============================================================================
+
+import { createContext, useContext, useReducer, ReactNode } from 'react'
+import type { GameState, GameAction, ConversationEntry } from '../types/game'
+import { initialGameState } from '../types/game'
+import { candidates } from '../data/candidates'
+
+// ----------------------------------------------------------------------------
+
+/**
+ * gameReducer - Reducer function that handles all game state transitions.
+ *
+ * This reducer processes actions and returns updated state.
+ * It follows the standard Redux pattern: (state, action) => newState
+ *
+ * Action types handled:
+ * - SET_PHASE: Transition to a new game phase
+ * - DECREMENT_QUESTIONS: Decrease questions remaining (max 3)
+ * - ADD_CONVERSATION_ENTRY: Add a conversation event to history
+ * - SET_VOTE: Record the player's final choice
+ * - SET_CONSEQUENCES: Store aftermath data
+ * - SET_PROCESSING: Toggle loading state for AI calls
+ * - SELECT_CANDIDATE: Target a candidate for questioning
+ * - RESET_GAME: Return to initial state
+ */
+export function gameReducer(state: GameState, action: GameAction): GameState {
+  switch (action.type) {
+    case 'SET_PHASE':
+      return {
+        ...state,
+        phase: action.payload,
+      }
+
+    case 'DECREMENT_QUESTIONS':
+      return {
+        ...state,
+        questionsRemaining: Math.max(0, state.questionsRemaining - 1),
+      }
+
+    case 'ADD_CONVERSATION_ENTRY': {
+      const newEntry = {
+        ...action.payload,
+        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        timestamp: Date.now(),
+      }
+
+      return {
+        ...state,
+        conversationHistory: [...state.conversationHistory, newEntry],
+      }
+    }
+
+    case 'SET_VOTE':
+      return {
+        ...state,
+        playerVote: action.payload,
+      }
+
+    case 'SET_CONSEQUENCES':
+      return {
+        ...state,
+        consequences: action.payload,
+      }
+
+    case 'SET_PROCESSING':
+      return {
+        ...state,
+        isProcessing: action.payload,
+      }
+
+    case 'SELECT_CANDIDATE':
+      return {
+        ...state,
+        selectedCandidate: action.payload,
+      }
+
+    case 'RESET_GAME': {
+      // Reset to initial state, but keep the candidates array
+      return {
+        ...initialGameState,
+        candidates: state.candidates.map((c) => ({
+          ...c,
+          hasSpoken: false,
+          trustLevel: 50,
+          relationships: {},
+        })),
+      }
+    }
+
+    default:
+      // TypeScript exhaustiveness check - will error if any action type is missed
+      return state
+  }
+}
+
+// ----------------------------------------------------------------------------
+
+/**
+ * GameContext - The React Context for game state.
+ *
+ * Components access game state and dispatch functions through this context.
+ */
+const GameContext = createContext<{
+  state: GameState
+  dispatch: React.Dispatch<GameAction>
+} | null>(null)
+
+// ----------------------------------------------------------------------------
+
+/**
+ * GameProviderProps - Props for the GameProvider component.
+ */
+interface GameProviderProps {
+  children: ReactNode
+}
+
+/**
+ * GameProvider - Context Provider component that wraps the application.
+ *
+ * This component:
+ * 1. Creates the reducer with initial state
+ * 2. Populates candidates from data/candidates.ts
+ * 3. Provides state and dispatch to all children
+ *
+ * Usage in App.tsx:
+ *   <GameProvider>
+ *     <App />
+ *   </GameProvider>
+ */
+export function GameProvider({ children }: GameProviderProps) {
+  // Initialize state with candidates from data
+  const initialState: GameState = {
+    ...initialGameState,
+    candidates: candidates,
+  }
+
+  const [state, dispatch] = useReducer(gameReducer, initialState)
+
+  return <GameContext.Provider value={{ state, dispatch }}>{children}</GameContext.Provider>
+}
+
+// ----------------------------------------------------------------------------
+
+/**
+ * useGame - Custom hook to access game state and dispatch.
+ *
+ * This hook provides a convenient way for components to access:
+ * - state: The current game state (phase, questions, candidates, etc.)
+ * - dispatch: Function to dispatch actions to update state
+ *
+ * Usage in components:
+ *   const { state, dispatch } = useGame()
+ *
+ * Throws an error if used outside of GameProvider.
+ */
+export function useGame() {
+  const context = useContext(GameContext)
+
+  if (context === null) {
+    throw new Error('useGame must be used within a GameProvider')
+  }
+
+  return context
+}
+
+// ----------------------------------------------------------------------------
+
+/**
+ * Action creators - Helper functions to dispatch common actions.
+ *
+ * These functions make it easier to dispatch actions with proper typing.
+ * They are optional but make code more readable.
+ */
+export const gameActions = {
+  setPhase: (phase: GameState['phase']): GameAction => ({
+    type: 'SET_PHASE',
+    payload: phase,
+  }),
+
+  decrementQuestions: (): GameAction => ({
+    type: 'DECREMENT_QUESTIONS',
+  }),
+
+  addConversationEntry: (entry: Omit<ConversationEntry, 'id' | 'timestamp'>): GameAction => ({
+    type: 'ADD_CONVERSATION_ENTRY',
+    payload: entry,
+  }),
+
+  setVote: (candidateId: string): GameAction => ({
+    type: 'SET_VOTE',
+    payload: candidateId,
+  }),
+
+  setConsequences: (consequences: NonNullable<GameState['consequences']>): GameAction => ({
+    type: 'SET_CONSEQUENCES',
+    payload: consequences,
+  }),
+
+  setProcessing: (isProcessing: boolean): GameAction => ({
+    type: 'SET_PROCESSING',
+    payload: isProcessing,
+  }),
+
+  selectCandidate: (candidateId: string | null): GameAction => ({
+    type: 'SELECT_CANDIDATE',
+    payload: candidateId,
+  }),
+
+  resetGame: (): GameAction => ({
+    type: 'RESET_GAME',
+  }),
+}
+
+// ============================================================================
+// USAGE EXAMPLES
+// ============================================================================
+//
+// In your component:
+//
+//   import { useGame } from '../context/GameContext'
+//   import { gameActions } from '../context/GameContext'
+//
+//   function MyComponent() {
+//     const { state, dispatch } = useGame()
+//
+//     const goToVoting = () => {
+//       dispatch(gameActions.setPhase('voting'))
+//     }
+//
+//     const askQuestion = (question: string) => {
+//       dispatch(gameActions.addConversationEntry({
+//         type: 'question',
+//         speaker: 'player',
+//         content: question,
+//       }))
+//       dispatch(gameActions.decrementQuestions())
+//     }
+//
+//     return (
+//       <div>
+//         <p>Phase: {state.phase}</p>
+//         <p>Questions: {state.questionsRemaining}</p>
+//       </div>
+//     )
+//   }
+//
+// ============================================================================

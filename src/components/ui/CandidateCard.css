@@ -1,0 +1,108 @@
+/* ============================================================================
+   CandidateCard Component Styles
+   ============================================================================ */
+
+/* Base card styles */
+.candidate-card {
+  border: 3px solid;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.2s ease;
+  background: var(--color-bg-card, #1a1a1a);
+}
+
+/* Compact variant (for roster) */
+.candidate-card--compact {
+  max-width: 280px;
+}
+
+/* Detailed variant (future use) */
+.candidate-card--detailed {
+  max-width: 400px;
+}
+
+/* Voting variant (clickable) */
+.candidate-card--voting {
+  cursor: pointer;
+  max-width: 300px;
+}
+
+.candidate-card--voting:hover:not(.candidate-card--disabled) {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.candidate-card--voting:active:not(.candidate-card--disabled) {
+  transform: translateY(-2px);
+}
+
+/* Selected state */
+.candidate-card--selected {
+  box-shadow: 0 0 0 3px var(--color-accent, #fff);
+  transform: scale(1.02);
+}
+
+/* Disabled state */
+.candidate-card--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.candidate-card--disabled:hover {
+  transform: none;
+}
+
+/* Portrait emoji */
+.candidate-card__portrait {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+/* Name */
+.candidate-card__name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+  color: var(--color-text, #e0e0e0);
+}
+
+/* Personality description */
+.candidate-card__personality {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+  text-align: center;
+  color: var(--color-text-muted, #a0a0a0);
+}
+
+/* Vote button */
+.candidate-card__vote-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.candidate-card__vote-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.candidate-card__vote-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.candidate-card__vote-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
