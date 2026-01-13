@@ -5,12 +5,14 @@
 // ============================================================================
 
 import { GameProvider, useGame } from './context/GameContext'
+import { ThemeProvider } from './context/ThemeContext'
 import { IntroductionScreen } from './components/screens/IntroductionScreen'
 import { CandidateRosterScreen } from './components/screens/CandidateRosterScreen'
 import { QuestioningPhase } from './components/screens/QuestioningPhase'
 import { VotingPhase } from './components/screens/VotingPhase'
 import { ConsequencePhase } from './components/screens/ConsequencePhase'
 import { CreditsScreen } from './components/screens/CreditsScreen'
+import { AppFooter } from './components/ui/AppFooter'
 import './App.css'
 
 // ============================================================================
@@ -22,37 +24,74 @@ function AppContent() {
   // Phase-based routing: render the appropriate screen based on current phase
   switch (state.phase) {
     case 'introduction':
-      return <IntroductionScreen />
+      return (
+        <>
+          <IntroductionScreen />
+          <AppFooter />
+        </>
+      )
 
     case 'roster':
-      return <CandidateRosterScreen />
+      return (
+        <>
+          <CandidateRosterScreen />
+          <AppFooter />
+        </>
+      )
 
     case 'questioning':
-      return <QuestioningPhase />
+      return (
+        <>
+          <QuestioningPhase />
+          <AppFooter />
+        </>
+      )
 
     case 'voting':
-      return <VotingPhase />
+      return (
+        <>
+          <VotingPhase />
+          <AppFooter />
+        </>
+      )
 
     case 'consequence':
-      return <ConsequencePhase />
+      return (
+        <>
+          <ConsequencePhase />
+          <AppFooter />
+        </>
+      )
 
     case 'credits':
-      return <CreditsScreen />
+      return (
+        <>
+          <CreditsScreen />
+          <AppFooter />
+        </>
+      )
 
     default:
       // This should never happen due to TypeScript exhaustiveness
-      return <IntroductionScreen />
+      return (
+        <>
+          <IntroductionScreen />
+          <AppFooter />
+        </>
+      )
   }
 }
 
 // ============================================================================
-// App - Root component that provides game context
+// App - Root component that provides theme and game context
 // ============================================================================
 function App() {
   return (
-    <GameProvider>
-      <AppContent />
-    </GameProvider>
+    <ThemeProvider>
+      <GameProvider>
+        <AppContent />
+      </GameProvider>
+    </ThemeProvider>
   )
 }
 

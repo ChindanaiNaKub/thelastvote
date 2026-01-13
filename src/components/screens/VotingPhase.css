@@ -1,0 +1,53 @@
+/* ============================================================================
+ * Voting Phase Screen - Clinical Theme
+ * ============================================================================ */
+
+.voting-screen {
+  text-align: center;
+  padding: var(--clinical-space-2xl) var(--clinical-space-xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.voting-screen h2 {
+  font-size: var(--clinical-size-3xl);
+  font-weight: 800;
+  margin: 0 0 var(--clinical-space-md) 0;
+  color: var(--clinical-text-primary);
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.voting-screen .subtitle {
+  font-size: var(--clinical-size-lg);
+  color: var(--clinical-text-muted);
+  margin: 0 0 var(--clinical-space-2xl) 0;
+  font-family: var(--clinical-font-body);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.voting-screen .candidates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--clinical-space-lg);
+  margin: var(--clinical-space-2xl) 0;
+  justify-items: center;
+}
+
+@media (max-width: 768px) {
+  .voting-screen .candidates-grid {
+    grid-template-columns: 1fr;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+
+  .voting-screen {
+    padding: var(--clinical-space-lg) var(--clinical-space-md);
+  }
+
+  .voting-screen h2 {
+    font-size: var(--clinical-size-2xl);
+  }
+}

@@ -1,0 +1,50 @@
+/* ============================================================================
+ * Candidate Roster Screen - Clinical Theme
+ * ============================================================================ */
+
+.roster-screen {
+  text-align: center;
+  padding: var(--clinical-space-2xl) var(--clinical-space-xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.roster-screen h2 {
+  font-size: var(--clinical-size-3xl);
+  font-weight: 800;
+  margin: 0 0 var(--clinical-space-md) 0;
+  color: var(--clinical-text-primary);
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.roster-screen .subtitle {
+  font-size: var(--clinical-size-base);
+  color: var(--clinical-text-muted);
+  margin: 0 0 var(--clinical-space-2xl) 0;
+  font-family: var(--clinical-font-body);
+  font-style: italic;
+}
+
+.candidates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--clinical-space-lg);
+  margin: var(--clinical-space-2xl) 0;
+  justify-items: center;
+}
+
+.roster-screen .btn-primary {
+  font-size: var(--clinical-size-lg);
+  padding: var(--clinical-space-md) var(--clinical-space-2xl);
+  margin-top: var(--clinical-space-xl);
+}
+
+@media (max-width: 768px) {
+  .candidates-grid {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+    margin: 0 auto var(--clinical-space-2xl);
+  }
+}

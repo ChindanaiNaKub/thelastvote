@@ -1,0 +1,80 @@
+/* ============================================================================
+ * Introduction Screen - Clinical Theme
+ * ============================================================================ */
+
+.introduction-screen {
+  text-align: center;
+  padding: var(--clinical-space-3xl) var(--clinical-space-xl);
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Add institutional frame */
+.introduction-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid var(--clinical-border-medium);
+  pointer-events: none;
+}
+
+.introduction-screen h1 {
+  font-size: var(--clinical-size-4xl);
+  font-weight: 900;
+  margin: 0 0 var(--clinical-space-2xl) 0;
+  color: var(--clinical-text-primary);
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  position: relative;
+  /* Add underline */
+  padding-bottom: var(--clinical-space-md);
+  border-bottom: 3px solid var(--clinical-accent-cyan);
+}
+
+.intro-content {
+  margin: var(--clinical-space-2xl) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--clinical-space-lg);
+}
+
+.intro-content .lead {
+  font-size: var(--clinical-size-lg);
+  line-height: var(--clinical-leading-relaxed);
+  color: var(--clinical-text-secondary);
+  font-family: var(--clinical-font-body);
+  margin: 0;
+  font-weight: 400;
+}
+
+.intro-content .warning {
+  font-size: var(--clinical-size-base);
+  padding: var(--clinical-space-md) var(--clinical-space-lg);
+  background: var(--clinical-alert-bg);
+  border: 1px solid var(--clinical-alert-primary);
+  border-radius: var(--clinical-radius-sm);
+  color: var(--clinical-alert-primary);
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-tight);
+  font-weight: 600;
+  margin: var(--clinical-space-lg) 0;
+}
+
+.intro-content .reflection {
+  font-size: var(--clinical-size-lg);
+  font-style: italic;
+  color: var(--clinical-text-muted);
+  font-family: var(--clinical-font-body);
+  margin: var(--clinical-space-xl) 0 0 0;
+}
+
+.introduction-screen .btn-primary {
+  font-size: var(--clinical-size-lg);
+  padding: var(--clinical-space-md) var(--clinical-space-2xl);
+  margin-top: var(--clinical-space-xl);
+}

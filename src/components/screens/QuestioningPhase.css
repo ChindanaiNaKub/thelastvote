@@ -1,164 +1,209 @@
 /* ============================================================================
- * Questioning Phase Screen Styles
- * ============================================================================
- */
+ * Questioning Phase Screen - Clinical Theme
+ * ============================================================================ */
 
 .questioning-screen {
   width: 100%;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: var(--clinical-space-2xl) var(--clinical-space-lg);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--clinical-space-lg);
 }
 
 .question-header {
   text-align: center;
+  padding-bottom: var(--clinical-space-md);
+  border-bottom: 2px solid var(--clinical-border-medium);
 }
 
 .question-header h2 {
-  font-size: 2rem;
-  margin: 0 0 0.5rem 0;
-  color: inherit;
+  font-size: var(--clinical-size-3xl);
+  font-weight: 800;
+  margin: 0 0 var(--clinical-space-sm) 0;
+  color: var(--clinical-text-primary);
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .question-header .subtitle {
-  font-size: 1rem;
-  opacity: 0.8;
-  margin: 0 0 1rem 0;
+  font-size: var(--clinical-size-base);
+  color: var(--clinical-text-muted);
+  margin: 0 0 var(--clinical-space-md) 0;
+  font-family: var(--clinical-font-body);
+  font-style: italic;
 }
 
 .questions-remaining {
-  font-size: 1.1rem;
-  margin: 0.5rem 0;
-  padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
+  font-size: var(--clinical-size-lg);
+  margin: var(--clinical-space-sm) 0;
+  padding: var(--clinical-space-sm) var(--clinical-space-lg);
+  background: var(--clinical-bg-secondary);
+  border: 1px solid var(--clinical-border-medium);
+  border-radius: var(--clinical-radius-sm);
   display: inline-block;
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
+  color: var(--clinical-text-secondary);
+  font-weight: 600;
 }
 
 .questions-remaining.urgent {
-  background: rgba(255, 87, 34, 0.2);
-  color: #ff5722;
-  animation: pulse 2s infinite;
+  background: var(--clinical-alert-bg);
+  border-color: var(--clinical-alert-primary);
+  color: var(--clinical-alert-primary);
+  animation: pulseUrgent 1.5s infinite;
+  font-weight: 700;
 }
 
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-/* Suggested Questions */
+/* Suggested Questions - clinical suggestions */
 .suggested-questions {
-  background: rgba(100, 108, 255, 0.1);
-  border: 2px solid rgba(100, 108, 255, 0.3);
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
+  background: var(--clinical-bg-primary);
+  border: 2px solid var(--clinical-accent-cyan);
+  border-radius: var(--clinical-radius-md);
+  padding: var(--clinical-space-lg);
+  margin-bottom: var(--clinical-space-md);
+  box-shadow: var(--clinical-shadow-subtle);
+  position: relative;
+}
+
+/* Add accent header */
+.suggested-questions::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--clinical-accent-cyan) 0%,
+    var(--clinical-accent-steel) 100%
+  );
 }
 
 .suggested-questions__title {
-  font-size: 1rem;
-  margin: 0 0 1rem 0;
-  opacity: 0.9;
-  font-weight: 500;
+  font-size: var(--clinical-size-sm);
+  margin: 0 0 var(--clinical-space-md) 0;
+  font-weight: 700;
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
+  color: var(--clinical-text-secondary);
 }
 
 .suggested-questions__list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--clinical-space-sm);
 }
 
 .suggested-question-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  padding: 0.875rem 1.25rem;
-  font-size: 0.95rem;
-  color: inherit;
+  background: var(--clinical-bg-secondary);
+  border: 1px solid var(--clinical-border-thin);
+  border-left: 3px solid var(--clinical-accent-cyan);
+  border-radius: var(--clinical-radius-sm);
+  padding: var(--clinical-space-sm) var(--clinical-space-md);
+  font-size: var(--clinical-size-base);
+  color: var(--clinical-text-primary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--clinical-duration-base) var(--clinical-ease-harsh);
   text-align: left;
-  font-family: inherit;
+  font-family: var(--clinical-font-body);
+  position: relative;
 }
 
 .suggested-question-btn:hover {
-  background: rgba(100, 108, 255, 0.2);
-  border-color: rgba(100, 108, 255, 0.5);
-  transform: translateX(4px);
+  background: var(--clinical-bg-primary);
+  border-color: var(--clinical-accent-cyan);
+  border-left-width: 4px;
+  padding-left: calc(var(--clinical-space-md) + 1px);
+  transform: translateX(2px);
+  box-shadow: var(--clinical-shadow-subtle);
 }
 
 .suggested-question-btn:active {
-  transform: translateX(2px);
+  transform: translateX(1px);
 }
 
-/* Candidates List */
+/* Candidates List - institutional listing */
 .candidates-list {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
-  padding: 1rem;
+  background: var(--clinical-bg-primary);
+  border: 1px solid var(--clinical-border-medium);
+  border-radius: var(--clinical-radius-md);
+  padding: var(--clinical-space-md);
+  box-shadow: var(--clinical-shadow-subtle);
 }
 
 .candidates-list h3 {
-  font-size: 1rem;
-  margin: 0 0 0.75rem 0;
-  opacity: 0.7;
+  font-size: var(--clinical-size-sm);
+  margin: 0 0 var(--clinical-space-md) 0;
+  font-weight: 700;
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
+  color: var(--clinical-text-muted);
+  padding-bottom: var(--clinical-space-sm);
+  border-bottom: 1px solid var(--clinical-border-thin);
 }
 
 .candidate-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 8px;
-  transition: background 0.2s ease;
+  gap: var(--clinical-space-md);
+  padding: var(--clinical-space-sm) var(--clinical-space-md);
+  margin-bottom: var(--clinical-space-sm);
+  background: var(--clinical-bg-secondary);
+  border: 1px solid var(--clinical-border-thin);
+  border-left-width: 4px;
+  border-radius: var(--clinical-radius-sm);
+  transition: all var(--clinical-duration-base) var(--clinical-ease-harsh);
 }
 
 .candidate-item:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--clinical-bg-primary);
+  border-color: var(--clinical-accent-cyan);
+  transform: translateX(2px);
+  box-shadow: var(--clinical-shadow-subtle);
 }
 
 .candidate-emoji {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
+  filter: grayscale(30%);
 }
 
 /* Actions */
 .actions {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  padding: 1rem 0;
+  gap: var(--clinical-space-md);
+  padding: var(--clinical-space-lg) 0;
 }
 
 .actions button {
-  font-size: 1.1rem;
-  padding: 0.875rem 2rem;
+  font-size: var(--clinical-size-lg);
+  padding: var(--clinical-space-md) var(--clinical-space-2xl);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .questioning-screen {
-    padding: 1rem 0.5rem;
+    padding: var(--clinical-space-lg) var(--clinical-space-md);
   }
 
   .question-header h2 {
-    font-size: 1.5rem;
+    font-size: var(--clinical-size-2xl);
   }
 
   .suggested-questions {
-    padding: 1rem;
+    padding: var(--clinical-space-md);
   }
 
   .suggested-question-btn {
-    font-size: 0.9rem;
-    padding: 0.75rem 1rem;
+    font-size: var(--clinical-size-sm);
+    padding: var(--clinical-space-sm);
   }
 }

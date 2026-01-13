@@ -1,0 +1,64 @@
+/* ============================================================================
+ * Credits Screen - Clinical Theme
+ * ============================================================================ */
+
+.credits-screen {
+  text-align: center;
+  padding: var(--clinical-space-3xl) var(--clinical-space-xl);
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.credits-screen h1 {
+  font-size: var(--clinical-size-4xl);
+  font-weight: 900;
+  margin: 0 0 var(--clinical-space-2xl) 0;
+  color: var(--clinical-text-primary);
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding-bottom: var(--clinical-space-md);
+  border-bottom: 3px solid var(--clinical-accent-cyan);
+}
+
+.credits-content {
+  margin: var(--clinical-space-2xl) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--clinical-space-lg);
+}
+
+.credits-content p {
+  font-size: var(--clinical-size-lg);
+  line-height: var(--clinical-leading-relaxed);
+  color: var(--clinical-text-secondary);
+  font-family: var(--clinical-font-body);
+  margin: 0;
+  font-weight: 400;
+}
+
+.credits-content .reflection {
+  font-size: var(--clinical-size-xl);
+  font-style: italic;
+  color: var(--clinical-text-muted);
+  font-family: var(--clinical-font-body);
+  margin: var(--clinical-space-xl) 0;
+  font-weight: 500;
+}
+
+.credits-screen .btn-primary {
+  font-size: var(--clinical-size-lg);
+  padding: var(--clinical-space-md) var(--clinical-space-2xl);
+  margin-top: var(--clinical-space-xl);
+}
+
+@media (max-width: 768px) {
+  .credits-screen {
+    padding: var(--clinical-space-2xl) var(--clinical-space-lg);
+  }
+
+  .credits-screen h1 {
+    font-size: var(--clinical-size-3xl);
+  }
+}

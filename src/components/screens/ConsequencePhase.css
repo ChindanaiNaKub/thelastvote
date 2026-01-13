@@ -1,0 +1,213 @@
+/* ============================================================================
+ * Consequence Phase Screen - Clinical Theme
+ * ============================================================================ */
+
+.consequence-screen {
+  text-align: center;
+  padding: var(--clinical-space-2xl) var(--clinical-space-xl);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.consequence-screen h2 {
+  font-size: var(--clinical-size-3xl);
+  font-weight: 800;
+  margin: 0 0 var(--clinical-space-xl) 0;
+  color: var(--clinical-text-primary);
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Chosen candidate display - stark presentation */
+.chosen-candidate {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--clinical-space-md);
+  padding: var(--clinical-space-lg) var(--clinical-space-xl);
+  border: 3px solid;
+  border-radius: var(--clinical-radius-md);
+  background: var(--clinical-bg-primary);
+  box-shadow: var(--clinical-shadow-harsh);
+  margin-bottom: var(--clinical-space-xl);
+}
+
+.chosen-candidate__portrait {
+  font-size: 5rem;
+  line-height: 1;
+  filter: grayscale(30%);
+}
+
+.chosen-candidate__name {
+  font-size: var(--clinical-size-2xl);
+  font-weight: 800;
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
+  color: var(--clinical-text-primary);
+}
+
+/* Consequence sections - clinical report style */
+.consequence-section {
+  background: var(--clinical-bg-primary);
+  border: 2px solid var(--clinical-border-medium);
+  border-radius: var(--clinical-radius-md);
+  padding: var(--clinical-space-lg);
+  margin-bottom: var(--clinical-space-lg);
+  text-align: left;
+  box-shadow: var(--clinical-shadow-subtle);
+  position: relative;
+}
+
+/* Add section header */
+.consequence-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--clinical-accent-cyan);
+}
+
+.consequence-section__title {
+  font-size: var(--clinical-size-xl);
+  font-weight: 700;
+  margin: 0 0 var(--clinical-space-md) 0;
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
+  color: var(--clinical-text-primary);
+  padding-bottom: var(--clinical-space-sm);
+  border-bottom: 2px solid var(--clinical-border-thin);
+}
+
+.consequence-section__timeframe {
+  font-size: var(--clinical-size-sm);
+  font-weight: 400;
+  color: var(--clinical-text-muted);
+  font-style: italic;
+  font-family: var(--clinical-font-body);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.consequence-section__content {
+  font-size: var(--clinical-size-base);
+  line-height: var(--clinical-leading-relaxed);
+  color: var(--clinical-text-secondary);
+  font-family: var(--clinical-font-body);
+  margin: 0 0 var(--clinical-space-md) 0;
+}
+
+.consequence-section__content.secret {
+  background: rgba(199, 62, 58, 0.08);
+  border-left: 3px solid var(--clinical-alert-primary);
+  padding: var(--clinical-space-md);
+  font-style: italic;
+  color: var(--clinical-text-primary);
+}
+
+.consequence-section__reflection {
+  margin-top: var(--clinical-space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--clinical-space-md);
+  padding-top: var(--clinical-space-md);
+  border-top: 1px solid var(--clinical-border-thin);
+}
+
+.consequence-section__good,
+.consequence-section__bad {
+  font-size: var(--clinical-size-sm);
+  line-height: var(--clinical-leading-relaxed);
+  font-family: var(--clinical-font-body);
+}
+
+.consequence-section__good {
+  color: var(--clinical-text-secondary);
+  border-left: 2px solid var(--clinical-accent-cyan);
+  padding-left: var(--clinical-space-sm);
+}
+
+.consequence-section__bad {
+  color: var(--clinical-alert-primary);
+  border-left: 2px solid var(--clinical-alert-primary);
+  padding-left: var(--clinical-space-sm);
+}
+
+.consequence-section__label {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: var(--clinical-size-xs);
+  letter-spacing: var(--clinical-tracking-wide);
+  font-family: var(--clinical-font-display);
+}
+
+.consequence-section__final {
+  font-size: var(--clinical-size-base);
+  font-style: italic;
+  text-align: center;
+  color: var(--clinical-text-primary);
+  margin-top: var(--clinical-space-md);
+  font-weight: 500;
+}
+
+/* Alternative paths */
+.consequence-section--alternatives {
+  background: var(--clinical-bg-secondary);
+  border-color: var(--clinical-border-deep);
+}
+
+.consequence-section__alternative {
+  font-size: var(--clinical-size-sm);
+  padding: var(--clinical-space-sm) var(--clinical-space-md);
+  margin-bottom: var(--clinical-space-sm);
+  background: var(--clinical-bg-primary);
+  border-left: 2px solid var(--clinical-border-medium);
+  font-family: var(--clinical-font-body);
+  line-height: var(--clinical-leading-relaxed);
+}
+
+/* Continue button */
+.consequence-screen__continue-btn {
+  margin: var(--clinical-space-lg) auto;
+  display: block;
+}
+
+/* Actions */
+.consequence-screen__actions {
+  margin-top: var(--clinical-space-xl);
+  display: flex;
+  justify-content: center;
+  gap: var(--clinical-space-md);
+}
+
+/* Placeholder */
+.placeholder {
+  font-size: var(--clinical-size-lg);
+  font-style: italic;
+  color: var(--clinical-text-muted);
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  animation: pulseText 2s infinite;
+}
+
+@media (max-width: 768px) {
+  .consequence-screen {
+    padding: var(--clinical-space-lg) var(--clinical-space-md);
+  }
+
+  .consequence-screen h2 {
+    font-size: var(--clinical-size-2xl);
+  }
+
+  .chosen-candidate {
+    flex-direction: column;
+    padding: var(--clinical-space-md);
+  }
+
+  .consequence-section {
+    padding: var(--clinical-space-md);
+  }
+}

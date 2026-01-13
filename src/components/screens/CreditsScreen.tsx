@@ -4,6 +4,7 @@
 // Simple end screen. Shown after consequences (optional phase).
 // ============================================================================
 
+import './CreditsScreen.css'
 import { useGame } from '../../context/GameContext'
 import { gameActions } from '../../context/GameContext'
 

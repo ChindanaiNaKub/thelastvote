@@ -4,6 +4,7 @@
 // Reveals the aftermath of the player's choice. Creates doubt and regret.
 // ============================================================================
 
+import './ConsequencePhase.css'
 import { useState, useEffect } from 'react'
 import { useGame } from '../../context/GameContext'
 import { gameActions } from '../../context/GameContext'

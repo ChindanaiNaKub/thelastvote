@@ -4,6 +4,7 @@
 // Introduces all 5 candidates to the player.
 // ============================================================================
 
+import './CandidateRosterScreen.css'
 import { useGame } from '../../context/GameContext'
 import { gameActions } from '../../context/GameContext'
 import { CandidateCard } from '../ui/CandidateCard'

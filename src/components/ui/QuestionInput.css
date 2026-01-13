@@ -1,73 +1,99 @@
 /* ============================================================================
-   QuestionInput Component Styles
+   QuestionInput Component - Clinical Theme
+   Institutional form submission style
    ============================================================================ */
 
-/* Main container */
+/* Main container - institutional form */
 .question-input {
-  background: var(--color-bg-card, #1a1a1a);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  background: var(--clinical-bg-primary);
+  border: 2px solid var(--clinical-border-medium);
+  border-radius: var(--clinical-radius-md);
+  padding: var(--clinical-space-lg);
+  margin-bottom: var(--clinical-space-lg);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--clinical-space-md);
+  box-shadow: var(--clinical-shadow-subtle);
+  position: relative;
+}
+
+/* Add form header accent */
+.question-input::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: var(--clinical-accent-cyan);
 }
 
 /* Selected candidate display */
 .question-input__target {
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: var(--clinical-size-sm);
+  font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--clinical-space-sm);
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
+  color: var(--clinical-text-muted);
+  padding-bottom: var(--clinical-space-sm);
+  border-bottom: 1px solid var(--clinical-border-thin);
 }
 
-/* Warning message */
+/* Warning message - clinical alert */
 .question-input__warning {
-  background: rgba(255, 150, 50, 0.1);
-  border: 1px solid rgba(255, 150, 50, 0.3);
-  border-radius: 6px;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.85rem;
-  color: #ffaa50;
+  background: var(--clinical-alert-bg);
+  border: 1px solid var(--clinical-alert-primary);
+  border-radius: var(--clinical-radius-sm);
+  padding: var(--clinical-space-sm) var(--clinical-space-md);
+  font-size: var(--clinical-size-sm);
+  color: var(--clinical-alert-primary);
   text-align: center;
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-tight);
+  font-weight: 600;
 }
 
-/* Text input field */
+/* Text input field - sterile form field */
 .question-input__field {
   width: 100%;
   box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
-  padding: 0.75rem;
-  font-family: inherit;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: var(--color-text, #e0e0e0);
+  background: var(--clinical-bg-secondary);
+  border: 2px solid var(--clinical-border-thin);
+  border-radius: var(--clinical-radius-sm);
+  padding: var(--clinical-space-md);
+  font-family: var(--clinical-font-body);
+  font-size: var(--clinical-size-base);
+  line-height: var(--clinical-leading-relaxed);
+  color: var(--clinical-text-primary);
   resize: vertical;
-  min-height: 80px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-height: 100px;
+  transition: all var(--clinical-duration-base) var(--clinical-ease-harsh);
 }
 
 .question-input__field:focus {
   outline: none;
-  border-color: rgba(100, 150, 255, 0.5);
-  box-shadow: 0 0 0 3px rgba(100, 150, 255, 0.1);
+  border-color: var(--clinical-accent-cyan);
+  box-shadow: 0 0 0 3px rgba(74, 156, 184, 0.15);
+  background: var(--clinical-bg-primary);
 }
 
 .question-input__field::placeholder {
-  color: var(--color-text-muted, #a0a0a0);
+  color: var(--clinical-text-faint);
+  font-style: italic;
 }
 
 .question-input__field--disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
+  background: var(--clinical-bg-tertiary);
 }
 
 .question-input__field--disabled:focus {
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--clinical-border-thin);
   box-shadow: none;
 }
 
@@ -76,82 +102,97 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: var(--clinical-space-md);
   flex-wrap: wrap;
 }
 
-/* Character counter */
+/* Character counter - precise display */
 .question-input__char-counter {
-  font-size: 0.8rem;
-  color: var(--color-text-muted, #a0a0a0);
-  transition: color 0.2s ease;
+  font-size: var(--clinical-size-xs);
+  color: var(--clinical-text-muted);
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-tight);
+  transition: color var(--clinical-duration-fast);
 }
 
 .question-input__char-counter--warning {
-  color: #ffaa50;
+  color: var(--clinical-alert-primary);
+  font-weight: 700;
 }
 
 .question-input__char-counter--error {
-  color: #ff5050;
-  font-weight: 600;
+  color: var(--clinical-alert-primary);
+  font-weight: 700;
+  animation: pulseText 1s infinite;
 }
 
 /* Action buttons container */
 .question-input__actions {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--clinical-space-sm);
 }
 
-/* Clear button */
+/* Clear button - secondary action */
 .question-input__clear {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  color: var(--color-text-muted, #a0a0a0);
+  background: var(--clinical-bg-primary);
+  border: 2px solid var(--clinical-border-medium);
+  border-radius: var(--clinical-radius-sm);
+  padding: var(--clinical-space-sm) var(--clinical-space-md);
+  font-size: var(--clinical-size-sm);
+  font-weight: 600;
+  color: var(--clinical-text-secondary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--clinical-duration-base) var(--clinical-ease-harsh);
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
 }
 
 .question-input__clear:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: var(--color-text, #e0e0e0);
+  background: var(--clinical-bg-tertiary);
+  border-color: var(--clinical-text-secondary);
+  color: var(--clinical-text-primary);
 }
 
 .question-input__clear:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
-/* Submit button */
+/* Submit button - primary action */
 .question-input__submit {
-  background: rgba(100, 150, 255, 0.2);
-  border: 1px solid rgba(100, 150, 255, 0.4);
-  border-radius: 6px;
-  padding: 0.5rem 1.25rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--color-text, #e0e0e0);
+  background: var(--clinical-text-primary);
+  border: 2px solid var(--clinical-text-primary);
+  border-radius: var(--clinical-radius-sm);
+  padding: var(--clinical-space-sm) var(--clinical-space-lg);
+  font-size: var(--clinical-size-sm);
+  font-weight: 700;
+  color: var(--clinical-bg-primary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--clinical-duration-base) var(--clinical-ease-harsh);
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
 }
 
 .question-input__submit:hover:not(:disabled) {
-  background: rgba(100, 150, 255, 0.3);
-  border-color: rgba(100, 150, 255, 0.6);
+  background: var(--clinical-accent-cyan);
+  border-color: var(--clinical-accent-cyan);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: var(--clinical-shadow-medium);
 }
 
 .question-input__submit:active:not(:disabled) {
-  transform: scale(0.98);
+  transform: translateY(0);
 }
 
 .question-input__submit--disabled {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: var(--color-text-muted, #a0a0a0);
+  background: var(--clinical-bg-deep);
+  border-color: var(--clinical-bg-deep);
+  color: var(--clinical-text-muted);
   cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .question-input__submit:disabled {
@@ -161,10 +202,13 @@
 
 /* Keyboard shortcut hint */
 .question-input__hint {
-  font-size: 0.75rem;
-  color: var(--color-text-muted, #a0a0a0);
+  font-size: var(--clinical-size-xs);
+  color: var(--clinical-text-faint);
   text-align: center;
   font-style: italic;
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-tight);
+  margin-top: var(--clinical-space-xs);
 }
 
 /* Responsive adjustments */
