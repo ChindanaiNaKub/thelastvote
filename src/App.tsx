@@ -11,6 +11,7 @@ import { QuestioningPhase } from './components/screens/QuestioningPhase'
 import { VotingPhase } from './components/screens/VotingPhase'
 import { ConsequencePhase } from './components/screens/ConsequencePhase'
 import { CreditsScreen } from './components/screens/CreditsScreen'
+import { ScreenTransition } from './components/ui/ScreenTransition'
 import './App.css'
 
 // ============================================================================
@@ -20,29 +21,32 @@ function AppContent() {
   const { state } = useGame()
 
   // Phase-based routing: render the appropriate screen based on current phase
-  switch (state.phase) {
-    case 'introduction':
-      return <IntroductionScreen />
-
-    case 'roster':
-      return <CandidateRosterScreen />
-
-    case 'questioning':
-      return <QuestioningPhase />
-
-    case 'voting':
-      return <VotingPhase />
-
-    case 'consequence':
-      return <ConsequencePhase />
-
-    case 'credits':
-      return <CreditsScreen />
-
-    default:
-      // This should never happen due to TypeScript exhaustiveness
-      return <IntroductionScreen />
+  const renderScreen = () => {
+    switch (state.phase) {
+      case 'introduction':
+        return <IntroductionScreen />
+      case 'roster':
+        return <CandidateRosterScreen />
+      case 'questioning':
+        return <QuestioningPhase />
+      case 'voting':
+        return <VotingPhase />
+      case 'consequence':
+        return <ConsequencePhase />
+      case 'credits':
+        return <CreditsScreen />
+      default:
+        // This should never happen due to TypeScript exhaustiveness
+        return <IntroductionScreen />
+    }
   }
+
+  // Wrap in ScreenTransition with key to re-trigger animation on phase change
+  return (
+    <ScreenTransition key={state.phase}>
+      {renderScreen()}
+    </ScreenTransition>
+  )
 }
 
 // ============================================================================

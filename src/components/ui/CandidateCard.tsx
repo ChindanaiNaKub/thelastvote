@@ -62,7 +62,10 @@ export function CandidateCard({
   return (
     <div
       className={cardClasses}
-      style={{ borderColor: candidate.colorTheme }}
+      style={{
+        borderColor: candidate.colorTheme,
+        color: candidate.colorTheme,
+      }}
       onClick={!disabled ? onClick : undefined}
       role={onClick ? 'button' : undefined}
       tabIndex={onClick && !disabled ? 0 : undefined}

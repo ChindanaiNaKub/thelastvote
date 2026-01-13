@@ -26,18 +26,42 @@
 }
 
 /* Voting variant (clickable) */
+.candidate-card {
+  position: relative;
+}
+
 .candidate-card--voting {
   cursor: pointer;
   max-width: 300px;
 }
 
 .candidate-card--voting:hover:not(.candidate-card--disabled) {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
 }
 
 .candidate-card--voting:active:not(.candidate-card--disabled) {
   transform: translateY(-2px);
+}
+
+/* Colored inner glow effect based on candidate color */
+.candidate-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 3px;
+  background: linear-gradient(135deg, currentColor, transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.candidate-card--voting:hover::before {
+  opacity: 0.6;
 }
 
 /* Selected state */

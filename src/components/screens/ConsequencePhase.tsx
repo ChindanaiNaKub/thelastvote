@@ -7,6 +7,7 @@
 import { useState, useEffect } from 'react'
 import { useGame } from '../../context/GameContext'
 import { gameActions } from '../../context/GameContext'
+import './ConsequencePhase.css'
 
 export function ConsequencePhase() {
   const { state, dispatch } = useGame()
