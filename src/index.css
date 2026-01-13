@@ -1,5 +1,7 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* Thai font stack */
+  --font-thai: 'Sarabun', 'Kanit', Inter, system-ui, -apple-system, sans-serif;
+  font-family: var(--font-thai);
   line-height: 1.5;
   font-weight: 400;
 
@@ -40,6 +42,16 @@
   --space-sm: 1rem;
   --space-md: 1.5rem;
   --space-lg: 2rem;
+
+  /* Thai typography optimization */
+  --line-height-thai: 1.6;
+  --letter-spacing-thai: 0.02em;
+
+  /* Game state mood tracking */
+  --mood-tension: 0; /* 0 = calm, 1 = tense */
+  --mood-saturation: 1; /* 1 = full color, 0.8 = desaturated when tense */
+  --mood-brightness: 1; /* Brightness multiplier */
+  --ambient-duration: 20s; /* Breathing speed */
 }
 
 a {
@@ -57,6 +69,31 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+
+  /* Thai typography optimization */
+  line-height: var(--line-height-thai);
+  letter-spacing: var(--letter-spacing-thai);
+
+  /* Ambient breathing effect */
+  background: var(--color-bg-primary);
+  animation: ambient-breathing var(--ambient-duration) ease-in-out infinite;
+}
+
+/* Ambient breathing animation */
+@keyframes ambient-breathing {
+  0%, 100% {
+    filter: brightness(var(--mood-brightness)) saturate(var(--mood-saturation));
+  }
+  50% {
+    filter: brightness(calc(var(--mood-brightness) + 0.02)) saturate(var(--mood-saturation));
+  }
+}
+
+/* Tense state (applied by JS when questions run out) */
+body.tense {
+  --mood-tension: 1;
+  --mood-saturation: 0.8;
+  --ambient-duration: 8s; /* Faster breathing when tense */
 }
 
 h1 {
@@ -78,6 +115,26 @@ button {
   overflow: hidden;
 }
 
+/* Ripple effect on click */
+button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+  pointer-events: none;
+}
+
+button:active::before {
+  width: 300px;
+  height: 300px;
+}
+
 button:hover {
   border-color: #646cff;
   transform: translateY(-2px);
@@ -94,6 +151,38 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Primary button lift + glow */
+button.btn-primary {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-hover));
+  border: none;
+  font-weight: 600;
+}
+
+button.btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(100, 108, 255, 0.4);
+  transform: translateY(-3px);
+}
+
+button.btn-primary:active {
+  transform: translateY(-1px);
+}
+
+/* Urgent button (voting phase) */
+button.btn-urgent {
+  background: linear-gradient(135deg, #ff5722, #f44336);
+  box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+  animation: urgent-glow 2s ease-in-out infinite;
+}
+
+@keyframes urgent-glow {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(255, 87, 34, 0.5);
+  }
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -105,4 +194,27 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* Thai text optimization for better readability */
+p {
+  line-height: 1.7;
+  word-spacing: 0.1em;
+}
+
+/* Long text blocks (consequences) */
+.consequence-section__content {
+  line-height: 1.8;
+  text-align: justify;
+  text-justify: inter-word;
+  max-width: 70ch; /* Optimal reading length */
+  margin: 0 auto;
+}
+
+/* Dialogue readability */
+.dialogue-entry__message {
+  text-align: left;
+  max-width: 60ch;
+  line-height: 1.7;
+  word-spacing: 0.1em;
 }

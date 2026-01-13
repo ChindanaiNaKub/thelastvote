@@ -9,7 +9,7 @@ import { gameActions } from '../../context/GameContext'
 import { DialogueBox } from '../ui/DialogueBox'
 import { QuestionInput } from '../ui/QuestionInput'
 import { generateCandidateResponse } from '../../lib/api'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './QuestioningPhase.css'
 
 export function QuestioningPhase() {
@@ -112,6 +112,20 @@ export function QuestioningPhase() {
 
   // Count how many questions have been asked
   const questionsAsked = state.conversationHistory.filter(entry => entry.type === 'question').length
+
+  // Apply tense state to body as questions run out
+  useEffect(() => {
+    if (questionsAsked >= 2 && state.questionsRemaining <= 1) {
+      document.body.classList.add('tense')
+    } else {
+      document.body.classList.remove('tense')
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove('tense')
+    }
+  }, [state.questionsRemaining, questionsAsked])
 
   const handleSuggestedQuestion = (question: string) => {
     if (!state.isProcessing && state.questionsRemaining > 0) {

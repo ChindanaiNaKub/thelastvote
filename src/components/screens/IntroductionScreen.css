@@ -1,0 +1,100 @@
+/* ============================================================================
+   Introduction Screen - Atmospheric Styling
+   ============================================================================ */
+
+.screen.introduction-screen {
+  background: radial-gradient(ellipse at top, rgba(100, 108, 255, 0.1) 0%, transparent 60%),
+              linear-gradient(180deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+  animation: intro-fade-in 2s ease-out;
+  text-align: center;
+}
+
+@keyframes intro-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.screen.introduction-screen h1 {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #646cff, #a78bfa, #646cff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: title-shimmer 3s linear infinite;
+}
+
+@keyframes title-shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.screen.introduction-screen .intro-content {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.screen.introduction-screen .intro-content p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  color: var(--color-text);
+}
+
+.screen.introduction-screen .intro-content .warning {
+  background: rgba(255, 87, 34, 0.15);
+  border-left: 4px solid var(--color-urgent);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin: 2rem 0;
+  animation: warning-pulse 2s ease-in-out infinite;
+}
+
+@keyframes warning-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.screen.introduction-screen .intro-content .warning strong {
+  color: var(--color-urgent);
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.screen.introduction-screen .intro-actions {
+  margin-top: 2rem;
+}
+
+.screen.introduction-screen .btn-primary {
+  font-size: 1.1rem;
+  padding: 0.8em 2em;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .screen.introduction-screen h1 {
+    font-size: 2.5rem;
+  }
+
+  .screen.introduction-screen .intro-content {
+    padding: 1rem;
+  }
+
+  .screen.introduction-screen .intro-content p {
+    font-size: 1rem;
+  }
+}

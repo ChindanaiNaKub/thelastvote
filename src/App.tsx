@@ -12,6 +12,7 @@ import { VotingPhase } from './components/screens/VotingPhase'
 import { ConsequencePhase } from './components/screens/ConsequencePhase'
 import { CreditsScreen } from './components/screens/CreditsScreen'
 import { ScreenTransition } from './components/ui/ScreenTransition'
+import { AmbientEffects } from './components/ui/AmbientEffects'
 import './App.css'
 
 // ============================================================================
@@ -55,6 +56,7 @@ function AppContent() {
 function App() {
   return (
     <GameProvider>
+      <AmbientEffects />
       <AppContent />
     </GameProvider>
   )

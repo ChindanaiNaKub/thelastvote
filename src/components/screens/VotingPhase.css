@@ -1,0 +1,154 @@
+/* ============================================================================
+   Voting Phase Screen - Tense Atmosphere
+   ============================================================================ */
+
+.screen.voting-screen {
+  background: radial-gradient(circle at center, rgba(255, 87, 34, 0.05) 0%, transparent 70%),
+              linear-gradient(180deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+  animation: voting-tension 4s ease-in-out infinite;
+}
+
+@keyframes voting-tension {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.screen.voting-screen h2 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  animation: title-urgency 2s ease-in-out infinite;
+}
+
+@keyframes title-urgency {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(255, 87, 34, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(255, 87, 34, 0.5);
+  }
+}
+
+.screen.voting-screen .subtitle {
+  text-align: center;
+  color: var(--color-text-muted);
+  margin-bottom: 2rem;
+}
+
+.screen.voting-screen .voting-warning {
+  text-align: center;
+  background: rgba(255, 87, 34, 0.1);
+  border-left: 4px solid var(--color-urgent);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin: 0 auto 2rem;
+  max-width: 700px;
+}
+
+.screen.voting-screen .candidates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+/* Enhance hover state for tension */
+.screen.voting-screen .candidate-card--voting:hover {
+  animation: hover-wobble 0.3s ease-in-out;
+}
+
+@keyframes hover-wobble {
+  0%, 100% {
+    transform: translateY(-6px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-8px) rotate(-1deg);
+  }
+  75% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+.screen.voting-screen .vote-actions {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.screen.voting-screen .confirmation-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: dialog-appear 0.3s ease-out;
+}
+
+@keyframes dialog-appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.screen.voting-screen .confirmation-dialog-content {
+  background: var(--color-bg-secondary);
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 500px;
+  text-align: center;
+  border: 2px solid var(--color-urgent);
+  animation: dialog-scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes dialog-scale {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.screen.voting-screen .confirmation-dialog-content h3 {
+  color: var(--color-urgent);
+  margin-bottom: 1rem;
+}
+
+.screen.voting-screen .confirmation-dialog-content p {
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.screen.voting-screen .confirmation-dialog-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .screen.voting-screen h2 {
+    font-size: 2rem;
+  }
+
+  .screen.voting-screen .candidates-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .screen.voting-screen .confirmation-dialog-content {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+}
