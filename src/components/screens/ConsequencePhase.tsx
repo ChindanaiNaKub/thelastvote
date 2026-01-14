@@ -182,15 +182,21 @@ export function ConsequencePhase() {
             {consequences.alternativePaths.map((path) => {
               const candidate = state.candidates.find(c => c.id === path.candidateId)
               return (
-                <p key={path.candidateId} className="consequence-section__alternative">
-                  <span
-                    className="consequence-section__alternative-portrait"
-                    style={{ color: candidate?.colorTheme }}
-                  >
-                    {candidate?.portrait}
-                  </span>{' '}
-                  {path.wouldHaveHappened}
-                </p>
+                <div key={path.candidateId} className="consequence-section__alternative">
+                  <div className="alternative-header">
+                    <span
+                      className="alternative-portrait"
+                      style={{ '--candidate-color': candidate?.colorTheme } as React.CSSProperties}
+                    >
+                      {candidate?.portrait}
+                    </span>
+                    <span className="alternative-name">{candidate?.name}</span>
+                  </div>
+                  <p className="alternative-text">
+                    <span className="alternative-prefix">ถ้าคุณเลือก {candidate?.name}...</span>
+                    <span className="alternative-result">{path.wouldHaveHappened}</span>
+                  </p>
+                </div>
               )
             })}
           </div>

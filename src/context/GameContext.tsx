@@ -8,7 +8,7 @@
 import { createContext, useContext, useReducer, ReactNode } from 'react'
 import type { GameState, GameAction, ConversationEntry } from '../types/game'
 import { initialGameState } from '../types/game'
-import { candidates } from '../data/candidates'
+import { randomizeCandidateSecrets } from '../data/candidates'
 
 // ----------------------------------------------------------------------------
 
@@ -262,12 +262,15 @@ interface GameProviderProps {
  *   </GameProvider>
  */
 export function GameProvider({ children }: GameProviderProps) {
-  // Initialize state with candidates from data
+  // Randomize candidate secrets for replay value (Priority 4.4.1)
+  const randomizedCandidates = randomizeCandidateSecrets()
+
+  // Initialize state with randomized candidates
   const initialState: GameState = {
     ...initialGameState,
-    candidates: candidates,
+    candidates: randomizedCandidates,
     // Initialize pressure states for all candidates
-    pressureStates: candidates.reduce((acc, candidate) => {
+    pressureStates: randomizedCandidates.reduce((acc, candidate) => {
       acc[candidate.id] = {
         candidateId: candidate.id,
         pressureLevel: 0,

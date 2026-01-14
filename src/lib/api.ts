@@ -47,6 +47,8 @@ export interface CandidateResponseRequest {
   mode?: 'auto' | 'fallback' | 'mock' | 'api'
   /** Configuration overrides (optional) */
   config?: Partial<ApiConfig>
+  /** Pressure level (0-100) - affects response behavior (Priority 4.3.2) */
+  pressureLevel?: number
 }
 
 /**
@@ -484,6 +486,7 @@ async function generateApiResponse(
     conversationHistory: request.conversationHistory,
     includeConversationHistory: true,
     maxHistoryEntries: 7, // Reduced from 10 to save tokens (saves ~99 tokens/call)
+    pressureLevel: request.pressureLevel || 0, // Pass pressure level for Priority 4.3.2
   })
 
   // Call backend with retry logic

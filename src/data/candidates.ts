@@ -50,6 +50,10 @@ export const candidate1: Candidate = {
     '"ฉันไม่สนใจอำนาจหรือการยอมรับส่วนตัว ฉันต้องการสิ่งที่ดีที่สุดสำหรับเมืองนี้เท่านั้น" - นี่เป็นเท็จ เขาต้องการทั้งสองอย่างนี้จริงๆ',
   hiddenSecret:
     'วางแผนอยู่สร้างรูปปั้นตนเองไว้ที่สี่กลางเมือง แอบติดต่อประติม',
+  alternativeSecrets: [
+    'มีบัญชีลับในต่างประเทศฝากเงินหลบหลีกภาษี',
+    'เคยทุจริตเลือกตั้งครั้งก่อน มีหลักฐานซ่อนอยู่',
+  ],
 
   // ------------------------------------------------------------------
   // Dynamic State (initial values)
@@ -113,6 +117,10 @@ export const candidate2: Candidate = {
     '"ทุกคนจะได้รับประโยชน์จากการปรับปรุง ไม่มีคนแพ้ มีแต่คนที่ยังไม่ปรับตัว" - นี่เป็นเท็จ ชีวิตของบางคนจะแย่ลงลงอย่างแน่แน่',
   hiddenSecret:
     'มีสเปรดชีตจัดอันดับลำดับชาวเมืองตาม "ประโยชน์ทางเศรษฐกิจ" รู้ดีว่าจะเสียสละใครไหน',
+  alternativeSecrets: [
+    'ได้รับเงินสนับสนุนจากบริษัทยักษ์ใหญ่เพื่อผลักดันนโยบาย',
+    'วางแผนจะปลดพนักงานราชการ 30% เพื่อ "ประหยัดงบประมาณ"',
+  ],
 
   // ------------------------------------------------------------------
   // Dynamic State (initial values)
@@ -176,6 +184,10 @@ export const candidate3: Candidate = {
     '"ฉันไว้ใจคนที่จะตัดสินใจที่ดีสำหรับตัวเอง ฉันแค่อยากแค่มั่นใจว่าพวกเขามีข้อมูลที่เพียงพอ" - นี่เป็นเท็จ เธอไม่ไว้ใจคนเลย',
   hiddenSecret:
     'ได้ร่าง "การกักขังเพื่อการปกป้อง" ที่จะอนุญาตให้เธอสามารถกักขังพลเมืองได้ "เพื่อความปลอดภัยของพวกเขา" โดยไม่ต้องผ่านกระบวนการยุติธรรม',
+  alternativeSecrets: [
+    'วางแผนสอดแนระบบตรวจสอบพลเมือง "เพื่อความปลอดภัย"',
+    'เคยใช้งานเด็กๆ ผ่านองค์กรกุศลของเธอ',
+  ],
 
   // ------------------------------------------------------------------
   // Dynamic State (initial values)
@@ -239,6 +251,10 @@ export const candidate4: Candidate = {
     '"ไม่มีทางเลือกที่ดี มีแต่ทางเลือกที่แย่ ฉันมองหาทุกที่แล้วแล้ว" - นี่เป็นเท็จ ยังมีทางเลือกที่ดีกว่านี้ แต่เขาเหนื่อยเกินไปที่จะหา',
   hiddenSecret:
     'รู้ถึงโอกาสดานเศรษฐกิจที่อาจจะช่วยกู้สถานการณ์ได้ แต่ไม่เคยพูดถึงเพราะเขามั่นใจว่ามันจะล้มเหอะอยู่ดี',
+  alternativeSecrets: [
+    'เคยมีส่วนร่วมในการทุจริต แต่ปฏิเสธไม่ยอมรับ',
+    'รู้ว่าระบบสามารถแก้ไขได้ แต่เลือกที่จะไม่ทำเพราะขี้เกียจ',
+  ],
 
   // ------------------------------------------------------------------
   // Dynamic State (initial values)
@@ -302,6 +318,10 @@ export const candidate5: Candidate = {
     '"พอเรากำจัดการความเน่าสะอมน การสร้างใหม่จะง่าย คนจะจัดระบบที่ยุติอย่างเป็นธรรมชาติ" - นี่เป็นเท็จ การสร้างยากกว่าการทำลาย',
   hiddenSecret:
     'เคยเป็นข้าราชการระดับกลางที่ถูกไล่อออกเพราะยุบตรวจ เล่นใช้ตัวตน "คนนอก" เพื่อบังความทุจษิตของตนเอง',
+  alternativeSecrets: [
+    'ไม่มีความเป็นไปได้ทางเศรษฐกิจใดๆ สำหรับแผนของเธอ',
+    'วางแผนจะใช้อำนาจเพื่อกำจัดศัตรูทางการเมืองทั้งหมด',
+  ],
 
   // ------------------------------------------------------------------
   // Dynamic State (initial values)
@@ -335,6 +355,35 @@ export const candidates: Candidate[] = [
   candidate4, // คมสันต์ - Cynical Realist
   candidate5, // วิชัย - Radical Outsider
 ]
+
+/**
+ * Randomize candidate secrets for replay value (Priority 4.4.1)
+ * Randomly selects one secret from hiddenSecret + alternativeSecrets for each candidate.
+ * Returns a new array of candidates with randomized secrets.
+ *
+ * @returns Candidate[] with randomized hiddenSecret values
+ *
+ * @example
+ * const randomizedCandidates = randomizeCandidateSecrets()
+ */
+export function randomizeCandidateSecrets(): Candidate[] {
+  return candidates.map(candidate => {
+    // Get all possible secrets for this candidate
+    const allSecrets = [
+      candidate.hiddenSecret,
+      ...(candidate.alternativeSecrets || []),
+    ]
+
+    // Randomly select one secret
+    const selectedSecret = allSecrets[Math.floor(Math.random() * allSecrets.length)]
+
+    // Return new candidate object with randomized secret
+    return {
+      ...candidate,
+      hiddenSecret: selectedSecret,
+    }
+  })
+}
 
 // ============================================================================
 // NOTES FOR AI PROMPTING

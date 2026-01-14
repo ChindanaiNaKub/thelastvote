@@ -8,13 +8,16 @@ import { useGame } from '../../context/GameContext'
 import { gameActions } from '../../context/GameContext'
 import { ResponsesGrid } from '../ui/ResponsesGrid'
 import { QuestionInput } from '../ui/QuestionInput'
+import { ClashCard } from '../ui/ClashCard'
 import { generateCandidateResponse } from '../../lib/api'
+import { checkClashConditions } from '../../lib/tracking'
 import { useState, useEffect } from 'react'
 import './QuestioningPhase.css'
 
 export function QuestioningPhase() {
   const { state, dispatch } = useGame()
   const [apiModeNotice, setApiModeNotice] = useState<string | null>(null)
+  const [currentClash, setCurrentClash] = useState<typeof state.clashHistory[number] | null>(null)
 
   // Determine if game should feel tense (low on questions)
   const isTense = state.questionsRemaining <= 1
@@ -95,11 +98,15 @@ export function QuestioningPhase() {
         // Generate responses from active candidates only
         const responsePromises = activeCandidates.map(async (candidate) => {
           try {
+            // Get pressure level for this candidate (Priority 4.3.2)
+            const pressureLevel = state.pressureStates[candidate.id]?.pressureLevel || 0
+
             const response = await generateCandidateResponse({
               candidateId: candidate.id,
               question: question,
               conversationHistory: state.conversationHistory,
               mode: 'auto', // Automatically detect best mode
+              pressureLevel, // Pass pressure for stress responses
             })
             return {
               success: true,
@@ -158,6 +165,19 @@ export function QuestioningPhase() {
         dispatch(gameActions.setProcessing(false))
 
         console.log(`[API] Generated ${successfulResponses.length} successful responses, ${failedResponses.length} failed`)
+
+        // Check for clash conditions after all responses are received
+        const clash = checkClashConditions(state)
+        if (clash) {
+          console.log('[QuestioningPhase] Clash detected!', clash)
+          // Add clash to game state
+          dispatch(gameActions.addClash(clash))
+          // Set current clash for display
+          setCurrentClash(clash)
+        } else {
+          // Clear current clash if no new clash
+          setCurrentClash(null)
+        }
 
       } catch (error) {
         // This should rarely happen due to fallbacks, but handle gracefully
@@ -244,6 +264,14 @@ export function QuestioningPhase() {
         candidates={state.candidates}
         isProcessing={state.isProcessing}
       />
+
+      {/* Clash Card - Shows when candidates attack each other */}
+      {currentClash && (
+        <ClashCard
+          clashEvent={currentClash}
+          candidates={state.candidates}
+        />
+      )}
 
       <QuestionInput
         onSubmit={handleQuestionSubmit}

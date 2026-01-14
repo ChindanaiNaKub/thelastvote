@@ -1,0 +1,257 @@
+/* ============================================================================
+   ClashCard Component Styles
+   ============================================================================ */
+
+.clash-card {
+  --clash-primary: #f59e0b;
+  --clash-secondary: #ef4444;
+  --clash-bg: rgba(245, 158, 11, 0.1);
+  --clash-border: #f59e0b;
+
+  background: var(--clash-bg);
+  border: 2px solid var(--clash-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
+  animation: clash-shake 0.6s ease-out, clash-fade-in 0.4s ease-out;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Shake animation on appear */
+@keyframes clash-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes clash-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Header */
+.clash-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.clash-badge {
+  background: linear-gradient(135deg, var(--clash-primary), var(--clash-secondary));
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+}
+
+.clash-topic {
+  color: var(--clash-primary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Participants */
+.clash-card__participants {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.clash-participant {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  min-width: 100px;
+}
+
+.clash-participant__portrait {
+  font-size: 2.5rem;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--participant-color, #666);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.clash-participant__name {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #1f2937;
+}
+
+.clash-vs {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--clash-secondary);
+  text-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+  letter-spacing: 2px;
+}
+
+/* Dialogue */
+.clash-dialogue {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.clash-line {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border-left: 4px solid;
+  transition: all 0.2s ease;
+}
+
+.clash-line--angry {
+  background: rgba(239, 68, 68, 0.1);
+  border-left-color: #ef4444;
+}
+
+.clash-line--defensive {
+  background: rgba(59, 130, 246, 0.1);
+  border-left-color: #3b82f6;
+}
+
+.clash-line--mocking {
+  background: rgba(168, 85, 247, 0.1);
+  border-left-color: #a855f7;
+}
+
+.clash-line--desperate {
+  background: rgba(245, 158, 11, 0.15);
+  border-left-color: #f59e0b;
+}
+
+.clash-line--triumphant {
+  background: rgba(34, 197, 94, 0.1);
+  border-left-color: #22c55e;
+}
+
+.clash-line__speaker {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.clash-line__content {
+  color: #1f2937;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Context footer */
+.clash-context {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(245, 158, 11, 0.3);
+  text-align: center;
+}
+
+.clash-context small {
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .clash-card {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .clash-card__participants {
+    gap: 1rem;
+  }
+
+  .clash-participant {
+    min-width: 80px;
+    padding: 0.5rem;
+  }
+
+  .clash-participant__portrait {
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+  }
+
+  .clash-vs {
+    font-size: 1.2rem;
+  }
+
+  .clash-dialogue {
+    padding: 0.75rem;
+  }
+
+  .clash-line {
+    padding: 0.5rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .clash-card {
+    --clash-bg: rgba(245, 158, 11, 0.15);
+    --clash-border: #f59e0b;
+  }
+
+  .clash-participant {
+    background: rgba(31, 41, 55, 0.8);
+  }
+
+  .clash-participant__name {
+    color: #f3f4f6;
+  }
+
+  .clash-dialogue {
+    background: rgba(31, 41, 55, 0.6);
+  }
+
+  .clash-line__speaker {
+    color: #d1d5db;
+  }
+
+  .clash-line__content {
+    color: #e5e7eb;
+  }
+
+  .clash-context small {
+    color: #9ca3af;
+  }
+}

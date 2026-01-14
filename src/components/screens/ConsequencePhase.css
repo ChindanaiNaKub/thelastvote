@@ -276,30 +276,83 @@
 
 /* Alternative Paths Section */
 .consequence-section--alternatives {
-  background: var(--clinical-bg-secondary);
-  border-color: var(--clinical-border-deep);
+  background: rgba(251, 191, 36, 0.1); /* Yellow tint for caution */
+  border-color: #f59e0b; /* Orange/yellow border */
 }
 
 .consequence-section--alternatives::before {
   background: linear-gradient(
     90deg,
-    var(--clinical-text-muted) 0%,
-    var(--clinical-border-medium) 100%
+    #f59e0b 0%, /* Orange-yellow gradient */
+    #fbbf24 100%
   );
 }
 
+/* Enhanced alternative path card - Priority 4.4.2 */
 .consequence-section__alternative {
   font-size: var(--clinical-size-sm);
   padding: var(--clinical-space-md) var(--clinical-space-lg);
   margin-bottom: var(--clinical-space-sm);
-  background: var(--clinical-bg-primary);
-  border: 1px solid var(--clinical-border-thin);
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #f59e0b; /* Orange/yellow border for caution */
   border-radius: var(--clinical-radius-md);
   font-family: var(--clinical-font-body);
   line-height: var(--clinical-leading-relaxed);
   transition: all var(--clinical-duration-fast) var(--clinical-ease-harsh);
   position: relative;
-  padding-left: var(--clinical-space-xl);
+  overflow: hidden;
+}
+
+.consequence-section__alternative:hover {
+  background: rgba(251, 191, 36, 0.2); /* Stronger yellow tint on hover */
+  transform: translateX(4px); /* Subtle movement to draw attention */
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+/* Alternative header - portrait and name */
+.alternative-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.alternative-portrait {
+  font-size: 2rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--candidate-color, #666);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.alternative-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #374151;
+}
+
+/* Alternative text structure */
+.alternative-text {
+  margin: 0;
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.alternative-prefix {
+  color: #f59e0b; /* Orange for the "if you chose" part */
+  font-weight: 600;
+  font-style: italic;
+}
+
+.alternative-result {
+  color: #1f2937;
+  line-height: 1.6;
 }
 
 .consequence-section__alternative::before {

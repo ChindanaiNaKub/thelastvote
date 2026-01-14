@@ -22,6 +22,8 @@ export interface PromptOptions {
   question?: string
   /** Previous conversation history */
   conversationHistory?: ConversationEntry[]
+  /** Pressure level (0-100) - affects response behavior (Priority 4.3.2) */
+  pressureLevel?: number
 }
 
 /**
@@ -48,7 +50,24 @@ export interface BuiltPrompt {
 /**
  * Build the system prompt that defines the AI's character
  */
-function buildSystemPrompt(candidate: Candidate): string {
+function buildSystemPrompt(candidate: Candidate, pressureLevel: number = 0): string {
+  // Pressure context for Priority 4.3.2
+  let pressureContext = ''
+  if (pressureLevel > 80) {
+    pressureContext = `
+⚠️ คำเตือนพิเศษ: คุณกำลังถูกกดดันอย่างหนัก (ความดัน: ${pressureLevel}/100)
+- คำตอบอาจสั้นลง หรือแสดงความเครียดเล็กน้อยได้
+- อาจใช้คำว่า "..." แทรกในคำตอบเพื่อแสดงความลังเล
+- อย่าให้ความเครียดชัดเจจนเกินไป เพียงแค่บ่งบอกเบาๆ
+`
+  } else if (pressureLevel > 70) {
+    pressureContext = `
+⚠️ หมายเหตุ: คุณกำลังถูกกดดันเล็กน้อย (ความดัน: ${pressureLevel}/100)
+- คำตอบอาจแสดงความเครียดได้เล็กน้อย
+- พยายามรักษาความมั่นใจ แต่อาจมีรอยร้าว
+`
+  }
+
   return `
 === คำสั่งระบบ ===
 คุณคือ ${candidate.name}, ${getArchetypeLabel(candidate.archetype)} ที่ลงสมัครเลือกตั้ง
@@ -58,7 +77,7 @@ function buildSystemPrompt(candidate: Candidate): string {
 รูปแบบการพูด: ${candidate.speakingStyle}
 
 นโยบายประกาศ: ${candidate.publicStance}
-
+${pressureContext}
 === ข้อมูลลับ (สำหรับ AI เท่านั้น ห้ามเปิดเผยต่อผู้เล่น) ===
 
 แรงจูงใจที่ซ่อนอยู่: ${candidate.hiddenMotivation}
@@ -162,10 +181,11 @@ export function buildCandidatePrompt(
     maxHistoryEntries = 10,
     question = '',
     conversationHistory = [],
+    pressureLevel = 0,
   } = options
 
-  // Build system prompt (character definition)
-  const systemPrompt = buildSystemPrompt(candidate)
+  // Build system prompt (character definition) with pressure context
+  const systemPrompt = buildSystemPrompt(candidate, pressureLevel)
 
   // Build user prompt (question + context)
   let userPrompt = ''

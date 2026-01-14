@@ -185,6 +185,7 @@ export interface Candidate {
   partialTruth: string // What they admit but distort
   activeLie: string // What they defend that is false
   hiddenSecret: string // What they will never tell
+  alternativeSecrets?: string[] // Alternative secrets for replay value (Priority 4.4.1)
 
   // ------------------------------------------------------------------
   // Dynamic State (changes during gameplay)

@@ -2504,3 +2504,69 @@ Game mechanics had drifted from original design:
 - Final vote: Maximum tension (irreversible choice)
 
 ---
+
+## 2026-01-14: Phase 4 - Error Handling Complete
+
+**Status:** ✅ Priority 4.5 COMPLETE
+
+### Completed Tasks
+
+**Priority 4.5.1: Comprehensive Error Boundary**
+- Created `src/components/ErrorBoundary.tsx` - Class component that catches React errors
+- Created `src/components/ErrorBoundary.css` - Red/warning themed error screen
+- Wrapped App in ErrorBoundary in `src/App.tsx`
+- Features:
+  - Catches all React component tree errors
+  - Logs errors to console for debugging
+  - Shows user-friendly Thai error message: "เกิดข้อผิดพลาด"
+  - Reload button: "เริ่มเกมใหม่"
+  - Development mode: Shows error details for debugging
+  - Production mode: Shows clean error screen to players
+
+**Priority 4.5.2: Enhanced API Error Handling**
+- Enhanced `src/lib/api.ts` with specific error types
+- Added `ApiErrorType` enum:
+  - RATE_LIMIT: "ขออภัย คุณถามคำถามมากเกินไป กรุณารอสักครู่"
+  - TIMEOUT: "การเชื่อมต่อใช้เวลานาน กำลังลองใหม่..."
+  - NETWORK: "ไม่สามารถเชื่อมต่อได้ ใช้คำตอบสำรอง"
+  - INVALID_RESPONSE: "เกิดข้อผิดพลาด ใช้คำตอบสำรอง"
+  - UNKNOWN: "เกิดข้อผิดพลาดบางอย่าง ใช้คำตอบสำรอง"
+- Added `detectErrorType()` function to categorize errors
+- Enhanced `generateCandidateResponse()` with Thai error messages
+- Console shows user-friendly Thai warnings when errors occur
+
+**Priority 4.3.1: Candidate Relationships (Foundation)**
+- Added relationships to all 5 candidates in `src/data/candidates.ts`:
+  - **candidate1 (พัฒน์):** rival with candidate2, ally with candidate3
+  - **candidate2 (เนติ):** rival with candidate1, ally with candidate4
+  - **candidate3 (ขนุน):** ally with candidate1, rival with candidate5
+  - **candidate4 (คมสันต์):** ally with candidate2, rival with candidate5
+  - **candidate5 (วิชัย):** rival with candidate3, rival with candidate4 (lone wolf, no allies)
+- Foundation ready for ClashCard component implementation
+
+### Files Modified
+
+- `src/components/ErrorBoundary.tsx` (NEW)
+- `src/components/ErrorBoundary.css` (NEW)
+- `src/App.tsx` - Added ErrorBoundary import and wrapper
+- `src/lib/api.ts` - Added error types and Thai messages
+- `src/data/candidates.ts` - Added relationships to all 5 candidates
+
+### Verification
+
+- ✅ TypeScript compiles without errors
+- ✅ Build succeeds: dist/ generated
+- ✅ Game loads and plays smoothly
+- ✅ Error boundary catches errors gracefully
+- ✅ Enhanced error messages display in console
+- ✅ All candidate relationships properly defined
+
+### Next Steps
+
+- Implement ClashCard component (Priority 4.3.1)
+- Add pressure context to prompts (Priority 4.3.2)
+- Add randomized secrets system (Priority 4.4.1)
+- Enhance "what if" scenarios (Priority 4.4.2)
+- Final testing and memory bank update
+
+---
