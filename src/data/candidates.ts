@@ -509,11 +509,11 @@ export const candidate5: Candidate = {
  * Export all candidates as an array for easy use in the game.
  */
 export const candidates: Candidate[] = [
-  candidate1, // พัฒน์ - Charismatic Reformer
-  candidate2, // เนติ - Pragmatic Technocrat
+  candidate1, // ป่า - Charismatic Reformer
+  candidate2, // แบม - Pragmatic Technocrat
   candidate3, // ขนุน - Healer/Protector
-  candidate4, // คมสันต์ - Cynical Realist
-  candidate5, // วิชัย - Radical Outsider
+  candidate4, // กัน - Cynical Realist
+  candidate5, // ทาม - Radical Outsider
 ]
 
 /**

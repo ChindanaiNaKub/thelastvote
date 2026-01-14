@@ -107,13 +107,6 @@ export interface PlayerStats {
   // Consistency
   flipFlopScore: number // How often changed mind (0-100)
 
-  // Prab-specific triggers (for Part 4)
-  prabRevealConditions: {
-    askedAboutGameMaster: boolean
-    questionedReality: boolean
-    showedSkepticism: boolean
-  }
-
   // Game completion timestamp
   gameCompletedAt: number | null
 }
@@ -480,7 +473,6 @@ export type GameAction =
   | { type: 'TRACK_QUESTION'; payload: { candidateId: string; topics: string[]; timestamp: number } }
   | { type: 'TRACK_AGGRESSION'; payload: { candidateId: string } }
   | { type: 'TRACK_DECISION'; payload: { timestamp: number } }
-  | { type: 'TRACK_PRAB_CONDITION'; payload: { condition: 'askedAboutGameMaster' | 'questionedReality' | 'showedSkepticism' } }
   | { type: 'COMPLETE_GAME'; payload: number } // Timestamp when game completed
 
 // ----------------------------------------------------------------------------
@@ -523,11 +515,6 @@ export const initialGameState: GameState = {
     averageDecisionTime: 0,
     rushedDecisions: 0,
     flipFlopScore: 0,
-    prabRevealConditions: {
-      askedAboutGameMaster: false,
-      questionedReality: false,
-      showedSkepticism: false,
-    },
     gameCompletedAt: null,
   },
 }

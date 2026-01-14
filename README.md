@@ -166,8 +166,6 @@ Based on your playstyle, receive a personalized message that reflects your choic
 - ✅ Clash detection with context-aware dialogue
 - ✅ Comprehensive stat tracking during gameplay
 - ✅ Player behavior analysis and archetype detection
-- ✅ Suspicion detection for meta-aware players
-- ✅ Mastermind plot twist reveal with personalized messages
 
 ---
 
@@ -179,10 +177,10 @@ Based on your playstyle, receive a personalized message that reflects your choic
 thelastvote/
 ├── src/
 │   ├── components/
-│   │   ├── screens/        # Game phases (7 screens)
+│   │   ├── screens/        # Game phases (6 screens)
 │   │   └── ui/             # Reusable UI components
 │   ├── context/            # Game state manager with stat tracking
-│   ├── data/               # Candidates, consequences, Prab reveal content
+│   ├── data/               # Candidates, consequences
 │   ├── hooks/              # Custom React hooks
 │   ├── lib/                # API client, tracking, pressure calculation
 │   ├── prompts/            # AI prompt builders
@@ -201,18 +199,6 @@ This is a **vibe-first** project:
 - Meaning over scale
 
 If a feature does not increase tension, doubt, or replay value — remove it.
-
-### Meta-Gaming Philosophy
-
-The game uses **personalization without targeting**:
-
-- ✅ Change ONLY names — Keep all personalities/archetypes from original design
-- ✅ Friendship-safe — No real secrets, no real drama, just fun character dynamics
-- ✅ Enhanced mechanics — More depth through systems, not personal attacks
-- ✅ Epic twist ending — Mastermind reveal should feel cool/shocking, not mean
-
-**Meta น้อย - ให้ความสำคัญคือเกม ไม่ใช่โจมตีบุคคล**
-(Small meta — focus on the game, not personal attacks)
 
 ### Memory Bank
 
@@ -254,8 +240,6 @@ Created with love for dialogue-driven storytelling and psychological tension.
 
 Built with React, TypeScript, and Anthropic Claude.
 
-**Mastermind behind the experiment:** ปราบ ✨
-
 ---
 
-*Every choice matters. Every doubt is real. Every playthrough tells a different story.*
+*Every choice matters. Every doubt is real.*
