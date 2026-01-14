@@ -4,6 +4,7 @@
 // Implements phase-based routing and wraps the app with GameProvider.
 // ============================================================================
 
+import { useEffect } from 'react'
 import { GameProvider, useGame } from './context/GameContext'
 import { ThemeProvider } from './context/ThemeContext'
 import { IntroductionScreen } from './components/screens/IntroductionScreen'
@@ -18,8 +19,14 @@ import './App.css'
 // ============================================================================
 // AppContent - Inner component that uses the game context
 // ============================================================================
+
 function AppContent() {
   const { state } = useGame()
+
+  // Scroll to top when phase changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [state.phase])
 
   // Phase-based routing: render the appropriate screen based on current phase
   switch (state.phase) {

@@ -36,7 +36,14 @@ export function DialogueBox({ entries, candidates, isProcessing = false }: Dialo
   // Auto-scroll to bottom when entries change
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+      // Use setTimeout to ensure DOM is updated with new content
+      // Use smooth scroll behavior for better UX
+      setTimeout(() => {
+        scrollRef.current?.scrollTo({
+          top: scrollRef.current.scrollHeight,
+          behavior: 'smooth'
+        })
+      }, 100)
     }
   }, [entries, isProcessing])
 
