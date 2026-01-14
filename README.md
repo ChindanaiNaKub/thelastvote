@@ -12,6 +12,24 @@ You are the final voter in a fictional town. Five candidates seek your trust. Th
 
 You may ask only **three questions** before your vote becomes final.
 
+### The Candidates
+
+- **🦁 ป่า (Pah)** — Charismatic reformer with a vision for change. Best friend of ขนุน.
+- **🧠 แบม (Bam)** — Pragmatic technocrat who believes in data and systems. Friendly rival of กัน.
+- **🛡️ ขนุน (Khanun)** — Protective healer who cares about people's well-being. Best friend of ป่า.
+- **😏 กัน (Kan)** — Cynical realist who sees through everyone's facades. Friendly rival of แบม.
+- **🔥 ทาม (Tam)** — Radical outsider who challenges the status quo. A lone wolf with no allies.
+
+### Dynamic Relationships
+
+Candidates don't exist in isolation. They have **complex relationships** with each other:
+- **Best friends** will defend each other fiercely
+- **Friendly rivals** trade barbs but respect one another
+- **Lone wolves** have no allies and higher base pressure
+- **Secret relationships** reveal themselves during consequences
+
+Watch how they interact, clash, and respond when their allies are eliminated.
+
 Success is not measured by winning. Success is measured by **how much you doubt your own certainty**.
 
 ---
@@ -100,10 +118,33 @@ The game works **immediately** with pre-written Thai responses (FALLBACK mode). 
 
 1. **Meet** five candidates with distinct personalities
 2. **Ask** up to three questions
-3. **Watch** candidates respond
-4. **Vote** for your chosen candidate
-5. **Discover** hidden truths and consequences
-6. **Replay** to see how differently words can deceive
+3. **Eliminate** one candidate after each question round (3 eliminations total)
+4. **Watch** candidates respond, clash, and reveal their true nature
+5. **Vote** for your chosen candidate among the final two
+6. **Discover** hidden truths, alternative paths, and consequences
+7. **Uncover** the mastermind behind this experiment
+8. **Replay** to see how differently words can deceive
+
+### New Features
+
+#### Enhanced Relationship System
+- **Pair mechanics** — Best friends defend each other (+50 pressure when ally eliminated)
+- **Rival dynamics** — Friendly rivals banter but respect each other
+- **Pressure system** — Candidates crack differently based on who they've lost
+- **Clash detection** — Candidates attack each other when pressure builds
+
+#### Stat Tracking
+The game tracks your playstyle and reveals insights:
+- **Question patterns** — Who did you focus on? Who did you ignore?
+- **Ruthlessness score** — Did you eliminate allies or enemies?
+- **Decision speed** — How quickly did you make choices?
+- **Meta-awareness** — Did you suspect this was all a game?
+
+#### Mastermind Plot Twist
+At the end, discover who created this experiment... and why.
+Based on your playstyle, receive a personalized message that reflects your choices.
+
+**Every playthrough reveals a different side of the story.**
 
 ---
 
@@ -111,11 +152,22 @@ The game works **immediately** with pre-written Thai responses (FALLBACK mode). 
 
 **Production Ready** ✅
 
-- ✅ Complete game loop (intro → vote → consequences)
-- ✅ Five Thai-speaking candidates with distinct personalities
+### Core Features
+- ✅ Complete game loop (intro → questioning → elimination → voting → consequences → mastermind reveal)
+- ✅ Five Thai-speaking candidates with distinct personalities and relationships
 - ✅ Three-tier API system (FALLBACK/MOCK/API modes)
 - ✅ Consequence system with staged reveals
 - ✅ Full Thai localization
+
+### Meta-Gaming Features (Phase 6)
+- ✅ Enhanced relationship system (8 relationship types)
+- ✅ Pair mechanics (best friends, friendly rivals, lone wolves)
+- ✅ Dynamic pressure calculation based on eliminations
+- ✅ Clash detection with context-aware dialogue
+- ✅ Comprehensive stat tracking during gameplay
+- ✅ Player behavior analysis and archetype detection
+- ✅ Suspicion detection for meta-aware players
+- ✅ Mastermind plot twist reveal with personalized messages
 
 ---
 
@@ -127,12 +179,12 @@ The game works **immediately** with pre-written Thai responses (FALLBACK mode). 
 thelastvote/
 ├── src/
 │   ├── components/
-│   │   ├── screens/        # Game phases (6 screens)
+│   │   ├── screens/        # Game phases (7 screens)
 │   │   └── ui/             # Reusable UI components
-│   ├── context/            # Game state manager
-│   ├── data/               # Candidates, consequences
+│   ├── context/            # Game state manager with stat tracking
+│   ├── data/               # Candidates, consequences, Prab reveal content
 │   ├── hooks/              # Custom React hooks
-│   ├── lib/                # API client
+│   ├── lib/                # API client, tracking, pressure calculation
 │   ├── prompts/            # AI prompt builders
 │   └── types/              # TypeScript definitions
 ├── api/                    # Vercel serverless functions
@@ -149,6 +201,18 @@ This is a **vibe-first** project:
 - Meaning over scale
 
 If a feature does not increase tension, doubt, or replay value — remove it.
+
+### Meta-Gaming Philosophy
+
+The game uses **personalization without targeting**:
+
+- ✅ Change ONLY names — Keep all personalities/archetypes from original design
+- ✅ Friendship-safe — No real secrets, no real drama, just fun character dynamics
+- ✅ Enhanced mechanics — More depth through systems, not personal attacks
+- ✅ Epic twist ending — Mastermind reveal should feel cool/shocking, not mean
+
+**Meta น้อย - ให้ความสำคัญคือเกม ไม่ใช่โจมตีบุคคล**
+(Small meta — focus on the game, not personal attacks)
 
 ### Memory Bank
 
@@ -189,3 +253,9 @@ The game will work without an API key using FALLBACK mode.
 Created with love for dialogue-driven storytelling and psychological tension.
 
 Built with React, TypeScript, and Anthropic Claude.
+
+**Mastermind behind the experiment:** ปราบ ✨
+
+---
+
+*Every choice matters. Every doubt is real. Every playthrough tells a different story.*
