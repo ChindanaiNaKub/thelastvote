@@ -2,11 +2,13 @@
 // Main App Component
 // ============================================================================
 // Implements phase-based routing and wraps the app with GameProvider.
+// Phase 4: Added ErrorBoundary for robust error handling.
 // ============================================================================
 
 import { useEffect } from 'react'
 import { GameProvider, useGame } from './context/GameContext'
 import { ThemeProvider } from './context/ThemeContext'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { IntroductionScreen } from './components/screens/IntroductionScreen'
 import { CandidateRosterScreen } from './components/screens/CandidateRosterScreen'
 import { QuestioningPhase } from './components/screens/QuestioningPhase'
@@ -104,14 +106,17 @@ function AppContent() {
 
 // ============================================================================
 // App - Root component that provides theme and game context
+// Phase 4: Wrapped in ErrorBoundary for robust error handling
 // ============================================================================
 function App() {
   return (
-    <ThemeProvider>
-      <GameProvider>
-        <AppContent />
-      </GameProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <GameProvider>
+          <AppContent />
+        </GameProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   )
 }
 

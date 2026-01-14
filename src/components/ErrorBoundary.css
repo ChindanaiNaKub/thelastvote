@@ -1,0 +1,137 @@
+/* ============================================================================
+ * Error Boundary Styles (Phase 4: Priority 4.5.1)
+ * ============================================================================
+ * Error screen with red/warning theme, centered layout, clear CTA button.
+ * ============================================================================ */
+
+.error-fallback {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border: 2px solid #ef4444;
+}
+
+.error-fallback__content {
+  max-width: 600px;
+  text-align: center;
+  background: white;
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(239, 68, 68, 0.2);
+  border: 2px solid #ef4444;
+}
+
+.error-fallback__icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.error-fallback__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #dc2626;
+  margin: 0 0 1rem 0;
+  text-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+}
+
+.error-fallback__message {
+  font-size: 1.125rem;
+  color: #7f1d1d;
+  margin: 0 0 2rem 0;
+  line-height: 1.6;
+}
+
+.error-fallback__details {
+  margin: 1.5rem 0;
+  text-align: left;
+  background: #fef2f2;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #fecaca;
+}
+
+.error-fallback__summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #dc2626;
+  margin-bottom: 0.5rem;
+  user-select: none;
+}
+
+.error-fallback__summary:hover {
+  color: #b91c1c;
+}
+
+.error-fallback__stack {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #1f2937;
+  color: #f3f4f6;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.error-fallback__button {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1.125rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.error-fallback__button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+
+.error-fallback__button:active {
+  transform: scale(0.98);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .error-fallback__content {
+    padding: 2rem 1.5rem;
+  }
+
+  .error-fallback__icon {
+    font-size: 3rem;
+  }
+
+  .error-fallback__title {
+    font-size: 1.5rem;
+  }
+
+  .error-fallback__message {
+    font-size: 1rem;
+  }
+
+  .error-fallback__button {
+    font-size: 1rem;
+    padding: 0.875rem 2rem;
+  }
+}

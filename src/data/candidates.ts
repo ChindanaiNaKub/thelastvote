@@ -56,7 +56,13 @@ export const candidate1: Candidate = {
   // ------------------------------------------------------------------
   hasSpoken: false,
   trustLevel: 50,
-  relationships: {},
+  // Phase 4: Clash system relationships
+  // - Rival with candidate2 (Technocrat) - ideological clash
+  // - Ally with candidate3 (Healer) - both care about people
+  relationships: {
+    candidate_2: 'rival',
+    candidate_3: 'ally',
+  },
 
   // ------------------------------------------------------------------
   // Elimination State (initial values)
@@ -113,7 +119,13 @@ export const candidate2: Candidate = {
   // ------------------------------------------------------------------
   hasSpoken: false,
   trustLevel: 50,
-  relationships: {},
+  // Phase 4: Clash system relationships
+  // - Rival with candidate1 (Reformer) - ideological clash
+  // - Ally with candidate4 (Cynic) - both are "realists"
+  relationships: {
+    candidate_1: 'rival',
+    candidate_4: 'ally',
+  },
 
   // ------------------------------------------------------------------
   // Elimination State (initial values)
@@ -170,7 +182,13 @@ export const candidate3: Candidate = {
   // ------------------------------------------------------------------
   hasSpoken: false,
   trustLevel: 50,
-  relationships: {},
+  // Phase 4: Clash system relationships
+  // - Ally with candidate1 (Reformer) - both care about people
+  // - Rival with candidate5 (Radical) - too extreme for her taste
+  relationships: {
+    candidate_1: 'ally',
+    candidate_5: 'rival',
+  },
 
   // ------------------------------------------------------------------
   // Elimination State (initial values)
@@ -227,7 +245,13 @@ export const candidate4: Candidate = {
   // ------------------------------------------------------------------
   hasSpoken: false,
   trustLevel: 50,
-  relationships: {},
+  // Phase 4: Clash system relationships
+  // - Ally with candidate2 (Technocrat) - both are "realists"
+  // - Rival with candidate5 (Radical) - thinks radical is delusional
+  relationships: {
+    candidate_2: 'ally',
+    candidate_5: 'rival',
+  },
 
   // ------------------------------------------------------------------
   // Elimination State (initial values)
@@ -284,7 +308,14 @@ export const candidate5: Candidate = {
   // ------------------------------------------------------------------
   hasSpoken: false,
   trustLevel: 50,
-  relationships: {},
+  // Phase 4: Clash system relationships
+  // - No allies (lone wolf)
+  // - Rival with candidate3 (Healer) - too controlling
+  // - Rival with candidate4 (Cynic) - thinks cynic is a sellout
+  relationships: {
+    candidate_3: 'rival',
+    candidate_4: 'rival',
+  },
 
   // ------------------------------------------------------------------
   // Elimination State (initial values)

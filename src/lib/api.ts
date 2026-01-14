@@ -94,6 +94,72 @@ interface ApiConfig {
 // ----------------------------------------------------------------------------
 
 /**
+ * API error types for Phase 4: Priority 4.5.2 (Enhanced Error Handling)
+ * Specific error types allow for better user feedback and graceful degradation
+ */
+export enum ApiErrorType {
+  RATE_LIMIT = 'RATE_LIMIT',
+  TIMEOUT = 'TIMEOUT',
+  NETWORK = 'NETWORK',
+  INVALID_RESPONSE = 'INVALID_RESPONSE',
+  UNKNOWN = 'UNKNOWN'
+}
+
+/**
+ * User-friendly Thai error messages for Phase 4: Priority 4.5.2
+ * Provides clear feedback to players when errors occur
+ */
+const THAI_ERROR_MESSAGES: Record<ApiErrorType, string> = {
+  RATE_LIMIT: 'ขออภัย คุณถามคำถามมากเกินไป กรุณารอสักครู่',
+  TIMEOUT: 'การเชื่อมต่อใช้เวลานาน กำลังลองใหม่...',
+  NETWORK: 'ไม่สามารถเชื่อมต่อได้ ใช้คำตอบสำรอง',
+  INVALID_RESPONSE: 'เกิดข้อผิดพลาด ใช้คำตอบสำรอง',
+  UNKNOWN: 'เกิดข้อผิดพลาดบางอย่าง ใช้คำตอบสำรอง'
+}
+
+/**
+ * Detects error type from Error object
+ * Helps determine appropriate user feedback
+ */
+function detectErrorType(error: unknown): ApiErrorType {
+  if (error instanceof Error) {
+    const message = error.message.toLowerCase()
+
+    // Rate limit errors
+    if (message.includes('429') || message.includes('rate limit') || message.includes('too many requests')) {
+      return ApiErrorType.RATE_LIMIT
+    }
+
+    // Timeout errors
+    if (message.includes('timeout') || message.includes('timed out') || message.includes('aborted')) {
+      return ApiErrorType.TIMEOUT
+    }
+
+    // Network errors
+    if (message.includes('network') || message.includes('fetch') || message.includes('connection')) {
+      return ApiErrorType.NETWORK
+    }
+
+    // Invalid response errors
+    if (message.includes('api error') || message.includes('invalid') || message.includes('parse')) {
+      return ApiErrorType.INVALID_RESPONSE
+    }
+  }
+
+  return ApiErrorType.UNKNOWN
+}
+
+/**
+ * Gets user-friendly Thai error message
+ * Used in console warnings for transparency
+ */
+function getThaiErrorMessage(errorType: ApiErrorType): string {
+  return THAI_ERROR_MESSAGES[errorType]
+}
+
+// ----------------------------------------------------------------------------
+
+/**
  * Thai fallback responses by archetype
  * These are used when backend is unavailable or in FALLBACK/MOCK modes
  * Expanded to 100+ responses for variety when API limit is reached
@@ -260,7 +326,11 @@ export async function generateCandidateResponse(
     const response = await executeInMode(mode, request, candidate)
     return response
   } catch (error) {
+    // Phase 4: Enhanced error handling with user-friendly Thai messages
+    const errorType = detectErrorType(error)
+    const thaiMessage = getThaiErrorMessage(errorType)
     console.warn(`[API] ${mode} mode failed:`, error)
+    console.warn(`[API] ${thaiMessage}`)
 
     // Attempt fallback
     const fallbackMode = getNextMode(mode)
@@ -276,7 +346,11 @@ export async function generateCandidateResponse(
           }
         }
       } catch (fallbackError) {
+        // Phase 4: Enhanced error handling for fallback errors too
+        const fallbackErrorType = detectErrorType(fallbackError)
+        const fallbackThaiMessage = getThaiErrorMessage(fallbackErrorType)
         console.error(`[API] Fallback to ${fallbackMode} also failed:`, fallbackError)
+        console.error(`[API] ${fallbackThaiMessage}`)
       }
     }
 

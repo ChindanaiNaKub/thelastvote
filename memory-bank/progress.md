@@ -2419,3 +2419,88 @@ const responsePromises = activeCandidates.map(async (candidate) => {
 - All implementation steps completed as planned
 
 ---
+
+## 2026-01-14: Elimination Mechanic Corrections
+
+**Status:** ✅ COMPLETE
+
+**Issue Identified:**
+Game mechanics had drifted from original design:
+1. Question count was incorrectly set to 2 instead of 3
+2. Elimination mechanic limited to 1 round instead of 3 rounds
+3. No way to exit elimination phase if accidentally re-entered
+
+**Changes Made:**
+
+### 1. Fixed Question Count (2 → 3)
+**File:** `src/types/game.ts`
+- Changed `questionsRemaining: 2` → `questionsRemaining: 3`
+- Updated comments to reflect original design (3 questions, not 2)
+
+### 2. Updated Tension Calculation
+**File:** `src/lib/tension.ts`
+- Updated formula: `(2 - state.questionsRemaining) * 15` → `(3 - state.questionsRemaining) * 10`
+- Properly scales tension for 3-question gameplay
+
+### 3. Fixed Elimination Round Calculation
+**File:** `src/context/GameContext.tsx`
+- Round calculation: `2 - state.questionsRemaining` → `3 - state.questionsRemaining`
+- Correctly tracks which elimination round (1, 2, or 3)
+
+### 4. Fixed Elimination Expectation
+**File:** `src/components/screens/QuestioningPhase.tsx`
+- Changed `totalEliminationsExpected: 2` → `totalEliminationsExpected: 3`
+- Allows 1 elimination per question round (3 total eliminations)
+
+### 5. Added Elimination Complete Screen
+**File:** `src/components/screens/EliminationPhase.tsx`
+- Added `isEliminationDone` check
+- Shows completion message with continue button when elimination already done
+- Prevents re-elimination in same round
+
+**File:** `src/components/screens/EliminationPhase.css`
+- Added styles for `.elimination-complete` screen
+- Green success theme with confirmation message
+- Continue button styling
+
+### Corrected Game Flow
+
+**Before (Broken):**
+- introduction → roster → questioning (Q1, Q2) → elimination (1 person) → voting (5 candidates)
+
+**After (Fixed):**
+- introduction → roster
+- → questioning (Q1) → elimination (รอบ 1: 5→4)
+- → questioning (Q2) → elimination (รอบ 2: 4→3)
+- → questioning (Q3) → elimination (รอบ 3: 3→2)
+- → voting (2 candidates)
+
+### Verification
+
+- ✅ TypeScript compiles without errors
+- ✅ Build succeeds: `dist/` folder generated
+- ✅ Game correctly enforces 3 questions
+- ✅ Elimination limited to 1 person per round
+- ✅ Continue button appears when elimination complete
+- ✅ Final vote with 2 candidates
+
+### Design Impact
+
+**Restores Original Game Balance:**
+- More questions (3 vs 2) = more information = harder decision
+- Multi-round elimination = progressive doubt vs single elimination
+- Final choice between 2 candidates = intense, regretful decision
+
+**Player Experience:**
+1. Ask Q1 → See 5 responses → Eliminate 1 (4 remain)
+2. Ask Q2 → See 4 responses → Eliminate 1 (3 remain)
+3. Ask Q3 → See 3 responses → Eliminate 1 (2 remain)
+4. Vote for winner between final 2 candidates
+
+**Tension Progression:**
+- Round 1: Low stakes (plenty of candidates)
+- Round 2: Medium tension (narrowing down)
+- Round 3: High tension (must choose carefully)
+- Final vote: Maximum tension (irreversible choice)
+
+---
