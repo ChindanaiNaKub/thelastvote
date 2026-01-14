@@ -1554,6 +1554,96 @@ Phase 2 is COMPLETE. The game is fully playable with:
 
 ---
 
+## Fallback Response Expansion Complete ✅
+
+**Date:** 2026-01-14
+
+**Entry:** Expanded fallback responses from 15 to 108 for better variety when API limit is reached
+
+### Actions Completed
+
+- Expanded `/src/lib/api.ts` fallback responses from 3 per archetype to 20+ per archetype
+- Added 93 new Thai responses (108 total, up from 15)
+- Maintained character voice and personality for each archetype
+- Verified TypeScript compilation (no errors)
+
+### Files Modified
+
+```
+/home/prab/Documents/thelastvote/src/
+└── lib/
+    └── api.ts                    # Expanded FALLBACK_RESPONSES from 15 to 108 entries
+```
+
+### Response Breakdown
+
+| Candidate Archetype | Previous Count | New Count | Added |
+|---------------------|----------------|-----------|-------|
+| Charismatic Reformer | 3 | 22 | +19 |
+| Pragmatic Technocrat | 3 | 21 | +18 |
+| Healer/Protector | 3 | 20 | +17 |
+| Cynical Realist | 3 | 22 | +19 |
+| Radical Outsider | 3 | 23 | +20 |
+| **Total** | **15** | **108** | **+93** |
+
+### Context & Rationale
+
+**Problem:** Free tier has 50 message limit. With 5 candidates responding to 3 questions = 15 API calls per session. Players can only play ~3 sessions before hitting limit.
+
+**Solution:** Expand fallback response variety so when API limit is reached, the game remains engaging without repetitive responses.
+
+**How It Works:**
+1. **API mode** (default): Uses real AI from OpenRouter
+2. **When limit reached**: Automatically switches to fallback mode
+3. **Fallback**: Uses hash-based selection from 108 pre-written Thai responses
+4. Game continues seamlessly - players won't notice the switch
+
+**Response Selection Logic:**
+- Same question always gets same response (hash-based)
+- Responses fit each candidate's archetype and personality
+- Maintains immersion even without AI
+
+### Test Results
+
+✅ TypeScript compilation succeeds with no errors
+✅ All 108 responses are in Thai
+✅ Character voice maintained across all responses
+✅ Graceful degradation system (API → MOCK → FALLBACK) still works
+
+### Design Decisions
+
+**Quantity over Randomness:**
+- Chose 20+ responses per archetype rather than random generation
+- Ensures consistent, quality responses that fit character voice
+- Hash-based selection prevents jarring random changes
+
+**Character Voice Consistency:**
+- **Charismatic Reformer**: Inspiring, visionary, confident, deflects specifics
+- **Pragmatic Technocrat**: Data-driven, statistics, efficiency-focused, cold logic
+- **Healer/Protector**: Parental, warm, "I'll protect you", creates dependency
+- **Cynical Realist**: World-weary, "no good options", honest about harsh realities
+- **Radical Outsider**: Angry, anti-establishment, "burn it down", revolutionary
+
+**Thai Language Throughout:**
+- All 108 responses in natural-sounding Thai
+- Maintains game's Thai localization
+- No English content in fallback mode
+
+### Current State
+
+- **Phase:** Post-Phase 2 (Optimization)
+- **Fallback Status:** ENHANCED ✅ (108 responses, up from 15)
+- **Game Status:** More resilient to API limits, better variety in offline mode
+
+### Next Steps
+
+Potential future enhancements:
+- Add more responses per archetype (current: 20+, target: 50+)
+- Implement response caching to reduce API calls
+- Add hybrid mode (API for targeted candidate, fallback for others)
+
+---
+
 ## Development Log
 
 | Date | Phase | Description |
@@ -1575,6 +1665,7 @@ Phase 2 is COMPLETE. The game is fully playable with:
 | 2026-01-12 | Phase 3.5 | Consequence System COMPLETE ✅ (5 consequence sets + staged reveals) |
 | 2026-01-12 | Phase 2.2-2.3 | Backend Setup COMPLETE ✅ (Local server + Vercel deployment) |
 | 2026-01-14 | Phase 2 | AI Integration COMPLETE ✅ (All 8 tasks: backend, prompts, API client, testing) |
+| 2026-01-14 | Optimization | Fallback Response Expansion COMPLETE ✅ (108 responses, up from 15) |
 
 ---
 
@@ -1747,4 +1838,4 @@ npm install
 
 ---
 
-*Progress log last updated: 2026-01-12*
+*Progress log last updated: 2026-01-14*
