@@ -77,7 +77,12 @@ export function DialogueBox({ entries, candidates, isProcessing = false }: Dialo
               )}
 
               {/* Message content */}
-              <div className="dialogue-entry__message">{stripMarkdown(entry.content)}</div>
+              <div
+                className="dialogue-entry__message"
+                data-candidate={entry.speaker}
+              >
+                {stripMarkdown(entry.content)}
+              </div>
 
               {/* Timestamp */}
               <div className="dialogue-entry__timestamp">

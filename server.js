@@ -7,7 +7,6 @@
 
 import express from 'express'
 import cors from 'cors'
-import Anthropic from '@anthropic-ai/sdk'
 import dotenv from 'dotenv'
 
 // Load environment variables
@@ -20,17 +19,17 @@ const PORT = process.env.API_PORT || 3001
 app.use(cors())
 app.use(express.json())
 
-// Initialize Anthropic client
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-})
+// OpenRouter API configuration
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY
+const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'xiaomi/mimo-v2-flash:free'
+const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions'
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', mode: 'development' })
 })
 
-// Chat endpoint - generates AI responses for candidates
+// Chat endpoint - generates AI responses for candidates using OpenRouter
 app.post('/api/chat', async (req, res) => {
   try {
     const { question, candidatePrompt, conversationHistory, candidateId } = req.body
@@ -42,12 +41,23 @@ app.post('/api/chat', async (req, res) => {
       })
     }
 
+    if (!OPENROUTER_API_KEY) {
+      return res.status(500).json({
+        error: 'OpenRouter API key not configured'
+      })
+    }
+
     console.log(`[API] Processing question for candidate ${candidateId}`)
     console.log(`[API] Question: "${question}"`)
     console.log(`[API] Conversation history length: ${conversationHistory?.length || 0}`)
 
-    // Format conversation history for Claude
+    // Format conversation history for OpenRouter
     const messages = []
+
+    // Add system prompt at the beginning
+    if (candidatePrompt) {
+      messages.push({ role: 'system', content: candidatePrompt })
+    }
 
     // Add conversation history if present
     if (conversationHistory && conversationHistory.length > 0) {
@@ -63,17 +73,32 @@ app.post('/api/chat', async (req, res) => {
     // Add current question
     messages.push({ role: 'user', content: question })
 
-    // Call Claude API
+    // Call OpenRouter API
     const startTime = Date.now()
-    const response = await anthropic.messages.create({
-      model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 150,
-      system: candidatePrompt,
-      messages: messages,
+    const response = await fetch(OPENROUTER_API_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'http://localhost:5173',
+        'X-Title': 'The Last Vote',
+      },
+      body: JSON.stringify({
+        model: OPENROUTER_MODEL,
+        messages: messages,
+      }),
     })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error('[API] OpenRouter error:', errorText)
+      throw new Error(`OpenRouter API error: ${response.status} ${response.statusText}`)
+    }
+
+    const data = await response.json()
     const duration = Date.now() - startTime
 
-    const aiResponse = response.content[0].text
+    const aiResponse = data.choices[0].message.content
 
     console.log(`[API] Response generated in ${duration}ms`)
     console.log(`[API] Response: "${aiResponse.substring(0, 100)}..."`)
@@ -104,7 +129,8 @@ app.listen(PORT, () => {
   console.log(`\n🚀 API Server running on http://localhost:${PORT}`)
   console.log(`📡 Chat endpoint: http://localhost:${PORT}/api/chat`)
   console.log(`💚 Health check: http://localhost:${PORT}/api/health`)
-  console.log(`\n🔑 Anthropic API key: ${process.env.ANTHROPIC_API_KEY ? 'configured' : 'NOT configured'}`)
+  console.log(`\n🔑 OpenRouter API key: ${OPENROUTER_API_KEY ? 'configured' : 'NOT configured'}`)
+  console.log(`🤖 Model: ${OPENROUTER_MODEL}`)
   console.log(`\n⚙️  Environment: ${process.env.NODE_ENV || 'development'}\n`)
 })
 

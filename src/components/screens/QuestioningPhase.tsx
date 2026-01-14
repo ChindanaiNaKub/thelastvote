@@ -9,10 +9,15 @@ import { gameActions } from '../../context/GameContext'
 import { DialogueBox } from '../ui/DialogueBox'
 import { QuestionInput } from '../ui/QuestionInput'
 import { generateCandidateResponse } from '../../lib/api'
+import { useState, useEffect } from 'react'
 import './QuestioningPhase.css'
 
 export function QuestioningPhase() {
   const { state, dispatch } = useGame()
+  const [apiModeNotice, setApiModeNotice] = useState<string | null>(null)
+
+  // Determine if game should feel tense (low on questions)
+  const isTense = state.questionsRemaining <= 1
 
   const handleVoteNow = () => {
     if (state.questionsRemaining === 0) {
@@ -57,6 +62,16 @@ export function QuestioningPhase() {
         // Wait for all responses (parallel execution for speed)
         const allResponses = await Promise.all(responsePromises)
 
+        // Show mode notice for transparency
+        const modesUsed = new Set(allResponses.map((r) => r.modeUsed))
+        if (modesUsed.has('fallback')) {
+          setApiModeNotice('📴 กำลังเล่นแบบออฟไลน์ - ใช้คำตอบที่เตรียมไว้')
+          setTimeout(() => setApiModeNotice(null), 3000)
+        } else if (modesUsed.has('mock')) {
+          setApiModeNotice('🧪 โหมดทดสอบ - จำลองการตอบสนอง')
+          setTimeout(() => setApiModeNotice(null), 2000)
+        }
+
         // Clear processing state
         dispatch(gameActions.setProcessing(false))
 
@@ -98,6 +113,20 @@ export function QuestioningPhase() {
   // Count how many questions have been asked
   const questionsAsked = state.conversationHistory.filter(entry => entry.type === 'question').length
 
+  // Apply tense state to body as questions run out
+  useEffect(() => {
+    if (questionsAsked >= 2 && state.questionsRemaining <= 1) {
+      document.body.classList.add('tense')
+    } else {
+      document.body.classList.remove('tense')
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove('tense')
+    }
+  }, [state.questionsRemaining, questionsAsked])
+
   const handleSuggestedQuestion = (question: string) => {
     if (!state.isProcessing && state.questionsRemaining > 0) {
       handleQuestionSubmit(question)
@@ -105,7 +134,7 @@ export function QuestioningPhase() {
   }
 
   return (
-    <div className="screen questioning-screen">
+    <div className={`screen questioning-screen ${isTense ? 'questioning-screen--tense' : ''}`}>
       <div className="question-header">
         <h2>ถามคำถามของคุณ</h2>
         <p className="subtitle">ทุกคนจะตอบคำถามของคุณ</p>
@@ -113,6 +142,11 @@ export function QuestioningPhase() {
           คำถามที่เหลือ: <strong>{state.questionsRemaining}</strong>
         </p>
       </div>
+
+      {/* API mode notice */}
+      {apiModeNotice && (
+        <div className="api-mode-notice">{apiModeNotice}</div>
+      )}
 
       {/* Suggested questions - show for first 3 rounds */}
       {state.questionsRemaining > 0 && !state.isProcessing && questionsAsked < 3 && (

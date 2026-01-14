@@ -1,0 +1,61 @@
+/* ============================================================================
+   Ambient Effects Component
+   ============================================================================ */
+
+.ambient-effects {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.ambient-particle {
+  position: absolute;
+  background: radial-gradient(circle, rgba(100, 108, 255, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float 20s ease-in-out infinite;
+}
+
+.ambient-particle--1 {
+  width: 300px;
+  height: 300px;
+  top: -50px;
+  left: -50px;
+  animation-delay: 0s;
+}
+
+.ambient-particle--2 {
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  right: -50px;
+  animation-delay: -7s;
+}
+
+.ambient-particle--3 {
+  width: 250px;
+  height: 250px;
+  bottom: -50px;
+  left: 30%;
+  animation-delay: -14s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translate(30px, -30px) scale(1.1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.9);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translate(40px, 10px) scale(1.05);
+    opacity: 0.35;
+  }
+}
