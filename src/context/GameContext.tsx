@@ -69,10 +69,11 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         return state
       }
 
-      // Calculate current round (questionsRemaining starts at 2)
-      // After Q1: questionsRemaining = 1, round = 1
-      // After Q2: questionsRemaining = 0, round = 2
-      const currentRound = 2 - state.questionsRemaining
+      // Calculate current round (questionsRemaining starts at 3)
+      // After Q1: questionsRemaining = 2, round = 1
+      // After Q2: questionsRemaining = 1, round = 2
+      // After Q3: questionsRemaining = 0, round = 3
+      const currentRound = 3 - state.questionsRemaining
 
       return {
         ...state,
@@ -204,6 +205,17 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...state,
         paradigmShift: action.payload,
+      }
+    }
+
+    // ----------------------------------------------------------------------
+    // Phase 4: Polish & Feel Actions
+    // ----------------------------------------------------------------------
+
+    case 'SET_TENSION': {
+      return {
+        ...state,
+        tensionLevel: action.payload,
       }
     }
 
@@ -417,6 +429,15 @@ export const gameActions = {
   setParadigmShift: (paradigmShift: NonNullable<GameState['paradigmShift']>): GameAction => ({
     type: 'SET_PARADIGM_SHIFT',
     payload: paradigmShift,
+  }),
+
+  // ----------------------------------------------------------------------
+  // Phase 4: Polish & Feel Action Creators
+  // ----------------------------------------------------------------------
+
+  setTension: (tensionLevel: number): GameAction => ({
+    type: 'SET_TENSION',
+    payload: tensionLevel,
   }),
 }
 

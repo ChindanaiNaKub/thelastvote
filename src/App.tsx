@@ -15,6 +15,7 @@ import { VotingPhase } from './components/screens/VotingPhase'
 import { ConsequencePhase } from './components/screens/ConsequencePhase'
 import { CreditsScreen } from './components/screens/CreditsScreen'
 import { AppFooter } from './components/ui/AppFooter'
+import { useTension } from './hooks/useTension'
 import './App.css'
 
 // ============================================================================
@@ -23,6 +24,9 @@ import './App.css'
 
 function AppContent() {
   const { state } = useGame()
+
+  // Phase 4: Tension system - automatically calculates and applies tension effects
+  useTension()
 
   // Scroll to top when phase changes
   useEffect(() => {

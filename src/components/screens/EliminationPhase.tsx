@@ -33,7 +33,15 @@ export function EliminationPhase() {
   // Calculate current round (questionsRemaining starts at 3)
   // After Q1: questionsRemaining = 2, round = 1
   // After Q2: questionsRemaining = 1, round = 2
+  // After Q3: questionsRemaining = 0, round = 3
   const currentRound = 3 - state.questionsRemaining
+
+  // Count how many questions have been asked
+  const questionsAsked = state.conversationHistory.filter(entry => entry.type === 'question').length
+  const currentEliminationCount = state.eliminatedCandidateIds.length
+
+  // Check if elimination is already done for this round
+  const isEliminationDone = questionsAsked === currentEliminationCount
 
   const handleEliminate = (candidateId: string) => {
     const candidate = state.candidates.find((c) => c.id === candidateId)
@@ -54,6 +62,43 @@ export function EliminationPhase() {
     // After Q3 (questionsRemaining=0): go to voting
     const nextPhase = state.questionsRemaining > 0 ? 'questioning' : 'voting'
     dispatch(gameActions.setPhase(nextPhase))
+  }
+
+  const handleContinue = () => {
+    // Go to next phase (questioning or voting)
+    const nextPhase = state.questionsRemaining > 0 ? 'questioning' : 'voting'
+    dispatch(gameActions.setPhase(nextPhase))
+  }
+
+  // If elimination is done, show continue screen instead of elimination candidates
+  if (isEliminationDone) {
+    return (
+      <div className="screen elimination-screen">
+        <div className="elimination-header">
+          <h2>คัดคนออก</h2>
+          <div className="round-badge">รอบที่ {currentRound}</div>
+          <p className="candidates-count">
+            เหลือ <strong>{activeCandidates.length}</strong> คน
+          </p>
+        </div>
+
+        <div className="elimination-complete">
+          <p className="elimination-complete__text">
+            ✅ คัดคนออกครบรอบที่ {currentRound} แล้ว
+          </p>
+          <p className="elimination-complete__subtext">
+            คุณได้คัดคนออก {currentEliminationCount} คนแล้ว
+          </p>
+        </div>
+
+        <button
+          onClick={handleContinue}
+          className="btn-primary elimination-continue-btn"
+        >
+          ดำเนินการต่อ →
+        </button>
+      </div>
+    )
   }
 
   return (

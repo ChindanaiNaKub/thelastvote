@@ -177,6 +177,48 @@
   font-weight: 500;
 }
 
+/* ============================================================================
+ * Elimination Complete Screen (Phase 4 fix)
+ * ============================================================================ */
+
+.elimination-complete {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border-radius: 16px;
+  border: 2px solid #10b981;
+  margin: 2rem 0;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+}
+
+.elimination-complete__text {
+  font-size: 1.5rem;
+  color: #065f46;
+  margin: 0 0 1rem 0;
+  font-weight: 700;
+}
+
+.elimination-complete__subtext {
+  font-size: 1.125rem;
+  color: #047857;
+  margin: 0;
+  font-weight: 500;
+}
+
+.elimination-continue-btn {
+  margin-top: 2rem;
+  padding: 1rem 3rem;
+  font-size: 1.25rem;
+  min-width: 200px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: none;
+}
+
+.elimination-continue-btn:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+  transform: scale(1.05);
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .elimination-header h2 {
@@ -190,5 +232,18 @@
 
   .candidate-portrait {
     font-size: 3rem;
+  }
+
+  .elimination-complete__text {
+    font-size: 1.25rem;
+  }
+
+  .elimination-complete__subtext {
+    font-size: 1rem;
+  }
+
+  .elimination-continue-btn {
+    font-size: 1.125rem;
+    padding: 0.875rem 2rem;
   }
 }

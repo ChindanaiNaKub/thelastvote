@@ -1,14 +1,110 @@
 /* ============================================================================
    ScreenTransition Component Styles
+   Phase 4: Enhanced with phase-specific transitions
    ============================================================================ */
 
 .screen-transition {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  transition: opacity var(--transition-duration, 0.4s) ease-out,
+              transform var(--transition-duration, 0.4s) ease-out;
 }
 
 .screen-transition--visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ============================================================================
+   Phase 4: Phase-Specific Transition Animations
+   ============================================================================ */
+
+/* Fade - simple fade in/out (introduction, questioning, credits) */
+.screen-transition--fade {
+  transform: none;
+}
+
+/* Slide Up - content slides up from below (roster) */
+.screen-transition--slide-up {
+  transform: translateY(20px);
+}
+
+/* Shake Fade - screen shake + fade for elimination */
+.screen-transition--shake-fade {
+  transform: translateY(20px) translateX(0);
+  transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.screen-transition--shake-fade.screen-transition--visible {
+  animation: shakeFade 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes shakeFade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) translateX(0);
+  }
+  20% {
+    opacity: 0.5;
+    transform: translateY(10px) translateX(-5px);
+  }
+  40% {
+    opacity: 0.7;
+    transform: translateY(5px) translateX(3px);
+  }
+  60% {
+    opacity: 0.85;
+    transform: translateY(2px) translateX(-2px);
+  }
+  80% {
+    opacity: 0.95;
+    transform: translateY(0px) translateX(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+  }
+}
+
+/* Dramatic Fade - slow fade with darkening vignette for voting */
+.screen-transition--dramatic-fade {
+  transform: scale(0.98);
+  filter: brightness(0.9);
+  transition: opacity 0.8s ease-out,
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              filter 0.8s ease-out;
+}
+
+.screen-transition--dramatic-fade.screen-transition--visible {
+  opacity: 1;
+  transform: scale(1);
+  filter: brightness(1);
+}
+
+/* Slow Zoom - gentle zoom + fade for consequence reveal */
+.screen-transition--slow-zoom {
+  transform: scale(0.95);
+  transition: opacity 1s ease-out,
+              transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.screen-transition--slow-zoom.screen-transition--visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .screen-transition--shake-fade,
+  .screen-transition--dramatic-fade,
+  .screen-transition--slow-zoom {
+    transition: opacity 0.3s ease-out;
+    transform: none;
+    filter: none;
+  }
+
+  .screen-transition--shake-fade.screen-transition--visible,
+  .screen-transition--dramatic-fade.screen-transition--visible,
+  .screen-transition--slow-zoom.screen-transition--visible {
+    animation: none;
+  }
 }

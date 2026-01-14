@@ -352,3 +352,199 @@ button:disabled:hover {
     opacity: 0.6;
   }
 }
+
+/* ============================================================================
+   Phase 4: Tension System Animations
+   ============================================================================ */
+
+/* Subtle shake for high tension */
+@keyframes subtleShake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-1px);
+  }
+  75% {
+    transform: translateX(1px);
+  }
+}
+
+/* Heartbeat effect for critical tension */
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1.01);
+  }
+}
+
+/* Border flicker for critical tension */
+@keyframes borderFlicker {
+  0%, 90%, 100% {
+    border-color: var(--clinical-border-medium);
+  }
+  95% {
+    border-color: var(--clinical-alert-primary);
+  }
+}
+
+/* Desaturation effect for high tension */
+@keyframes desaturate {
+  0% {
+    filter: saturate(1);
+  }
+  100% {
+    filter: saturate(0.7);
+  }
+}
+
+/* ============================================================================
+   Phase 4: Tension State Styles
+   ============================================================================ */
+
+/* Low tension (0-30): Normal state, subtle breathing animation */
+body[data-tension="low"] {
+  /* Minimal effects, baseline state */
+}
+
+/* Medium tension (31-60): Subtle vignette tightens, particles speed up */
+body[data-tension="medium"] {
+  /* Tighten vignette effect */
+}
+body[data-tension="medium"] .App::before {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(138, 159, 175, 0.12) 100%
+  );
+}
+
+/* High tension (61-80): Color desaturation, subtle shake on responses */
+body[data-tension="high"] {
+  /* Desaturate colors for unease */
+}
+body[data-tension="high"] .App {
+  filter: saturate(0.85);
+  animation: subtleShake 3s ease-in-out infinite;
+}
+body[data-tension="high"] .App::before {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(138, 159, 175, 0.18) 100%
+  );
+}
+
+/* Critical tension (81-100): Heavy vignette, rapid pulse, border flicker */
+body[data-tension="critical"] {
+  /* Maximum tension effects */
+}
+body[data-tension="critical"] .App {
+  filter: saturate(0.7);
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+body[data-tension="critical"] .App::before {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(199, 62, 58, 0.15) 100%
+  );
+}
+body[data-tension="critical"] * {
+  animation: borderFlicker 2s ease-in-out infinite;
+}
+
+/* Apply border flicker only to elements with borders */
+body[data-tension="critical"] button,
+body[data-tension="critical"] .candidate-card,
+body[data-tension="critical"] .dialogue-entry {
+  animation: borderFlicker 2s ease-in-out infinite;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  body[data-tension="high"] .App,
+  body[data-tension="critical"] .App,
+  body[data-tension="critical"] button,
+  body[data-tension="critical"] .candidate-card,
+  body[data-tension="critical"] .dialogue-entry {
+    animation: none;
+  }
+}
+
+/* ============================================================================
+   Phase 4: Tension-Responsive Ambient Particles
+   ============================================================================ */
+
+/* Medium tension (31-60): Speed up particles to 10s */
+body[data-tension="medium"] .ambient-particle {
+  animation-duration: 10s;
+}
+
+/* High tension (61-80): Speed up particles to 5s, add erratic movement */
+body[data-tension="high"] .ambient-particle {
+  animation-duration: 5s;
+  animation-name: floatErratic;
+}
+
+/* Critical tension (81-100): Speed up particles to 3s, more erratic */
+body[data-tension="critical"] .ambient-particle {
+  animation-duration: 3s;
+  animation-name: floatErraticFast;
+}
+
+/* Erratic float animation for high tension */
+@keyframes floatErratic {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translate(50px, -40px) scale(1.15);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-30px, 30px) scale(0.85);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translate(60px, 15px) scale(1.1);
+    opacity: 0.35;
+  }
+}
+
+/* Fast erratic float for critical tension */
+@keyframes floatErraticFast {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  20% {
+    transform: translate(60px, -50px) scale(1.2);
+    opacity: 0.5;
+  }
+  40% {
+    transform: translate(-40px, 40px) scale(0.8);
+    opacity: 0.4;
+  }
+  60% {
+    transform: translate(70px, 20px) scale(1.15);
+    opacity: 0.35;
+  }
+  80% {
+    transform: translate(-30px, -30px) scale(0.95);
+    opacity: 0.45;
+  }
+}
+
+/* Respect reduced motion for particles */
+@media (prefers-reduced-motion: reduce) {
+  body[data-tension="medium"] .ambient-particle,
+  body[data-tension="high"] .ambient-particle,
+  body[data-tension="critical"] .ambient-particle {
+    animation-duration: 20s;
+    animation-name: float;
+  }
+}

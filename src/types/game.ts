@@ -328,7 +328,7 @@ export interface GameState {
   // Phase Management
   // ------------------------------------------------------------------
   phase: GamePhase // Current game phase
-  questionsRemaining: number // Starts at 2, decrements to 0 (reduced from 3 for elimination mechanic)
+  questionsRemaining: number // Starts at 3, decrements to 0
 
   // ------------------------------------------------------------------
   // Conversation
@@ -361,6 +361,7 @@ export interface GameState {
   // ------------------------------------------------------------------
   isProcessing: boolean // Loading state for AI calls
   selectedCandidate: string | null // For targeting questions
+  tensionLevel: number // 0-100, overall game tension for visual effects (Phase 4)
 
   // ------------------------------------------------------------------
   // Plot Twist System Tracking
@@ -389,6 +390,7 @@ export type GameAction =
   | { type: 'SET_PROCESSING'; payload: boolean }
   | { type: 'SELECT_CANDIDATE'; payload: string | null }
   | { type: 'RESET_GAME' }
+  | { type: 'SET_TENSION'; payload: number } // Set overall tension level (Phase 4)
   // Plot Twist System Actions
   | { type: 'TRACK_TOPIC'; payload: TopicEntry } // Track question topics
   | { type: 'UPDATE_PRESSURE'; payload: { candidateId: string; pressureState: PressureState } } // Update candidate pressure
@@ -403,7 +405,7 @@ export type GameAction =
  */
 export const initialGameState: GameState = {
   phase: 'introduction',
-  questionsRemaining: 2, // Start with 2 questions (elimination mechanic reduces from 3)
+  questionsRemaining: 3, // Start with 3 questions (original design)
   conversationHistory: [],
   candidates: [], // Populated from data/candidates.ts
   eliminatedCandidateIds: [], // No eliminations at start
@@ -412,6 +414,7 @@ export const initialGameState: GameState = {
   consequences: null,
   isProcessing: false,
   selectedCandidate: null,
+  tensionLevel: 0, // Start with no tension (Phase 4)
   // Plot Twist System Initialization
   topicHistory: [],
   pressureStates: {}, // Will be initialized with candidates from data/candidates.ts

@@ -2,12 +2,14 @@
 // Consequence Phase Screen
 // ============================================================================
 // Reveals the aftermath of the player's choice. Creates doubt and regret.
+// Phase 4: Enhanced with dynamic timing based on impact level.
 // ============================================================================
 
 import './ConsequencePhase.css'
 import { useState, useEffect } from 'react'
 import { useGame } from '../../context/GameContext'
 import { gameActions } from '../../context/GameContext'
+import { getPhaseTiming } from '../../lib/consequenceTiming'
 import './ConsequencePhase.css'
 
 export function ConsequencePhase() {
@@ -17,14 +19,23 @@ export function ConsequencePhase() {
   const chosenCandidate = state.candidates.find(c => c.id === state.playerVote)
   const consequences = state.consequences
 
-  // Start with reveal phase 0 (chosen candidate display)
-  // Auto-advance to phase 1 after a brief delay
+  // Phase 4: Calculate dynamic timing for initial reveal
   useEffect(() => {
+    if (!consequences) return
+
+    const timing = getPhaseTiming(consequences, 1)
     const timer = setTimeout(() => {
       setRevealPhase(1)
-    }, 1500)
+    }, timing.delay)
+
     return () => clearTimeout(timer)
-  }, [])
+  }, [consequences])
+
+  // Phase 4: Get timing for each reveal phase
+  const getTimingForPhase = (phase: 1 | 2 | 3 | 4) => {
+    if (!consequences) return { delay: 1500, animation: 'fade' as const }
+    return getPhaseTiming(consequences, phase)
+  }
 
   const handlePlayAgain = () => {
     dispatch(gameActions.resetGame())
@@ -39,6 +50,12 @@ export function ConsequencePhase() {
         <p className="placeholder">กำลังคำนวณผลลัพธ์...</p>
       </div>
     )
+  }
+
+  // Phase 4: Get animation class for each phase
+  const getAnimationClass = (phase: number) => {
+    const timing = getTimingForPhase(phase as 1 | 2 | 3 | 4)
+    return `consequence-section--${timing.animation}`
   }
 
   return (
@@ -56,7 +73,7 @@ export function ConsequencePhase() {
 
       {/* Phase 1: Immediate Aftermath */}
       {revealPhase >= 1 && (
-        <div className="consequence-section">
+        <div className={`consequence-section ${getAnimationClass(1)}`}>
           <h3 className="consequence-section__title">
             ผลลัพธ์ทันที
             <span className="consequence-section__timeframe">
@@ -88,7 +105,7 @@ export function ConsequencePhase() {
 
       {/* Phase 2: Hidden Truths */}
       {revealPhase >= 2 && (
-        <div className="consequence-section">
+        <div className={`consequence-section ${getAnimationClass(2)}`}>
           <h3 className="consequence-section__title">ความจริงที่ซ่อนอยู่</h3>
           <p className="consequence-section__content secret">
             {consequences.hiddenTruths.chosenCandidateSecret}
@@ -122,7 +139,7 @@ export function ConsequencePhase() {
 
       {/* Phase 3: Long-term Consequences */}
       {revealPhase >= 3 && (
-        <div className="consequence-section">
+        <div className={`consequence-section ${getAnimationClass(3)}`}>
           <h3 className="consequence-section__title">
             ผลกระทบในระยะยาว
             <span className="consequence-section__timeframe">
@@ -160,7 +177,7 @@ export function ConsequencePhase() {
       {/* Phase 4: Alternative Paths + Play Again */}
       {revealPhase >= 4 && (
         <>
-          <div className="consequence-section consequence-section--alternatives">
+          <div className={`consequence-section consequence-section--alternatives ${getAnimationClass(4)}`}>
             <h3 className="consequence-section__title">หากคุณเลือกคนอื่น...</h3>
             {consequences.alternativePaths.map((path) => {
               const candidate = state.candidates.find(c => c.id === path.candidateId)

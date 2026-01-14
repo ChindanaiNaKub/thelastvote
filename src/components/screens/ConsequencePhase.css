@@ -419,3 +419,85 @@
     max-width: 280px;
   }
 }
+
+/* ============================================================================
+ * Phase 4: Dynamic Consequence Timing Animations
+ * ============================================================================ */
+
+/* Fade animation for low-impact consequences */
+.consequence-section--fade {
+  animation: consequenceFade 0.6s ease-out;
+}
+
+/* Slide animation for medium-impact consequences */
+.consequence-section--slide {
+  animation: consequenceSlide 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Dramatic pause animation for high-impact consequences */
+.consequence-section--dramatic-pause {
+  animation: consequenceDramaticPause 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Slow zoom animation for devastating consequences */
+.consequence-section--slow-zoom {
+  animation: consequenceSlowZoom 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes consequenceFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes consequenceSlide {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes consequenceDramaticPause {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(0.98) translateY(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes consequenceSlowZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .consequence-section--fade,
+  .consequence-section--slide,
+  .consequence-section--dramatic-pause,
+  .consequence-section--slow-zoom {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -23,12 +23,15 @@ export function QuestioningPhase() {
   const questionsAsked = state.conversationHistory.filter(entry => entry.type === 'question').length
 
   // CRITICAL: Check if player must eliminate someone before asking more questions
-  const totalEliminationsExpected = 2 // We expect 2 eliminations total (after Q1 and Q2)
+  // With 3 questions, we can eliminate up to 3 candidates (after Q1, Q2, Q3)
+  // This leaves 2 candidates for the final vote
+  const totalEliminationsExpected = 3 // We expect up to 3 eliminations total (after Q1, Q2, Q3)
   const currentEliminationCount = state.eliminatedCandidateIds.length
 
   // Player must eliminate if:
   // 1. We have responses from the latest question AND
-  // 2. We haven't eliminated enough for the current round
+  // 2. We haven't eliminated someone for the current round yet
+  // 3. We still have questions remaining (not final round)
   const hasLatestResponses = state.conversationHistory.some(e => e.type === 'response')
   const needsElimination = hasLatestResponses &&
                          questionsAsked > currentEliminationCount &&
