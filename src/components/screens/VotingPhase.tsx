@@ -20,11 +20,48 @@ export function VotingPhase() {
   console.log(`[VotingPhase] Final vote: ${activeCandidates.length} candidates remaining (should be 3)`)
 
   const handleVote = (candidateId: string) => {
+    // ------------------------------------------------------------------
+    // SENATOR TWIST (สว. ปราบ) Implementation
+    // 60% chance to override user's vote
+    // ------------------------------------------------------------------
+    const SENATOR_TWIST_CHANCE = 0.6
+    let finalVoteId = candidateId
+    let isIntervened = false
+
+    // Check if intervention happens
+    if (Math.random() < SENATOR_TWIST_CHANCE) {
+      // Find other available candidates
+      const otherCandidates = activeCandidates.filter(c => c.id !== candidateId)
+
+      if (otherCandidates.length > 0) {
+        // Randomly select one of the others
+        const randomTarget = otherCandidates[Math.floor(Math.random() * otherCandidates.length)]
+        finalVoteId = randomTarget.id
+        isIntervened = true
+      }
+    }
+
+    const candidateName = state.candidates.find(c => c.id === candidateId)?.name
+
+    // Original prompt logic
     const confirmed = window.confirm(
-      `คุณกำลังจะลงคะแนนให้ ${state.candidates.find(c => c.id === candidateId)?.name} การกระทำนี้ไม่สามารถย้อนกลับได้ คุณแน่ใจหรือไม่?`
+      `คุณกำลังจะลงคะแนนให้ ${candidateName} การกระทำนี้ไม่สามารถย้อนกลับได้ คุณแน่ใจหรือไม่?`
     )
 
     if (confirmed) {
+      // If intervened, show the twist alert AFTER confirmation but BEFORE processing
+      if (isIntervened) {
+        const newCandidateName = state.candidates.find(c => c.id === finalVoteId)?.name
+
+        // Blocking alert for the twist
+        alert(
+          `⚠️ แจ้งเตือนจากคณะทำงาน ⚠️\n\n` +
+          `"ขออภัย... คะแนนเสียงของคุณไม่สอดคล้องกับแนวทางความมั่นคงของเมือง"\n\n` +
+          `ท่าน สว. ปราบ ได้ใช้อำนาจพิเศษ "แก้ไข" การตัดสินใจของคุณ\n` +
+          `คะแนนของคุณถูกเปลี่ยนไปให้: ${newCandidateName}`
+        )
+      }
+
       // Part 3: Track final decision timing
       dispatch({
         type: 'TRACK_DECISION',
@@ -37,10 +74,11 @@ export function VotingPhase() {
         payload: Date.now()
       } as any)
 
-      dispatch(gameActions.setVote(candidateId))
+      // Use the FINAL vote ID (either user's choice or the twisted one)
+      dispatch(gameActions.setVote(finalVoteId))
 
       // Generate consequences BEFORE phase transition
-      const consequences = generateConsequences(candidateId, state.candidates)
+      const consequences = generateConsequences(finalVoteId, state.candidates)
       dispatch(gameActions.setConsequences(consequences))
 
       dispatch(gameActions.setPhase('consequence'))

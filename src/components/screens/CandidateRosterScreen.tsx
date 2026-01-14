@@ -31,6 +31,38 @@ export function CandidateRosterScreen() {
             variant="compact"
           />
         ))}
+
+        {/* Hidden Senator Card (Easter Egg / Introduction) */}
+        <div
+          className="candidate-card candidate-card--compact candidate-card--hidden-senator"
+          style={{
+            opacity: 0.7,
+            filter: 'grayscale(100%) blur(2px)',
+            pointerEvents: 'none',
+            position: 'relative'
+          }}
+        >
+          <div className="candidate-card__portrait">🤴</div>
+          <h3 className="candidate-card__name">ท่าน สว. ปราบ</h3>
+          <p className="candidate-card__personality">
+            ผู้มีอำนาจเหนือกว่า... คอยจับตาดูอยู่
+          </p>
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%) rotate(-15deg)',
+            border: '4px solid red',
+            color: 'red',
+            padding: '10px',
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            opacity: 0.6,
+            textTransform: 'uppercase'
+          }}>
+            LOCKED
+          </div>
+        </div>
       </div>
 
       <button onClick={handleContinue} className="btn-primary">
