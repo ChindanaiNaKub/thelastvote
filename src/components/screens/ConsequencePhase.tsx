@@ -3,6 +3,7 @@
 // ============================================================================
 // Reveals the aftermath of the player's choice. Creates doubt and regret.
 // Phase 4: Enhanced with dynamic timing based on impact level.
+// Part 4: Added Phase 5 Mastermind Reveal (Prab as game creator).
 // ============================================================================
 
 import './ConsequencePhase.css'
@@ -10,6 +11,8 @@ import { useState, useEffect } from 'react'
 import { useGame } from '../../context/GameContext'
 import { gameActions } from '../../context/GameContext'
 import { getPhaseTiming } from '../../lib/consequenceTiming'
+import { MastermindReveal } from '../ui/MastermindReveal'
+import '../ui/MastermindReveal.css'
 import './ConsequencePhase.css'
 
 export function ConsequencePhase() {
@@ -175,7 +178,7 @@ export function ConsequencePhase() {
       )}
 
       {/* Phase 4: Alternative Paths + Play Again */}
-      {revealPhase >= 4 && (
+      {revealPhase >= 4 && revealPhase < 5 && (
         <>
           <div className={`consequence-section consequence-section--alternatives ${getAnimationClass(4)}`}>
             <h3 className="consequence-section__title">หากคุณเลือกคนอื่น...</h3>
@@ -202,11 +205,26 @@ export function ConsequencePhase() {
           </div>
 
           <div className="consequence-screen__actions">
-            <button onClick={handlePlayAgain} className="btn-primary">
+            <button
+              onClick={() => setRevealPhase(5)}
+              className="btn-primary"
+              style={{ marginRight: 'var(--clinical-space-md)' }}
+            >
+              ดูความจริงสุดท้าย
+            </button>
+            <button onClick={handlePlayAgain} className="btn-secondary">
               เล่นอีกครั้ง
             </button>
           </div>
         </>
+      )}
+
+      {/* Part 4: Phase 5 - Mastermind Reveal */}
+      {revealPhase >= 5 && (
+        <MastermindReveal
+          playerStats={state.playerStats}
+          onContinue={handlePlayAgain}
+        />
       )}
     </div>
   )

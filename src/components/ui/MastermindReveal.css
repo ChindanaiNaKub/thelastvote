@@ -1,0 +1,349 @@
+/* ============================================================================
+ * Mastermind Reveal - Cinematic Plot Twist Styles
+ * ============================================================================
+ * Dramatic fourth-wall-breaking reveal with atmospheric effects.
+ * Creates tension, mystery, and a memorable conclusion.
+ * ============================================================================ */
+
+.mastermind-reveal {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--clinical-space-2xl) var(--clinical-space-xl);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(15, 23, 42, 0.98) 50%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated background particles */
+.mastermind-reveal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(245, 158, 11, 0.08) 0%, transparent 50%);
+  animation: mastermindPulse 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes mastermindPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* Dramatic dividers */
+.mastermind-reveal__divider {
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--clinical-accent-cyan) 50%,
+    transparent 100%
+  );
+  margin: var(--clinical-space-xl) 0;
+  opacity: 0;
+  animation: dividerFadeIn 1s ease-out forwards;
+}
+
+.mastermind-reveal__divider--bottom {
+  animation-delay: 0.5s;
+}
+
+@keyframes dividerFadeIn {
+  from {
+    opacity: 0;
+    transform: scaleX(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* Main content container */
+.mastermind-reveal__content {
+  max-width: 800px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.mastermind-reveal__content.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Title */
+.mastermind-reveal__title {
+  font-size: var(--clinical-size-3xl);
+  font-weight: 800;
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--clinical-accent-cyan);
+  text-shadow:
+    0 0 20px rgba(6, 182, 212, 0.5),
+    0 0 40px rgba(6, 182, 212, 0.3);
+  margin: 0 0 var(--clinical-space-2xl) 0;
+  animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+  0%, 100% {
+    text-shadow:
+      0 0 20px rgba(6, 182, 212, 0.5),
+      0 0 40px rgba(6, 182, 212, 0.3);
+  }
+  50% {
+    text-shadow:
+      0 0 30px rgba(6, 182, 212, 0.8),
+      0 0 60px rgba(6, 182, 212, 0.5);
+  }
+}
+
+/* Main reveal text */
+.mastermind-reveal__text {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: var(--clinical-radius-lg);
+  padding: var(--clinical-space-2xl);
+  margin-bottom: var(--clinical-space-xl);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 0 30px rgba(0, 0, 0, 0.5),
+    inset 0 0 60px rgba(6, 182, 212, 0.05);
+}
+
+.mastermind-reveal__paragraph {
+  font-size: var(--clinical-size-lg);
+  line-height: var(--clinical-leading-relaxed);
+  color: var(--clinical-text-primary);
+  font-family: var(--clinical-font-body);
+  margin: 0 0 var(--clinical-space-lg) 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.mastermind-reveal__paragraph:last-child {
+  margin-bottom: 0;
+  font-size: var(--clinical-size-xl);
+  font-weight: 500;
+  color: var(--clinical-accent-cyan);
+}
+
+/* Suspicion acknowledgment box */
+.mastermind-reveal__suspicion {
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.15) 0%,
+    rgba(245, 158, 11, 0.05) 100%
+  );
+  border: 2px solid rgba(245, 158, 11, 0.4);
+  border-left: 4px solid #f59e0b;
+  border-radius: var(--clinical-radius-md);
+  padding: var(--clinical-space-lg) var(--clinical-space-xl);
+  margin: var(--clinical-space-xl) 0;
+  text-align: left;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.8s ease-out 0.5s;
+}
+
+.mastermind-reveal__suspicion.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.mastermind-reveal__suspicion-label {
+  font-size: var(--clinical-size-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #f59e0b;
+  margin-bottom: var(--clinical-space-sm);
+  font-family: var(--clinical-font-display);
+}
+
+.mastermind-reveal__suspicion-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mastermind-reveal__suspicion-item {
+  font-size: var(--clinical-size-base);
+  color: var(--clinical-text-secondary);
+  padding: var(--clinical-space-xs) 0;
+  line-height: var(--clinical-leading-relaxed);
+}
+
+/* Personal message from Prab */
+.mastermind-reveal__message {
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.15) 0%,
+    rgba(139, 92, 246, 0.05) 100%
+  );
+  border: 2px solid rgba(139, 92, 246, 0.4);
+  border-radius: var(--clinical-radius-lg);
+  padding: var(--clinical-space-xl) var(--clinical-space-2xl);
+  margin: var(--clinical-space-xl) 0;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.mastermind-reveal__message.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.mastermind-reveal__message-title {
+  font-size: var(--clinical-size-xl);
+  font-weight: 700;
+  color: #8B5CF6;
+  margin-bottom: var(--clinical-space-md);
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mastermind-reveal__message-text {
+  font-size: var(--clinical-size-base);
+  line-height: var(--clinical-leading-relaxed);
+  color: var(--clinical-text-primary);
+  font-style: italic;
+  margin-bottom: var(--clinical-space-lg);
+}
+
+.mastermind-reveal__archetype {
+  font-size: var(--clinical-size-sm);
+  color: var(--clinical-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Signature */
+.mastermind-reveal__signature {
+  font-size: var(--clinical-size-md);
+  color: var(--clinical-accent-cyan);
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.15em;
+  margin-top: var(--clinical-space-xl);
+  opacity: 0.8;
+  font-style: italic;
+}
+
+/* Continue button */
+.mastermind-reveal__action {
+  margin-top: var(--clinical-space-2xl);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out 4.5s forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mastermind-reveal__continue-btn {
+  min-width: 200px;
+  padding: var(--clinical-space-md) var(--clinical-space-2xl);
+  font-size: var(--clinical-size-base);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: linear-gradient(
+    135deg,
+    var(--clinical-accent-cyan) 0%,
+    #06b6d4 100%
+  );
+  border: none;
+  color: var(--clinical-bg-deep);
+  border-radius: var(--clinical-radius-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 4px 12px rgba(6, 182, 212, 0.4),
+    0 0 20px rgba(6, 182, 212, 0.2);
+}
+
+.mastermind-reveal__continue-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 20px rgba(6, 182, 212, 0.6),
+    0 0 30px rgba(6, 182, 212, 0.4);
+}
+
+.mastermind-reveal__continue-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mastermind-reveal {
+    padding: var(--clinical-space-lg) var(--clinical-space-md);
+  }
+
+  .mastermind-reveal__title {
+    font-size: var(--clinical-size-xl);
+    letter-spacing: 0.15em;
+  }
+
+  .mastermind-reveal__text {
+    padding: var(--clinical-space-lg);
+  }
+
+  .mastermind-reveal__paragraph {
+    font-size: var(--clinical-size-base);
+  }
+
+  .mastermind-reveal__message {
+    padding: var(--clinical-space-lg);
+  }
+
+  .mastermind-reveal__divider {
+    width: 80%;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mastermind-reveal::before {
+    animation: none;
+  }
+
+  .mastermind-reveal__content,
+  .mastermind-reveal__suspicion,
+  .mastermind-reveal__message,
+  .mastermind-reveal__action {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
+
+  .mastermind-reveal__title {
+    animation: none;
+  }
+}

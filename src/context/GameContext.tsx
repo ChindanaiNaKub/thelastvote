@@ -75,6 +75,28 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       // After Q3: questionsRemaining = 0, round = 3
       const currentRound = 3 - state.questionsRemaining
 
+      // Track if eliminated candidate was ally or rival (Part 3 stat tracking)
+      const eliminatedCandidate = state.candidates.find(c => c.id === candidateId)
+      let newEliminatedAllies = [...state.playerStats.eliminatedAllies]
+      let newEliminatedRivals = [...state.playerStats.eliminatedRivals]
+
+      if (eliminatedCandidate?.enhancedRelationships) {
+        for (const [otherId, rel] of Object.entries(eliminatedCandidate.enhancedRelationships)) {
+          if (otherId === state.playerVote) {
+            // This is relative to who player voted for
+            if (rel.type === 'best_friend' || rel.type === 'ally' || rel.type === 'secret_friend') {
+              if (!newEliminatedAllies.includes(candidateId)) {
+                newEliminatedAllies = [...newEliminatedAllies, candidateId]
+              }
+            } else if (rel.type === 'enemy' || rel.type === 'rival') {
+              if (!newEliminatedRivals.includes(candidateId)) {
+                newEliminatedRivals = [...newEliminatedRivals, candidateId]
+              }
+            }
+          }
+        }
+      }
+
       return {
         ...state,
         eliminatedCandidateIds: [...state.eliminatedCandidateIds, candidateId],
@@ -99,6 +121,11 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
               }
             : c
         ),
+        playerStats: {
+          ...state.playerStats,
+          eliminatedAllies: newEliminatedAllies,
+          eliminatedRivals: newEliminatedRivals,
+        },
       }
     }
 
@@ -216,6 +243,147 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...state,
         tensionLevel: action.payload,
+      }
+    }
+
+    // ----------------------------------------------------------------------
+    // Part 3: Player Stat Tracking Actions
+    // ----------------------------------------------------------------------
+
+    case 'TRACK_QUESTION': {
+      const { candidateId, topics } = action.payload
+
+      // Update question counts
+      const newQuestionsPerCandidate = {
+        ...state.playerStats.questionsPerCandidate,
+        [candidateId]: (state.playerStats.questionsPerCandidate[candidateId] || 0) + 1,
+      }
+
+      // Update topic counts
+      const newTopicsAsked = { ...state.playerStats.topicsAsked }
+      for (const topic of topics) {
+        newTopicsAsked[topic] = (newTopicsAsked[topic] || 0) + 1
+      }
+
+      // Determine favorite candidate
+      let newFavoriteCandidate = state.playerStats.favoriteCandidate
+      const maxQuestions = Math.max(...Object.values(newQuestionsPerCandidate))
+      const favorites = Object.entries(newQuestionsPerCandidate)
+        .filter(([_, count]) => count === maxQuestions)
+        .map(([id, _]) => id)
+
+      if (favorites.length === 1) {
+        newFavoriteCandidate = favorites[0]
+      }
+
+      // Determine ignored candidates (never questioned)
+      const newIgnoredCandidates = state.candidates
+        .filter(c => !newQuestionsPerCandidate[c.id] && !c.isEliminated)
+        .map(c => c.id)
+
+      return {
+        ...state,
+        playerStats: {
+          ...state.playerStats,
+          totalQuestionsAsked: state.playerStats.totalQuestionsAsked + 1,
+          questionsPerCandidate: newQuestionsPerCandidate,
+          topicsAsked: newTopicsAsked,
+          favoriteCandidate: newFavoriteCandidate,
+          ignoredCandidates: newIgnoredCandidates,
+        },
+      }
+    }
+
+    case 'TRACK_AGGRESSION': {
+      const { candidateId } = action.payload
+
+      // Add to targeted list if not already there
+      const newCandidatesTargeted = state.playerStats.candidatesTargeted.includes(candidateId)
+        ? state.playerStats.candidatesTargeted
+        : [...state.playerStats.candidatesTargeted, candidateId]
+
+      return {
+        ...state,
+        playerStats: {
+          ...state.playerStats,
+          candidatesTargeted: newCandidatesTargeted,
+          aggressiveQuestions: state.playerStats.aggressiveQuestions + 1,
+        },
+      }
+    }
+
+    case 'TRACK_DECISION': {
+      const { timestamp } = action.payload
+
+      // Calculate decision time from previous timestamp
+      const newTimestamps = [...state.playerStats.decisionTimestamps, timestamp]
+      let newAverageTime = state.playerStats.averageDecisionTime
+
+      if (newTimestamps.length > 1) {
+        const times: number[] = []
+        for (let i = 1; i < newTimestamps.length; i++) {
+          times.push(newTimestamps[i] - newTimestamps[i - 1])
+        }
+        newAverageTime = times.reduce((a, b) => a + b, 0) / times.length / 1000 // Convert to seconds
+      }
+
+      // Count rushed decisions (< 5 seconds)
+      let newRushedDecisions = state.playerStats.rushedDecisions
+      if (newTimestamps.length > 1) {
+        const lastDecisionTime = (timestamp - newTimestamps[newTimestamps.length - 2]) / 1000
+        if (lastDecisionTime < 5) {
+          newRushedDecisions++
+        }
+      }
+
+      return {
+        ...state,
+        playerStats: {
+          ...state.playerStats,
+          decisionTimestamps: newTimestamps,
+          averageDecisionTime: newAverageTime,
+          rushedDecisions: newRushedDecisions,
+        },
+      }
+    }
+
+    case 'TRACK_PRAB_CONDITION': {
+      const { condition } = action.payload
+
+      return {
+        ...state,
+        playerStats: {
+          ...state.playerStats,
+          prabRevealConditions: {
+            ...state.playerStats.prabRevealConditions,
+            [condition]: true,
+          },
+        },
+      }
+    }
+
+    case 'COMPLETE_GAME': {
+      // Calculate final stats on game completion
+
+      // Calculate ruthless score (ally eliminations vs rival eliminations)
+      const allyEliminations = state.playerStats.eliminatedAllies.length
+      const rivalEliminations = state.playerStats.eliminatedRivals.length
+      let ruthlessScore = 0
+      if (allyEliminations + rivalEliminations > 0) {
+        ruthlessScore = Math.round(
+          ((allyEliminations * 100) - (rivalEliminations * 20)) /
+          Math.max(1, (allyEliminations + rivalEliminations))
+        )
+        ruthlessScore = Math.max(0, Math.min(100, ruthlessScore))
+      }
+
+      return {
+        ...state,
+        playerStats: {
+          ...state.playerStats,
+          ruthlessScore,
+          gameCompletedAt: action.payload,
+        },
       }
     }
 

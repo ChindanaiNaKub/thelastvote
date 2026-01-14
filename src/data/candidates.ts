@@ -10,7 +10,7 @@ import type { Candidate } from '../types/game'
 // ----------------------------------------------------------------------------
 
 /**
- * CANDIDATE 1: พัฒน์ - The Charismatic Reformer
+ * CANDIDATE 1: ป่า - The Charismatic Reformer
  *
  * Archetype: Charismatic Reformer → นักปฏิรูปที่มีเสน่ห์
  * Personality: Confident, inspiring, slightly arrogant
@@ -22,9 +22,9 @@ export const candidate1: Candidate = {
   // Public Identity (visible to player)
   // ------------------------------------------------------------------
   id: 'candidate_1',
-  name: 'พัฒน์',
+  name: 'ป่า',
   archetype: 'charismatic_reformer',
-  portrait: '💜',
+  portrait: '🦁',
   colorTheme: '#8B5CF6', // Purple
 
   // ------------------------------------------------------------------
@@ -69,6 +69,38 @@ export const candidate1: Candidate = {
   },
 
   // ------------------------------------------------------------------
+  // Part 2: Enhanced Pair/Rival System
+  // ------------------------------------------------------------------
+  // ป่า-ขนุน are BEST FRIENDS
+  // If ป่า eliminated → ขนุน gets +50 pressure, may auto-clash
+  enhancedRelationships: {
+    candidate_2: {
+      targetId: 'candidate_2',
+      type: 'rival',
+      strength: 70,
+      isSecret: false,
+    },
+    candidate_3: {
+      targetId: 'candidate_3',
+      type: 'best_friend',
+      strength: 95,
+      isSecret: false,
+    },
+    candidate_4: {
+      targetId: 'candidate_4',
+      type: 'neutral',
+      strength: 30,
+      isSecret: false,
+    },
+    candidate_5: {
+      targetId: 'candidate_5',
+      type: 'rival',
+      strength: 60,
+      isSecret: false,
+    },
+  },
+
+  // ------------------------------------------------------------------
   // Elimination State (initial values)
   // ------------------------------------------------------------------
   isEliminated: false,
@@ -77,7 +109,7 @@ export const candidate1: Candidate = {
 // ----------------------------------------------------------------------------
 
 /**
- * CANDIDATE 2: เนติ - The Pragmatic Technocrat
+ * CANDIDATE 2: แบม - The Pragmatic Technocrat
  *
  * Archetype: Pragmatic Technocrat → นักเทคโนแครตที่ใช้ได้จริง
  * Personality: Data-driven, cold, logical, dismissive of emotion
@@ -89,9 +121,9 @@ export const candidate2: Candidate = {
   // Public Identity (visible to player)
   // ------------------------------------------------------------------
   id: 'candidate_2',
-  name: 'เนติ',
+  name: 'แบม',
   archetype: 'pragmatic_technocrat',
-  portrait: '🩵',
+  portrait: '🧠',
   colorTheme: '#3B82F6', // Blue
 
   // ------------------------------------------------------------------
@@ -136,6 +168,38 @@ export const candidate2: Candidate = {
   },
 
   // ------------------------------------------------------------------
+  // Part 2: Enhanced Pair/Rival System
+  // ------------------------------------------------------------------
+  // แบม-กัน are FRIENDLY RIVALS
+  // Banter exchanges, but defend each other from outsiders
+  enhancedRelationships: {
+    candidate_1: {
+      targetId: 'candidate_1',
+      type: 'rival',
+      strength: 70,
+      isSecret: false,
+    },
+    candidate_3: {
+      targetId: 'candidate_3',
+      type: 'neutral',
+      strength: 40,
+      isSecret: false,
+    },
+    candidate_4: {
+      targetId: 'candidate_4',
+      type: 'friendly_rival',
+      strength: 85,
+      isSecret: false,
+    },
+    candidate_5: {
+      targetId: 'candidate_5',
+      type: 'rival',
+      strength: 65,
+      isSecret: false,
+    },
+  },
+
+  // ------------------------------------------------------------------
   // Elimination State (initial values)
   // ------------------------------------------------------------------
   isEliminated: false,
@@ -158,7 +222,7 @@ export const candidate3: Candidate = {
   id: 'candidate_3',
   name: 'ขนุน',
   archetype: 'healer_protector',
-  portrait: '💚',
+  portrait: '🛡️',
   colorTheme: '#10B981', // Green
 
   // ------------------------------------------------------------------
@@ -203,6 +267,38 @@ export const candidate3: Candidate = {
   },
 
   // ------------------------------------------------------------------
+  // Part 2: Enhanced Pair/Rival System
+  // ------------------------------------------------------------------
+  // ป่า-ขนุน are BEST FRIENDS (mutual)
+  // If ป่า eliminated → ขนุน gets +50 pressure, may auto-clash
+  enhancedRelationships: {
+    candidate_1: {
+      targetId: 'candidate_1',
+      type: 'best_friend',
+      strength: 95,
+      isSecret: false,
+    },
+    candidate_2: {
+      targetId: 'candidate_2',
+      type: 'neutral',
+      strength: 40,
+      isSecret: false,
+    },
+    candidate_4: {
+      targetId: 'candidate_4',
+      type: 'neutral',
+      strength: 35,
+      isSecret: false,
+    },
+    candidate_5: {
+      targetId: 'candidate_5',
+      type: 'rival',
+      strength: 70,
+      isSecret: false,
+    },
+  },
+
+  // ------------------------------------------------------------------
   // Elimination State (initial values)
   // ------------------------------------------------------------------
   isEliminated: false,
@@ -211,7 +307,7 @@ export const candidate3: Candidate = {
 // ----------------------------------------------------------------------------
 
 /**
- * CANDIDATE 4: คมสันต์ - The Cynical Realist
+ * CANDIDATE 4: กัน - The Cynical Realist
  *
  * Archetype: Cynical Realist → ผู้สมจริงที่หมดหวัง
  * Personality: World-weary, bitter, honest about harsh realities
@@ -223,9 +319,9 @@ export const candidate4: Candidate = {
   // Public Identity (visible to player)
   // ------------------------------------------------------------------
   id: 'candidate_4',
-  name: 'คมสันต์',
+  name: 'กัน',
   archetype: 'cynical_realist',
-  portrait: '🖤',
+  portrait: '😏',
   colorTheme: '#6B7280', // Gray
 
   // ------------------------------------------------------------------
@@ -270,6 +366,38 @@ export const candidate4: Candidate = {
   },
 
   // ------------------------------------------------------------------
+  // Part 2: Enhanced Pair/Rival System
+  // ------------------------------------------------------------------
+  // แบม-กัน are FRIENDLY RIVALS (mutual)
+  // Banter exchanges, but defend each other from outsiders
+  enhancedRelationships: {
+    candidate_1: {
+      targetId: 'candidate_1',
+      type: 'neutral',
+      strength: 35,
+      isSecret: false,
+    },
+    candidate_2: {
+      targetId: 'candidate_2',
+      type: 'friendly_rival',
+      strength: 85,
+      isSecret: false,
+    },
+    candidate_3: {
+      targetId: 'candidate_3',
+      type: 'neutral',
+      strength: 30,
+      isSecret: false,
+    },
+    candidate_5: {
+      targetId: 'candidate_5',
+      type: 'rival',
+      strength: 75,
+      isSecret: false,
+    },
+  },
+
+  // ------------------------------------------------------------------
   // Elimination State (initial values)
   // ------------------------------------------------------------------
   isEliminated: false,
@@ -278,7 +406,7 @@ export const candidate4: Candidate = {
 // ----------------------------------------------------------------------------
 
 /**
- * CANDIDATE 5: วิชัย - The Radical Outsider
+ * CANDIDATE 5: ทาม - The Radical Outsider
  *
  * Archetype: Radical Outsider → คนนอกระบบที่หัวรุนแรง
  * Personality: Passionate, disruptive, anti-establishment, paranoid
@@ -290,7 +418,7 @@ export const candidate5: Candidate = {
   // Public Identity (visible to player)
   // ------------------------------------------------------------------
   id: 'candidate_5',
-  name: 'วิชัย',
+  name: 'ทาม',
   archetype: 'radical_outsider',
   portrait: '💛',
   colorTheme: '#F59E0B', // Orange
@@ -335,6 +463,38 @@ export const candidate5: Candidate = {
   relationships: {
     candidate_3: 'rival',
     candidate_4: 'rival',
+  },
+
+  // ------------------------------------------------------------------
+  // Part 2: Enhanced Pair/Rival System
+  // ------------------------------------------------------------------
+  // ทาม is LONE WOLF - no allies, everyone is rival/enemy
+  // Higher base pressure due to isolation
+  enhancedRelationships: {
+    candidate_1: {
+      targetId: 'candidate_1',
+      type: 'enemy',
+      strength: 80,
+      isSecret: false,
+    },
+    candidate_2: {
+      targetId: 'candidate_2',
+      type: 'enemy',
+      strength: 75,
+      isSecret: false,
+    },
+    candidate_3: {
+      targetId: 'candidate_3',
+      type: 'enemy',
+      strength: 85,
+      isSecret: false,
+    },
+    candidate_4: {
+      targetId: 'candidate_4',
+      type: 'enemy',
+      strength: 90,
+      isSecret: false,
+    },
   },
 
   // ------------------------------------------------------------------

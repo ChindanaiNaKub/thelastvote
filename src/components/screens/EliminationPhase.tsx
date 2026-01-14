@@ -54,6 +54,12 @@ export function EliminationPhase() {
 
     if (!confirmed) return
 
+    // Part 3: Track decision timing
+    dispatch({
+      type: 'TRACK_DECISION',
+      payload: { timestamp: Date.now() }
+    } as any)
+
     // Dispatch elimination action
     dispatch(gameActions.eliminateCandidate(candidateId))
 

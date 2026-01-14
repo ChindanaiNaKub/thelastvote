@@ -25,6 +25,18 @@ export function VotingPhase() {
     )
 
     if (confirmed) {
+      // Part 3: Track final decision timing
+      dispatch({
+        type: 'TRACK_DECISION',
+        payload: { timestamp: Date.now() }
+      } as any)
+
+      // Part 3: Mark game as completed
+      dispatch({
+        type: 'COMPLETE_GAME',
+        payload: Date.now()
+      } as any)
+
       dispatch(gameActions.setVote(candidateId))
 
       // Generate consequences BEFORE phase transition

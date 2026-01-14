@@ -40,6 +40,20 @@ export type CandidateArchetype =
 export type RelationshipType = 'ally' | 'rival' | 'neutral' | 'secret_enemy' | 'secret_ally'
 
 /**
+ * EnhancedRelationshipType defines more granular relationships for pair mechanics.
+ * Added for Part 2 of meta-gaming update.
+ */
+export type EnhancedRelationshipType =
+  | 'best_friend'      // Always defends, takes bullet (+50 pressure when eliminated)
+  | 'ally'             // Supports, defends when attacked
+  | 'friendly_rival'   // Banter but respects, defends from outsiders
+  | 'rival'            // Openly competitive, critical
+  | 'enemy'            // Hostile, will attack
+  | 'secret_friend'    // Publicly neutral, privately ally
+  | 'secret_enemy'     // Publicly neutral, privately hostile
+  | 'neutral'          // No strong feelings either way
+
+/**
  * CandidateRelationship defines a relationship between two candidates.
  * Some relationships are hidden from the player (isSecret: true).
  */
@@ -48,6 +62,60 @@ export interface CandidateRelationship {
   type: RelationshipType // Nature of the relationship
   strength: number // 0-100, how strong this relationship is
   isSecret: boolean // If true, player doesn't know about this
+}
+
+/**
+ * EnhancedRelationship defines more detailed relationship dynamics.
+ * Used for pair mechanics and advanced clash detection.
+ */
+export interface EnhancedRelationship {
+  targetId: string
+  type: EnhancedRelationshipType
+  strength: number // 0-100, affects reaction intensity
+  isSecret: boolean // Hide from player until revealed
+}
+
+/**
+ * PlayerStats tracks player behavior throughout the game.
+ * Revealed at the end to show playstyle patterns.
+ * Added for Part 3 of meta-gaming update.
+ */
+export interface PlayerStats {
+  // Question patterns
+  totalQuestionsAsked: number
+  questionsPerCandidate: Record<string, number> // candidate_1: 2, candidate_2: 1, etc.
+  topicsAsked: Record<string, number> // เศรษฐกิจ: 3, ความปลอดภัย: 1, etc.
+
+  // Aggression
+  candidatesTargeted: string[] // Who player attacked most (in order)
+  aggressiveQuestions: number // Questions that challenge/interrupt
+
+  // Favoritism
+  favoriteCandidate: string | null // Most questioned
+  ignoredCandidates: string[] // Never questioned
+
+  // Elimination patterns
+  eliminatedAllies: string[] // Allies that were eliminated
+  eliminatedRivals: string[] // Rivals that were eliminated
+  ruthlessScore: number // 0-100, based on ally eliminations vs rival eliminations
+
+  // Decision speed
+  decisionTimestamps: number[] // Timestamps of major decisions
+  averageDecisionTime: number // Seconds per decision
+  rushedDecisions: number // Quick eliminations (< 5 sec)
+
+  // Consistency
+  flipFlopScore: number // How often changed mind (0-100)
+
+  // Prab-specific triggers (for Part 4)
+  prabRevealConditions: {
+    askedAboutGameMaster: boolean
+    questionedReality: boolean
+    showedSkepticism: boolean
+  }
+
+  // Game completion timestamp
+  gameCompletedAt: number | null
 }
 
 /**
@@ -211,6 +279,11 @@ export interface Candidate {
     mild: string[] // Subtle hints at pressure 70-80
     severe: string[] // Obvious slips at pressure 90+
   }
+
+  // ------------------------------------------------------------------
+  // Part 2: Enhanced Pair/Rival System
+  // ------------------------------------------------------------------
+  enhancedRelationships?: Record<string, EnhancedRelationship> // Enhanced relationship web
 }
 
 // ----------------------------------------------------------------------------
@@ -373,6 +446,11 @@ export interface GameState {
   secretReveals: SecretKnowledge[] // Secrets revealed so far
   paradigmShift: ParadigmShift | null // Which meta twist this playthrough has
   questionTopicsAnalyzed: boolean // Whether backend has analyzed topics
+
+  // ------------------------------------------------------------------
+  // Part 3: Player Stat Tracking
+  // ------------------------------------------------------------------
+  playerStats: PlayerStats // Tracks player behavior throughout game
 }
 
 // ----------------------------------------------------------------------------
@@ -398,6 +476,12 @@ export type GameAction =
   | { type: 'ADD_CLASH'; payload: ClashEvent } // Add a clash event
   | { type: 'REVEAL_SECRET'; payload: SecretKnowledge } // Reveal a secret
   | { type: 'SET_PARADIGM_SHIFT'; payload: ParadigmShift } // Set the end-game twist
+  // Part 3: Player Stat Tracking Actions
+  | { type: 'TRACK_QUESTION'; payload: { candidateId: string; topics: string[]; timestamp: number } }
+  | { type: 'TRACK_AGGRESSION'; payload: { candidateId: string } }
+  | { type: 'TRACK_DECISION'; payload: { timestamp: number } }
+  | { type: 'TRACK_PRAB_CONDITION'; payload: { condition: 'askedAboutGameMaster' | 'questionedReality' | 'showedSkepticism' } }
+  | { type: 'COMPLETE_GAME'; payload: number } // Timestamp when game completed
 
 // ----------------------------------------------------------------------------
 
@@ -423,4 +507,27 @@ export const initialGameState: GameState = {
   secretReveals: [],
   paradigmShift: null,
   questionTopicsAnalyzed: false,
+  // Part 3: Player Stat Tracking Initialization
+  playerStats: {
+    totalQuestionsAsked: 0,
+    questionsPerCandidate: {},
+    topicsAsked: {},
+    candidatesTargeted: [],
+    aggressiveQuestions: 0,
+    favoriteCandidate: null,
+    ignoredCandidates: [],
+    eliminatedAllies: [],
+    eliminatedRivals: [],
+    ruthlessScore: 0,
+    decisionTimestamps: [],
+    averageDecisionTime: 0,
+    rushedDecisions: 0,
+    flipFlopScore: 0,
+    prabRevealConditions: {
+      askedAboutGameMaster: false,
+      questionedReality: false,
+      showedSkepticism: false,
+    },
+    gameCompletedAt: null,
+  },
 }
