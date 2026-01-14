@@ -15,11 +15,9 @@
 /* Header Section */
 .roster-screen__header {
   padding: var(--clinical-space-lg) var(--clinical-space-xl);
-  background: linear-gradient(
-    180deg,
-    var(--clinical-bg-secondary) 0%,
-    transparent 100%
-  );
+  background: linear-gradient(180deg,
+      var(--clinical-bg-secondary) 0%,
+      transparent 100%);
   border-radius: var(--clinical-radius-lg);
   margin-bottom: var(--clinical-space-xl);
   position: relative;
@@ -33,12 +31,10 @@
   transform: translateX(-50%);
   width: 50%;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--clinical-border-medium) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      var(--clinical-border-medium) 50%,
+      transparent 100%);
 }
 
 .roster-screen h2 {
@@ -73,7 +69,7 @@
   flex: 1;
 }
 
-.candidates-grid > * {
+.candidates-grid>* {
   flex: 0 0 280px;
   width: 280px;
   max-width: 280px;
@@ -84,7 +80,7 @@
   font-size: var(--clinical-size-base);
   padding: var(--clinical-space-md) var(--clinical-space-2xl);
   margin-top: auto;
-  min-width: 240px;
+  align-self: center;
 }
 
 /* Responsive */
@@ -110,7 +106,7 @@
     gap: var(--clinical-space-md);
   }
 
-  .candidates-grid > * {
+  .candidates-grid>* {
     flex: 0 0 260px;
     width: 260px;
     max-width: 100%;

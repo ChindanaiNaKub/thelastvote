@@ -12,12 +12,10 @@
   justify-content: center;
   align-items: center;
   padding: var(--clinical-space-2xl) var(--clinical-space-xl);
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.95) 0%,
-    rgba(15, 23, 42, 0.98) 50%,
-    rgba(0, 0, 0, 0.95) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(0, 0, 0, 0.95) 0%,
+      rgba(15, 23, 42, 0.98) 50%,
+      rgba(0, 0, 0, 0.95) 100%);
   position: relative;
   overflow: hidden;
 }
@@ -38,10 +36,13 @@
 }
 
 @keyframes mastermindPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.5;
     transform: scale(1);
   }
+
   50% {
     opacity: 1;
     transform: scale(1.1);
@@ -52,12 +53,10 @@
 .mastermind-reveal__divider {
   width: 60%;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--clinical-accent-cyan) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      var(--clinical-accent-cyan) 50%,
+      transparent 100%);
   margin: var(--clinical-space-xl) 0;
   opacity: 0;
   animation: dividerFadeIn 1s ease-out forwards;
@@ -72,6 +71,7 @@
     opacity: 0;
     transform: scaleX(0.3);
   }
+
   to {
     opacity: 1;
     transform: scaleX(1);
@@ -108,11 +108,14 @@
 }
 
 @keyframes titleGlow {
-  0%, 100% {
+
+  0%,
+  100% {
     text-shadow:
       0 0 20px rgba(6, 182, 212, 0.5),
       0 0 40px rgba(6, 182, 212, 0.3);
   }
+
   50% {
     text-shadow:
       0 0 30px rgba(6, 182, 212, 0.8),
@@ -136,7 +139,7 @@
 .mastermind-reveal__paragraph {
   font-size: var(--clinical-size-lg);
   line-height: var(--clinical-leading-relaxed);
-  color: var(--clinical-text-primary);
+  color: #E8EEF2;
   font-family: var(--clinical-font-body);
   margin: 0 0 var(--clinical-space-lg) 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -151,11 +154,9 @@
 
 /* Suspicion acknowledgment box */
 .mastermind-reveal__suspicion {
-  background: linear-gradient(
-    135deg,
-    rgba(245, 158, 11, 0.15) 0%,
-    rgba(245, 158, 11, 0.05) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(245, 158, 11, 0.15) 0%,
+      rgba(245, 158, 11, 0.05) 100%);
   border: 2px solid rgba(245, 158, 11, 0.4);
   border-left: 4px solid #f59e0b;
   border-radius: var(--clinical-radius-md);
@@ -190,18 +191,16 @@
 
 .mastermind-reveal__suspicion-item {
   font-size: var(--clinical-size-base);
-  color: var(--clinical-text-secondary);
+  color: #D1DCE5;
   padding: var(--clinical-space-xs) 0;
   line-height: var(--clinical-leading-relaxed);
 }
 
 /* Personal message from Prab */
 .mastermind-reveal__message {
-  background: linear-gradient(
-    135deg,
-    rgba(139, 92, 246, 0.15) 0%,
-    rgba(139, 92, 246, 0.05) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(139, 92, 246, 0.15) 0%,
+      rgba(139, 92, 246, 0.05) 100%);
   border: 2px solid rgba(139, 92, 246, 0.4);
   border-radius: var(--clinical-radius-lg);
   padding: var(--clinical-space-xl) var(--clinical-space-2xl);
@@ -229,7 +228,7 @@
 .mastermind-reveal__message-text {
   font-size: var(--clinical-size-base);
   line-height: var(--clinical-leading-relaxed);
-  color: var(--clinical-text-primary);
+  color: #E8EEF2;
   font-style: italic;
   margin-bottom: var(--clinical-space-lg);
 }
@@ -274,11 +273,9 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  background: linear-gradient(
-    135deg,
-    var(--clinical-accent-cyan) 0%,
-    #06b6d4 100%
-  );
+  background: linear-gradient(135deg,
+      var(--clinical-accent-cyan) 0%,
+      #06b6d4 100%);
   border: none;
   color: var(--clinical-bg-deep);
   border-radius: var(--clinical-radius-md);
