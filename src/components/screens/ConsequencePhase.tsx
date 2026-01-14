@@ -3,7 +3,6 @@
 // ============================================================================
 // Reveals the aftermath of the player's choice. Creates doubt and regret.
 // Phase 4: Enhanced with dynamic timing based on impact level.
-// Part 4: Added Phase 5 Mastermind Reveal (Prab as game creator).
 // ============================================================================
 
 import './ConsequencePhase.css'
@@ -11,9 +10,6 @@ import { useState, useEffect } from 'react'
 import { useGame } from '../../context/GameContext'
 import { gameActions } from '../../context/GameContext'
 import { getPhaseTiming } from '../../lib/consequenceTiming'
-import { MastermindReveal } from '../ui/MastermindReveal'
-import '../ui/MastermindReveal.css'
-import './ConsequencePhase.css'
 
 export function ConsequencePhase() {
   const { state, dispatch } = useGame()
@@ -205,26 +201,11 @@ export function ConsequencePhase() {
           </div>
 
           <div className="consequence-screen__actions">
-            <button
-              onClick={() => setRevealPhase(5)}
-              className="btn-primary"
-              style={{ marginRight: 'var(--clinical-space-md)' }}
-            >
-              ดูความจริงสุดท้าย
-            </button>
-            <button onClick={handlePlayAgain} className="btn-secondary">
+            <button onClick={handlePlayAgain} className="btn-primary">
               เล่นอีกครั้ง
             </button>
           </div>
         </>
-      )}
-
-      {/* Part 4: Phase 5 - Mastermind Reveal */}
-      {revealPhase >= 5 && (
-        <MastermindReveal
-          playerStats={state.playerStats}
-          onContinue={handlePlayAgain}
-        />
       )}
     </div>
   )

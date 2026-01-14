@@ -347,21 +347,6 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       }
     }
 
-    case 'TRACK_PRAB_CONDITION': {
-      const { condition } = action.payload
-
-      return {
-        ...state,
-        playerStats: {
-          ...state.playerStats,
-          prabRevealConditions: {
-            ...state.playerStats.prabRevealConditions,
-            [condition]: true,
-          },
-        },
-      }
-    }
-
     case 'COMPLETE_GAME': {
       // Calculate final stats on game completion
 

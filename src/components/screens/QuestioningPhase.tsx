@@ -11,7 +11,6 @@ import { QuestionInput } from '../ui/QuestionInput'
 import { ClashCard } from '../ui/ClashCard'
 import { generateCandidateResponse } from '../../lib/api'
 import { checkClashConditions, analyzeQuestionTopics } from '../../lib/tracking'
-import { analyzeQuestionForSuspicion } from '../../lib/prabTracking'
 import { useState, useEffect } from 'react'
 import './QuestioningPhase.css'
 
@@ -83,18 +82,6 @@ export function QuestioningPhase() {
         topics,
       }
     } as any)
-
-    // Part 4: Check for Prab reveal conditions (suspicion about game)
-    const suspicionAnalysis = analyzeQuestionForSuspicion(question)
-    if (suspicionAnalysis.questionedReality) {
-      dispatch({ type: 'TRACK_PRAB_CONDITION', payload: { condition: 'questionedReality' } } as any)
-    }
-    if (suspicionAnalysis.askedAboutGameMaster) {
-      dispatch({ type: 'TRACK_PRAB_CONDITION', payload: { condition: 'askedAboutGameMaster' } } as any)
-    }
-    if (suspicionAnalysis.showedSkepticism) {
-      dispatch({ type: 'TRACK_PRAB_CONDITION', payload: { condition: 'showedSkepticism' } } as any)
-    }
 
     // Add conversation entry
     dispatch(gameActions.addConversationEntry({
