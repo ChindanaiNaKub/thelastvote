@@ -1,5 +1,5 @@
 /* ============================================================================
- * Introduction Screen - Clinical Theme
+ * Introduction Screen - Clinical Theme (Enterprise Edition)
  * ============================================================================ */
 
 .introduction-screen {
@@ -8,17 +8,42 @@
   max-width: 800px;
   margin: 0 auto;
   position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-/* Add institutional frame */
+/* Institutional frame with gradient */
 .introduction-screen::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: var(--clinical-space-lg);
+  left: var(--clinical-space-lg);
+  right: var(--clinical-space-lg);
+  bottom: var(--clinical-space-lg);
   border: 1px solid var(--clinical-border-medium);
+  border-radius: var(--clinical-radius-lg);
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 182, 212, 0.03) 0%,
+    transparent 50%,
+    rgba(6, 182, 212, 0.02) 100%
+  );
+}
+
+/* Corner accents */
+.introduction-screen::after {
+  content: '';
+  position: absolute;
+  top: var(--clinical-space-lg);
+  left: var(--clinical-space-lg);
+  width: 60px;
+  height: 60px;
+  border-top: 3px solid var(--clinical-accent-cyan);
+  border-left: 3px solid var(--clinical-accent-cyan);
+  border-radius: var(--clinical-radius-md) 0 0 0;
   pointer-events: none;
 }
 
@@ -28,19 +53,35 @@
   margin: 0 0 var(--clinical-space-2xl) 0;
   color: var(--clinical-text-primary);
   font-family: var(--clinical-font-display);
-  letter-spacing: 0.15em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   position: relative;
-  /* Add underline */
-  padding-bottom: var(--clinical-space-md);
-  border-bottom: 3px solid var(--clinical-accent-cyan);
+  padding-bottom: var(--clinical-space-lg);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.introduction-screen h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--clinical-accent-cyan) 50%,
+    transparent 100%
+  );
 }
 
 .intro-content {
   margin: var(--clinical-space-2xl) 0;
   display: flex;
   flex-direction: column;
-  gap: var(--clinical-space-lg);
+  gap: var(--clinical-space-xl);
+  padding: 0 var(--clinical-space-xl);
 }
 
 .intro-content .lead {
@@ -50,19 +91,35 @@
   font-family: var(--clinical-font-body);
   margin: 0;
   font-weight: 400;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .intro-content .warning {
-  font-size: var(--clinical-size-base);
-  padding: var(--clinical-space-md) var(--clinical-space-lg);
-  background: var(--clinical-alert-bg);
+  font-size: var(--clinical-size-sm);
+  padding: var(--clinical-space-md) var(--clinical-space-xl);
+  background: linear-gradient(
+    135deg,
+    var(--clinical-alert-bg) 0%,
+    rgba(199, 62, 58, 0.05) 100%
+  );
   border: 1px solid var(--clinical-alert-primary);
-  border-radius: var(--clinical-radius-sm);
+  border-radius: var(--clinical-radius-md);
   color: var(--clinical-alert-primary);
   font-family: var(--clinical-font-display);
-  letter-spacing: var(--clinical-tracking-tight);
+  letter-spacing: 0.05em;
   font-weight: 600;
-  margin: var(--clinical-space-lg) 0;
+  margin: var(--clinical-space-md) auto;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 
+    0 4px 12px rgba(199, 62, 58, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.intro-content .warning::before {
+  content: '⚠';
+  margin-right: var(--clinical-space-sm);
 }
 
 .intro-content .reflection {
@@ -70,11 +127,86 @@
   font-style: italic;
   color: var(--clinical-text-muted);
   font-family: var(--clinical-font-body);
-  margin: var(--clinical-space-xl) 0 0 0;
+  margin: var(--clinical-space-xl) auto 0;
+  opacity: 0.8;
+  max-width: 500px;
+  position: relative;
+}
+
+.intro-content .reflection::before,
+.intro-content .reflection::after {
+  content: '"';
+  font-size: var(--clinical-size-2xl);
+  color: var(--clinical-accent-cyan);
+  opacity: 0.5;
+  position: absolute;
+  font-family: serif;
+}
+
+.intro-content .reflection::before {
+  left: -20px;
+  top: -10px;
+}
+
+.intro-content .reflection::after {
+  right: -20px;
+  bottom: -20px;
 }
 
 .introduction-screen .btn-primary {
-  font-size: var(--clinical-size-lg);
+  font-size: var(--clinical-size-base);
   padding: var(--clinical-space-md) var(--clinical-space-2xl);
-  margin-top: var(--clinical-space-xl);
+  margin-top: var(--clinical-space-2xl);
+  min-width: 200px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .introduction-screen {
+    padding: var(--clinical-space-2xl) var(--clinical-space-md);
+  }
+
+  .introduction-screen::before {
+    top: var(--clinical-space-md);
+    left: var(--clinical-space-md);
+    right: var(--clinical-space-md);
+    bottom: var(--clinical-space-md);
+  }
+
+  .introduction-screen::after {
+    top: var(--clinical-space-md);
+    left: var(--clinical-space-md);
+    width: 40px;
+    height: 40px;
+  }
+
+  .introduction-screen h1 {
+    font-size: var(--clinical-size-2xl);
+    letter-spacing: 0.15em;
+  }
+
+  .intro-content {
+    padding: 0 var(--clinical-space-md);
+    gap: var(--clinical-space-lg);
+  }
+
+  .intro-content .lead {
+    font-size: var(--clinical-size-base);
+  }
+
+  .intro-content .warning {
+    font-size: var(--clinical-size-xs);
+    padding: var(--clinical-space-sm) var(--clinical-space-md);
+  }
+
+  .intro-content .reflection {
+    font-size: var(--clinical-size-base);
+  }
+
+  .intro-content .reflection::before,
+  .intro-content .reflection::after {
+    display: none;
+  }
 }

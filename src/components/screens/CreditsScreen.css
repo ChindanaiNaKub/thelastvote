@@ -1,5 +1,5 @@
 /* ============================================================================
- * Credits Screen - Clinical Theme
+ * Credits Screen - Clinical Theme (Enterprise Edition)
  * ============================================================================ */
 
 .credits-screen {
@@ -7,26 +7,105 @@
   padding: var(--clinical-space-3xl) var(--clinical-space-xl);
   max-width: 800px;
   margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   position: relative;
+}
+
+/* Subtle background pattern */
+.credits-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(6, 182, 212, 0.05) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(6, 182, 212, 0.03) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+}
+
+/* Decorative frame */
+.credits-screen__frame {
+  position: absolute;
+  top: var(--clinical-space-xl);
+  left: var(--clinical-space-xl);
+  right: var(--clinical-space-xl);
+  bottom: var(--clinical-space-xl);
+  border: 1px solid var(--clinical-border-thin);
+  border-radius: var(--clinical-radius-lg);
+  pointer-events: none;
+}
+
+.credits-screen__frame::before,
+.credits-screen__frame::after {
+  content: '';
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-color: var(--clinical-accent-cyan);
+  border-style: solid;
+}
+
+.credits-screen__frame::before {
+  top: -1px;
+  left: -1px;
+  border-width: 3px 0 0 3px;
+  border-radius: var(--clinical-radius-lg) 0 0 0;
+}
+
+.credits-screen__frame::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 3px 3px 0;
+  border-radius: 0 0 var(--clinical-radius-lg) 0;
 }
 
 .credits-screen h1 {
   font-size: var(--clinical-size-4xl);
   font-weight: 900;
-  margin: 0 0 var(--clinical-space-2xl) 0;
+  margin: 0 0 var(--clinical-space-xl) 0;
   color: var(--clinical-text-primary);
   font-family: var(--clinical-font-display);
-  letter-spacing: 0.2em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
-  padding-bottom: var(--clinical-space-md);
-  border-bottom: 3px solid var(--clinical-accent-cyan);
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.credits-screen h1::after {
+  content: '';
+  display: block;
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--clinical-accent-cyan) 50%,
+    transparent 100%
+  );
+  margin: var(--clinical-space-lg) auto 0;
 }
 
 .credits-content {
   margin: var(--clinical-space-2xl) 0;
   display: flex;
   flex-direction: column;
-  gap: var(--clinical-space-lg);
+  gap: var(--clinical-space-xl);
+  position: relative;
+  z-index: 1;
 }
 
 .credits-content p {
@@ -36,6 +115,8 @@
   font-family: var(--clinical-font-body);
   margin: 0;
   font-weight: 400;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .credits-content .reflection {
@@ -43,22 +124,123 @@
   font-style: italic;
   color: var(--clinical-text-muted);
   font-family: var(--clinical-font-body);
-  margin: var(--clinical-space-xl) 0;
+  margin: var(--clinical-space-xl) auto;
   font-weight: 500;
+  max-width: 500px;
+  padding: var(--clinical-space-lg);
+  background: linear-gradient(
+    135deg,
+    rgba(6, 182, 212, 0.05) 0%,
+    transparent 100%
+  );
+  border-radius: var(--clinical-radius-md);
+  border-left: 3px solid var(--clinical-accent-cyan);
+  text-align: left;
+}
+
+/* Credits List */
+.credits-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--clinical-space-xl) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--clinical-space-md);
+}
+
+.credits-list li {
+  font-size: var(--clinical-size-base);
+  color: var(--clinical-text-secondary);
+  font-family: var(--clinical-font-body);
+  padding: var(--clinical-space-sm) 0;
+  border-bottom: 1px solid var(--clinical-border-thin);
+}
+
+.credits-list li:last-child {
+  border-bottom: none;
+}
+
+.credits-list strong {
+  color: var(--clinical-text-primary);
+  font-weight: 600;
+}
+
+/* Thank You Message */
+.credits-thanks {
+  font-size: var(--clinical-size-sm);
+  color: var(--clinical-text-muted);
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: var(--clinical-space-xl);
+  opacity: 0.7;
 }
 
 .credits-screen .btn-primary {
-  font-size: var(--clinical-size-lg);
+  font-size: var(--clinical-size-base);
   padding: var(--clinical-space-md) var(--clinical-space-2xl);
-  margin-top: var(--clinical-space-xl);
+  margin-top: var(--clinical-space-2xl);
+  min-width: 200px;
+  position: relative;
+  z-index: 1;
 }
 
+/* Animation */
+.credits-screen--animate .credits-content > * {
+  animation: fadeInUp 0.8s ease-out both;
+}
+
+.credits-screen--animate .credits-content > *:nth-child(1) { animation-delay: 0.2s; }
+.credits-screen--animate .credits-content > *:nth-child(2) { animation-delay: 0.4s; }
+.credits-screen--animate .credits-content > *:nth-child(3) { animation-delay: 0.6s; }
+.credits-screen--animate .credits-content > *:nth-child(4) { animation-delay: 0.8s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .credits-screen {
-    padding: var(--clinical-space-2xl) var(--clinical-space-lg);
+    padding: var(--clinical-space-2xl) var(--clinical-space-md);
+  }
+
+  .credits-screen__frame {
+    top: var(--clinical-space-md);
+    left: var(--clinical-space-md);
+    right: var(--clinical-space-md);
+    bottom: var(--clinical-space-md);
+  }
+
+  .credits-screen__frame::before,
+  .credits-screen__frame::after {
+    width: 50px;
+    height: 50px;
   }
 
   .credits-screen h1 {
-    font-size: var(--clinical-size-3xl);
+    font-size: var(--clinical-size-2xl);
+    letter-spacing: 0.15em;
+  }
+
+  .credits-content p {
+    font-size: var(--clinical-size-base);
+  }
+
+  .credits-content .reflection {
+    font-size: var(--clinical-size-lg);
+    padding: var(--clinical-space-md);
+  }
+
+  .credits-screen .btn-primary {
+    min-width: 180px;
+    font-size: var(--clinical-size-sm);
   }
 }

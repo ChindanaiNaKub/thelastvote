@@ -1,41 +1,102 @@
 /* ============================================================================
- * Voting Phase Screen - Clinical Theme
+ * Voting Phase Screen - Clinical Theme (Enterprise Edition)
  * ============================================================================ */
 
 .voting-screen {
   text-align: center;
   padding: var(--clinical-space-2xl) var(--clinical-space-xl);
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Section */
+.voting-screen__header {
+  padding: var(--clinical-space-lg) var(--clinical-space-xl);
+  background: linear-gradient(
+    180deg,
+    var(--clinical-bg-secondary) 0%,
+    transparent 100%
+  );
+  border-radius: var(--clinical-radius-lg);
+  margin-bottom: var(--clinical-space-xl);
+  position: relative;
+}
+
+.voting-screen__header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--clinical-border-medium) 50%,
+    transparent 100%
+  );
 }
 
 .voting-screen h2 {
   font-size: var(--clinical-size-3xl);
   font-weight: 800;
-  margin: 0 0 var(--clinical-space-md) 0;
+  margin: 0 0 var(--clinical-space-sm) 0;
   color: var(--clinical-text-primary);
   font-family: var(--clinical-font-display);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .voting-screen .subtitle {
   font-size: var(--clinical-size-lg);
   color: var(--clinical-text-muted);
-  margin: 0 0 var(--clinical-space-2xl) 0;
+  margin: 0;
   font-family: var(--clinical-font-body);
   font-style: italic;
   font-weight: 400;
+  opacity: 0.8;
 }
 
+/* Urgency Badge */
+.voting-screen__urgency {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--clinical-space-sm);
+  padding: var(--clinical-space-sm) var(--clinical-space-lg);
+  background: var(--clinical-alert-bg);
+  border: 2px solid var(--clinical-alert-primary);
+  border-radius: var(--clinical-radius-full);
+  color: var(--clinical-alert-primary);
+  font-size: var(--clinical-size-sm);
+  font-weight: 700;
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: var(--clinical-space-md);
+  animation: pulseUrgent 2s infinite;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+}
+
+@keyframes pulseUrgent {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.02); }
+}
+
+/* Candidates Grid - Flexbox Centered with Equal Sizing */
 .voting-screen .candidates-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: stretch;
   gap: var(--clinical-space-lg);
-  margin: var(--clinical-space-2xl) auto;
+  margin: var(--clinical-space-xl) auto var(--clinical-space-2xl);
   max-width: 1000px;
+  flex: 1;
 }
 
 .voting-screen .candidates-grid > * {
@@ -44,18 +105,98 @@
   max-width: 280px;
 }
 
-@media (max-width: 768px) {
-  .voting-screen .candidates-grid {
-    grid-template-columns: 1fr;
-    max-width: 340px;
-    margin: 0 auto;
-  }
+/* Confirmation Section */
+.voting-screen__confirmation {
+  background: linear-gradient(
+    135deg,
+    var(--clinical-bg-secondary) 0%,
+    var(--clinical-bg-primary) 100%
+  );
+  border: 2px solid var(--clinical-accent-cyan);
+  border-radius: var(--clinical-radius-lg);
+  padding: var(--clinical-space-xl);
+  margin: var(--clinical-space-xl) auto;
+  max-width: 500px;
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    0 0 0 1px var(--clinical-accent-cyan);
+}
 
+.voting-screen__confirmation h3 {
+  font-size: var(--clinical-size-lg);
+  font-weight: 700;
+  margin: 0 0 var(--clinical-space-md) 0;
+  color: var(--clinical-text-primary);
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.voting-screen__confirmation p {
+  font-size: var(--clinical-size-sm);
+  color: var(--clinical-text-muted);
+  margin: 0 0 var(--clinical-space-lg) 0;
+  font-style: italic;
+}
+
+/* Action Buttons */
+.voting-screen__actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--clinical-space-md);
+  margin-top: auto;
+  padding: var(--clinical-space-lg) 0;
+}
+
+.voting-screen__actions .btn-primary,
+.voting-screen__actions .btn-secondary {
+  min-width: 160px;
+  font-size: var(--clinical-size-sm);
+  padding: var(--clinical-space-sm) var(--clinical-space-xl);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
   .voting-screen {
     padding: var(--clinical-space-lg) var(--clinical-space-md);
   }
 
+  .voting-screen__header {
+    padding: var(--clinical-space-md);
+  }
+
   .voting-screen h2 {
-    font-size: var(--clinical-size-2xl);
+    font-size: var(--clinical-size-xl);
+    letter-spacing: 0.1em;
+  }
+
+  .voting-screen .subtitle {
+    font-size: var(--clinical-size-base);
+  }
+
+  .voting-screen .candidates-grid {
+    gap: var(--clinical-space-md);
+  }
+
+  .voting-screen .candidates-grid > * {
+    flex: 0 0 260px;
+    width: 260px;
+    max-width: 100%;
+  }
+
+  .voting-screen__confirmation {
+    padding: var(--clinical-space-lg);
+    margin: var(--clinical-space-lg) auto;
+  }
+
+  .voting-screen__actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .voting-screen__actions .btn-primary,
+  .voting-screen__actions .btn-secondary {
+    width: 100%;
+    max-width: 280px;
   }
 }
