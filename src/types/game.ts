@@ -37,7 +37,124 @@ export type CandidateArchetype =
  * RelationshipType defines how candidates relate to each other.
  * This influences their behavior (interruptions, attacks, defenses).
  */
-export type RelationshipType = 'ally' | 'rival' | 'neutral'
+export type RelationshipType = 'ally' | 'rival' | 'neutral' | 'secret_enemy' | 'secret_ally'
+
+/**
+ * CandidateRelationship defines a relationship between two candidates.
+ * Some relationships are hidden from the player (isSecret: true).
+ */
+export interface CandidateRelationship {
+  targetId: string // Which candidate this relationship is with
+  type: RelationshipType // Nature of the relationship
+  strength: number // 0-100, how strong this relationship is
+  isSecret: boolean // If true, player doesn't know about this
+}
+
+/**
+ * PressureState tracks how much pressure a candidate is under.
+ * High pressure leads to slip-ups during questioning.
+ */
+export interface PressureState {
+  candidateId: string
+  pressureLevel: number // 0-100, where >70 triggers slip-ups
+  triggers: {
+    questionsTargeted: number // How many times player asked this candidate
+    alliesEliminated: number // How many of their allies were eliminated
+    contradictionsExposed: number // How many times they were caught contradicting
+  }
+  hasSlippedUp: boolean // Whether they've already had a slip-up event
+}
+
+/**
+ * TopicEntry tracks a question and its detected topics.
+ * Used for dynamic consequence generation.
+ */
+export interface TopicEntry {
+  question: string // The actual question text
+  topics: string[] // Detected topics: ['เศรษฐกิจ', 'คอร์รัปชัน', ...]
+  targetedCandidate?: string // If question was targeted at someone
+  timestamp: number // When asked
+}
+
+/**
+ * SecretKnowledge represents what one candidate knows about another.
+ * Revealed through mid-game events and consequences.
+ */
+export interface SecretKnowledge {
+  knowers: string[] // Candidate IDs who know this secret
+  targetId: string // Who the secret is about
+  secretType: 'hiddenSecret' | 'activeLie' | 'hiddenMotivation' | 'coreTruth'
+  revealCondition: {
+    type: 'question_topic' | 'ally_eliminated' | 'pressure_threshold' | 'never'
+    value: string | number
+  }
+  revealed: boolean // Whether this has been revealed to player
+}
+
+/**
+ * ClashEmotion represents the emotional intensity of a clash.
+ */
+export type ClashEmotion = 'angry' | 'defensive' | 'mocking' | 'desperate' | 'triumphant'
+
+/**
+ * ClashDialogueLine represents one line of dialogue in a clash.
+ */
+export interface ClashDialogueLine {
+  speaker: string // Candidate ID
+  content: string // What they said
+  emotion: ClashEmotion // How they said it
+}
+
+/**
+ * ClashTriggerType represents what caused a clash to occur.
+ */
+export type ClashTriggerType = 'contradiction' | 'ally_defense' | 'rival_attack' | 'pressure'
+
+/**
+ * ClashEvent represents candidates publicly attacking each other.
+ * These appear as special conversation entries.
+ */
+export interface ClashEvent {
+  id: string
+  timestamp: number
+  initiator: string // Candidate who interrupted
+  target: string // Candidate being interrupted
+  topic: string // What sparked the clash
+  dialogueExchange: ClashDialogueLine[] // The back-and-forth
+  triggers: {
+    type: ClashTriggerType
+    context: string // Description of what triggered this
+  }
+}
+
+/**
+ * ParadigmTwistType represents the type of end-game meta twist.
+ */
+export type ParadigmTwistType = 'no_honest' | 'tested' | 'previous_cycle' | 'unreliable_narrator'
+
+/**
+ * ParadigmRevealTiming represents when a twist revelation occurs.
+ */
+export type ParadigmRevealTiming = 'before_consequences' | 'after_phase1' | 'after_phase2' | 'after_phase3' | 'very_end'
+
+/**
+ * ParadigmRevealSequence represents one step in revealing the meta twist.
+ */
+export interface ParadigmRevealSequence {
+  timing: ParadigmRevealTiming // When this reveal happens
+  content: string // The reveal text (may contain placeholders)
+  referencesGameplay: boolean // If true, dynamically insert gameplay data
+  dramaticPause: number // Milliseconds to pause after this reveal
+}
+
+/**
+ * ParadigmShift represents the end-game meta twist.
+ * Revealed after consequences to shatter player's assumptions.
+ */
+export interface ParadigmShift {
+  twistType: ParadigmTwistType
+  revealSequence: ParadigmRevealSequence[]
+}
 
 /**
  * Candidate represents one of the 5 candidates in the game.
@@ -82,6 +199,17 @@ export interface Candidate {
   isEliminated: boolean // Whether this candidate has been eliminated
   eliminatedAtRound?: number // Which round they were eliminated (1 or 2)
   eliminatedByPlayerChoice?: boolean // Whether player explicitly chose to eliminate them
+
+  // ------------------------------------------------------------------
+  // Plot Twist System Extensions
+  // ------------------------------------------------------------------
+  detailedRelationships?: Record<string, CandidateRelationship> // Detailed relationship data
+  knowsSecretsAbout?: SecretKnowledge[] // Secrets this candidate knows about others
+  pressureThreshold?: number // When to slip up (default: 70)
+  slipUpResponses?: {
+    mild: string[] // Subtle hints at pressure 70-80
+    severe: string[] // Obvious slips at pressure 90+
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -94,6 +222,7 @@ export type ConversationEntryType =
   | 'response' // Candidate responded
   | 'interruption' // Candidate jumped in
   | 'system' // Game event (e.g., "Questions remaining: 2")
+  | 'clash' // Candidates attacked each other
 
 /**
  * ConversationEntry represents a single event in the conversation history.
@@ -106,6 +235,7 @@ export interface ConversationEntry {
   speaker: 'player' | string // "player" or candidate ID
   content: string // The actual text content
   targetedCandidate?: string // If question was directed at someone specific
+  clashData?: ClashEvent // Present if type is 'clash'
 }
 
 // ----------------------------------------------------------------------------
@@ -231,6 +361,16 @@ export interface GameState {
   // ------------------------------------------------------------------
   isProcessing: boolean // Loading state for AI calls
   selectedCandidate: string | null // For targeting questions
+
+  // ------------------------------------------------------------------
+  // Plot Twist System Tracking
+  // ------------------------------------------------------------------
+  topicHistory: TopicEntry[] // Questions and their detected topics
+  pressureStates: Record<string, PressureState> // Per-candidate pressure levels
+  clashHistory: ClashEvent[] // All clash events that occurred
+  secretReveals: SecretKnowledge[] // Secrets revealed so far
+  paradigmShift: ParadigmShift | null // Which meta twist this playthrough has
+  questionTopicsAnalyzed: boolean // Whether backend has analyzed topics
 }
 
 // ----------------------------------------------------------------------------
@@ -249,6 +389,12 @@ export type GameAction =
   | { type: 'SET_PROCESSING'; payload: boolean }
   | { type: 'SELECT_CANDIDATE'; payload: string | null }
   | { type: 'RESET_GAME' }
+  // Plot Twist System Actions
+  | { type: 'TRACK_TOPIC'; payload: TopicEntry } // Track question topics
+  | { type: 'UPDATE_PRESSURE'; payload: { candidateId: string; pressureState: PressureState } } // Update candidate pressure
+  | { type: 'ADD_CLASH'; payload: ClashEvent } // Add a clash event
+  | { type: 'REVEAL_SECRET'; payload: SecretKnowledge } // Reveal a secret
+  | { type: 'SET_PARADIGM_SHIFT'; payload: ParadigmShift } // Set the end-game twist
 
 // ----------------------------------------------------------------------------
 
@@ -257,7 +403,7 @@ export type GameAction =
  */
 export const initialGameState: GameState = {
   phase: 'introduction',
-  questionsRemaining: 3, // Start with 3 questions
+  questionsRemaining: 2, // Start with 2 questions (elimination mechanic reduces from 3)
   conversationHistory: [],
   candidates: [], // Populated from data/candidates.ts
   eliminatedCandidateIds: [], // No eliminations at start
@@ -266,4 +412,11 @@ export const initialGameState: GameState = {
   consequences: null,
   isProcessing: false,
   selectedCandidate: null,
+  // Plot Twist System Initialization
+  topicHistory: [],
+  pressureStates: {}, // Will be initialized with candidates from data/candidates.ts
+  clashHistory: [],
+  secretReveals: [],
+  paradigmShift: null,
+  questionTopicsAnalyzed: false,
 }

@@ -28,6 +28,11 @@ import { candidates } from '../data/candidates'
  * - SET_PROCESSING: Toggle loading state for AI calls
  * - SELECT_CANDIDATE: Target a candidate for questioning
  * - RESET_GAME: Return to initial state
+ * - TRACK_TOPIC: Track question topics for analysis
+ * - UPDATE_PRESSURE: Update candidate pressure level
+ * - ADD_CLASH: Add a candidate clash event
+ * - REVEAL_SECRET: Reveal a secret to player
+ * - SET_PARADIGM_SHIFT: Set the end-game meta twist
  */
 export function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
@@ -138,6 +143,70 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       }
     }
 
+    // ----------------------------------------------------------------------
+    // Plot Twist System Actions
+    // ----------------------------------------------------------------------
+
+    case 'TRACK_TOPIC': {
+      return {
+        ...state,
+        topicHistory: [...state.topicHistory, action.payload],
+      }
+    }
+
+    case 'UPDATE_PRESSURE': {
+      const { candidateId, pressureState } = action.payload
+
+      return {
+        ...state,
+        pressureStates: {
+          ...state.pressureStates,
+          [candidateId]: pressureState,
+        },
+      }
+    }
+
+    case 'ADD_CLASH': {
+      // Create conversation entry for the clash
+      const clashEntry = {
+        id: `clash_${Date.now()}`,
+        timestamp: Date.now(),
+        type: 'clash' as const,
+        speaker: 'system',
+        content: `⚔️ การปะทะ: ${action.payload.initiator} vs ${action.payload.target}`,
+        clashData: action.payload,
+      }
+
+      return {
+        ...state,
+        conversationHistory: [...state.conversationHistory, clashEntry],
+        clashHistory: [...state.clashHistory, action.payload],
+      }
+    }
+
+    case 'REVEAL_SECRET': {
+      // Prevent duplicate reveals
+      if (state.secretReveals.some(s =>
+        s.knowers.join() === action.payload.knowers.join() &&
+        s.targetId === action.payload.targetId &&
+        s.secretType === action.payload.secretType
+      )) {
+        return state
+      }
+
+      return {
+        ...state,
+        secretReveals: [...state.secretReveals, { ...action.payload, revealed: true }],
+      }
+    }
+
+    case 'SET_PARADIGM_SHIFT': {
+      return {
+        ...state,
+        paradigmShift: action.payload,
+      }
+    }
+
     default:
       // TypeScript exhaustiveness check - will error if any action type is missed
       return state
@@ -171,7 +240,9 @@ interface GameProviderProps {
  * This component:
  * 1. Creates the reducer with initial state
  * 2. Populates candidates from data/candidates.ts
- * 3. Provides state and dispatch to all children
+ * 3. Initializes pressure states for all candidates
+ * 4. Provides state and dispatch to all children
+ * 5. Sets up debug mode in development
  *
  * Usage in App.tsx:
  *   <GameProvider>
@@ -183,9 +254,62 @@ export function GameProvider({ children }: GameProviderProps) {
   const initialState: GameState = {
     ...initialGameState,
     candidates: candidates,
+    // Initialize pressure states for all candidates
+    pressureStates: candidates.reduce((acc, candidate) => {
+      acc[candidate.id] = {
+        candidateId: candidate.id,
+        pressureLevel: 0,
+        triggers: {
+          questionsTargeted: 0,
+          alliesEliminated: 0,
+          contradictionsExposed: 0,
+        },
+        hasSlippedUp: false,
+      }
+      return acc
+    }, {} as Record<string, GameState['pressureStates'][string]>),
   }
 
   const [state, dispatch] = useReducer(gameReducer, initialState)
+
+  // Set up debug mode in development
+  if (import.meta.env.DEV) {
+    // @ts-expect-error - Debug mode only available in development
+    window.TLV_DEBUG = {
+      getState: () => state,
+      getPressure: (candidateId: string) => state.pressureStates[candidateId],
+      getTopics: () => state.topicHistory,
+      getClashes: () => state.clashHistory,
+      getSecrets: () => state.secretReveals,
+      triggerClash: () => {
+        // For testing - manually trigger a clash between first two active candidates
+        const activeCandidates = state.candidates.filter(c => !c.isEliminated)
+        if (activeCandidates.length >= 2) {
+          dispatch({
+            type: 'ADD_CLASH',
+            payload: {
+              id: `debug_clash_${Date.now()}`,
+              timestamp: Date.now(),
+              initiator: activeCandidates[0].id,
+              target: activeCandidates[1].id,
+              topic: 'DEBUG',
+              dialogueExchange: [
+                {
+                  speaker: activeCandidates[0].id,
+                  content: '[DEBUG CLASH]',
+                  emotion: 'angry',
+                },
+              ],
+              triggers: {
+                type: 'pressure',
+                context: 'Debug mode - manually triggered',
+              },
+            },
+          })
+        }
+      },
+    }
+  }
 
   return <GameContext.Provider value={{ state, dispatch }}>{children}</GameContext.Provider>
 }
@@ -264,6 +388,35 @@ export const gameActions = {
 
   resetGame: (): GameAction => ({
     type: 'RESET_GAME',
+  }),
+
+  // ----------------------------------------------------------------------
+  // Plot Twist System Action Creators
+  // ----------------------------------------------------------------------
+
+  trackTopic: (topicEntry: GameState['topicHistory'][0]): GameAction => ({
+    type: 'TRACK_TOPIC',
+    payload: topicEntry,
+  }),
+
+  updatePressure: (candidateId: string, pressureState: GameState['pressureStates'][string]): GameAction => ({
+    type: 'UPDATE_PRESSURE',
+    payload: { candidateId, pressureState },
+  }),
+
+  addClash: (clashEvent: GameState['clashHistory'][0]): GameAction => ({
+    type: 'ADD_CLASH',
+    payload: clashEvent,
+  }),
+
+  revealSecret: (secret: GameState['secretReveals'][0]): GameAction => ({
+    type: 'REVEAL_SECRET',
+    payload: secret,
+  }),
+
+  setParadigmShift: (paradigmShift: NonNullable<GameState['paradigmShift']>): GameAction => ({
+    type: 'SET_PARADIGM_SHIFT',
+    payload: paradigmShift,
   }),
 }
 

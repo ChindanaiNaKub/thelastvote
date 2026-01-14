@@ -1949,6 +1949,271 @@ vercel --prod
 
 ---
 
+## Phase 1: Plot Twist System Foundation COMPLETE ✅
+
+**Date:** 2026-01-14
+
+**Entry:** Plot Twist System - Phase 1 Foundation Complete. Ready for collaborative development.
+
+### Context
+
+**User Request:** "ผมลืมไปว่าเกม เรา เน้นที่ Plot Twists, Creative และก็ never exists เราจะสามารถ improve game play ยังไงได้อีกบ้างจากตอนนี้ ไปอ่าน memory bank, enter plan mode!"
+
+**Goal:** Add never-before-seen plot twist mechanics while maintaining testability and stability. Focus on:
+- Betrayal from trusted candidates
+- Elimination regret
+- Total paradigm shifts ("everything I believed was wrong")
+- Creative, unique elements
+
+### Actions Completed
+
+#### Phase 1.1: Extended Type Definitions ✅
+**File:** `/src/types/game.ts`
+
+**New Types Added (7 major interfaces):**
+1. **CandidateRelationship** - Detailed relationship data between candidates
+   - Fields: targetId, type, strength, isSecret
+   - New relationship types: 'secret_enemy', 'secret_ally'
+
+2. **PressureState** - Tracks candidate pressure for slip-ups
+   - Fields: candidateId, pressureLevel (0-100), triggers, hasSlippedUp
+   - Triggers: questionsTargeted, alliesEliminated, contradictionsExposed
+
+3. **TopicEntry** - Tracks question topics for dynamic consequences
+   - Fields: question, topics[], targetedCandidate, timestamp
+
+4. **SecretKnowledge** - What each candidate knows about others
+   - Fields: knowers[], targetId, secretType, revealCondition, revealed
+
+5. **ClashEvent** - Candidates publicly attacking each other
+   - Fields: id, timestamp, initiator, target, topic, dialogueExchange[], triggers
+
+6. **ClashDialogueLine** - One line of dialogue in a clash
+   - Fields: speaker, content, emotion
+
+7. **ParadigmShift** - End-game meta twist
+   - Fields: twistType, revealSequence[]
+
+**Extended Existing Types:**
+- `ConversationEntryType` - Added 'clash' type
+- `ConversationEntry` - Added clashData field
+- `Candidate` - Added detailedRelationships, knowsSecretsAbout, pressureThreshold, slipUpResponses
+- `GameState` - Added topicHistory, pressureStates, clashHistory, secretReveals, paradigmShift, questionTopicsAnalyzed
+- `GameAction` - Added TRACK_TOPIC, UPDATE_PRESSURE, ADD_CLASH, REVEAL_SECRET, SET_PARADIGM_SHIFT
+
+#### Phase 1.2: Created Tracking Utilities ✅
+**File:** `/src/lib/tracking.ts` (NEW - 450+ lines)
+
+**Functions Implemented:**
+
+1. **Topic Analysis**
+   - `analyzeQuestionTopics(question)` - Detects topics from Thai text
+   - `trackTopic(question, targetedCandidate?)` - Creates TopicEntry
+   - Topics: เศรษฐกิจ, การศึกษา, ความปลอดภัย, คอร์รัปชัน, สิทธิมนุษยชน, สิ่งแวดล้อม, สุขภาพ, การท่องเที่ยว, โครงสร้างพื้นฐาน, ความมั่งคั่ง
+
+2. **Pressure Calculation**
+   - `calculatePressure(candidateId, state)` - Calculates pressure level
+   - `calculateAllPressures(state)` - Recalculates for all active candidates
+   - Formula: (questions × 20) + (allies eliminated × 30) + (contradictions × 15)
+   - Threshold: >70 triggers slip-ups
+
+3. **Clash Detection**
+   - `checkClashConditions(state)` - Main clash detector
+   - `checkAllyDefenseTrigger()` - Ally eliminated triggers clash
+   - `checkRivalAttackTrigger()` - Rival under pressure triggers clash
+   - `checkPressureTrigger()` - Extreme pressure (>80) triggers clash
+   - `generateClashEvent()` - Creates clash with dialogue
+
+4. **Debug Utilities**
+   - `getDebugTrackingData(state)` - Returns all tracking for dev mode
+
+#### Phase 1.3: Updated GameContext ✅
+**File:** `/src/context/GameContext.tsx`
+
+**Reducer Actions Added (5 new):**
+1. **TRACK_TOPIC** - Adds question topics to history
+2. **UPDATE_PRESSURE** - Updates candidate pressure state
+3. **ADD_CLASH** - Adds clash event and creates conversation entry
+4. **REVEAL_SECRET** - Reveals secret to player (with duplicate prevention)
+5. **SET_PARADIGM_SHIFT** - Sets end-game meta twist
+
+**GameProvider Enhancements:**
+- Initializes pressureStates for all candidates on startup
+- Sets up debug mode: `window.TLV_DEBUG` object in development
+- Debug functions: getState(), getPressure(), getTopics(), getClashes(), getSecrets(), triggerClash()
+
+**Action Creators Added:**
+- `trackTopic(topicEntry)`
+- `updatePressure(candidateId, pressureState)`
+- `addClash(clashEvent)`
+- `revealSecret(secret)`
+- `setParadigmShift(paradigmShift)`
+
+### Files Created
+
+```
+/home/prab/Documents/thelastvote/src/
+└── lib/
+    └── tracking.ts    # Plot twist tracking utilities (450+ lines)
+```
+
+### Files Modified
+
+```
+/home/prab/Documents/thelastvote/src/
+├── types/
+│   └── game.ts                        # Extended with 7 new interfaces
+└── context/
+    └── GameContext.tsx                # 5 new reducer cases + debug mode
+```
+
+### Test Results
+
+✅ **TypeScript Compilation:** All types compile successfully (195.24 kB build)
+✅ **Build:** Production build successful
+✅ **Dev Server:** Running at http://localhost:5173/
+✅ **Type Safety:** All new actions properly typed
+✅ **Debug Mode:** Accessible via `window.TLV_DEBUG`
+
+### Design Principles Applied
+
+**Deterministic Over Random:**
+- All mechanics are deterministic and testable
+- Clash triggers have explicit conditions
+- Pressure calculation follows clear formula
+- Topic detection uses keyword matching
+
+**Testability:**
+- Debug mode exposes all tracking data
+- Console logging available
+- Each mechanic can be triggered independently
+- No hidden state or randomness
+
+**Psychological Impact Goals:**
+- Pressure slip-ups → "They're cracking under questioning"
+- Candidate clashes → "Tension between candidates revealed"
+- Dynamic consequences → "I never asked about that"
+- Paradigm shift → "Everything I believed was wrong"
+
+### Current State
+
+**Phase:** Phase 1 COMPLETE ✅ (Foundation layer)
+
+**What's Ready:**
+- ✅ All type definitions for plot twist system
+- ✅ Tracking infrastructure (topics, pressure, clashes, secrets)
+- ✅ State management for new mechanics
+- ✅ Debug mode for development
+- ✅ Ready for collaborative development
+
+**What's Next (Phase 2):**
+**Phase 2A: Pressure Slip-ups**
+- Integrate pressure into API prompts
+- Add slip-up responses to candidate data
+- File: `/src/lib/api.ts`
+
+**Phase 2B: Candidate Clashes**
+- Create ClashCard UI component
+- Update QuestioningPhase to trigger clashes
+- Update ResponsesGrid to display clashes
+
+**Phase 3: Dynamic Consequences**
+- Create consequence templates based on gameplay
+- Make consequences respond to questions asked/not asked
+- File: `/src/data/consequences.ts`
+
+**Phase 4: Paradigm Shift**
+- Create meta twist definitions
+- Add twist reveal to ConsequencePhase
+- File: `/src/data/paradigmTwists.ts` (NEW)
+
+### Plan File
+
+**Location:** `/home/prab/.claude/plans/groovy-toasting-sphinx.md`
+**Note:** Plan file is NOT in repo - in `~/.claude/plans/`
+**Action Required:** Copy plan file to repo for collaborative development
+
+### Collaboration Instructions
+
+**For Other Developers:**
+
+1. **Read Memory Bank First:**
+   - `memory-bank/progress.md` - This file (development history)
+   - `memory-bank/game-design-document.md` - Core design vision
+   - `memory-bank/architecture.md` - System structure
+
+2. **Understand Current State:**
+   - Phase 1 Foundation COMPLETE ✅
+   - All tracking systems in place
+   - Debug mode enabled: `window.TLV_DEBUG`
+   - TypeScript compiles successfully
+
+3. **Next Phase to Implement:**
+   - Choose Phase 2A (Pressure) OR Phase 2B (Clashes) OR Phase 3 (Dynamic Consequences)
+   - Read plan file: `/home/prab/.claude/plans/groovy-toasting-sphinx.md`
+   - Follow implementation order in plan
+
+4. **Key Design Principles:**
+   - Deterministic, not random
+   - Testable and predictable
+   - Creates doubt and regret
+   - Enhances replay value
+
+### Debug Mode Usage
+
+**In Browser Console (Dev Mode Only):**
+
+```javascript
+// View current game state
+TLV_DEBUG.getState()
+
+// Check pressure level for candidate
+TLV_DEBUG.getPressure('candidate_1')
+
+// See all topics tracked so far
+TLV_DEBUG.getTopics()
+
+// View clash history
+TLV_DEBUG.getClashes()
+
+// See revealed secrets
+TLV_DEBUG.getSecrets()
+
+// Manually trigger a clash (for testing)
+TLV_DEBUG.triggerClash()
+```
+
+### Project Status Summary
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| **Type Definitions** | ✅ COMPLETE | All plot twist types defined |
+| **Tracking Utilities** | ✅ COMPLETE | Topics, pressure, clashes detection |
+| **State Management** | ✅ COMPLETE | 5 new actions, debug mode enabled |
+| **Pressure Slip-ups** | ⏳ PENDING | Phase 2A - integrate into API |
+| **Candidate Clashes** | ⏳ PENDING | Phase 2B - create UI components |
+| **Dynamic Consequences** | ⏳ PENDING | Phase 3 - template system |
+| **Paradigm Shift** | ⏳ PENDING | Phase 4 - meta twist |
+
+### Deployment Readiness
+
+**Current Status:**
+- ✅ Foundation ready for collaborative development
+- ✅ All changes compiled successfully
+- ✅ No breaking changes to existing gameplay
+- ✅ Debug mode available for testing
+- ⚠️ Plan file needs to be copied to repo
+
+**Recommended Actions:**
+1. Copy plan file from `~/.claude/plans/groovy-toasting-sphinx.md` to repo (e.g., `/docs/plot-twist-plan.md`)
+2. Commit and push Phase 1 changes
+3. Share with collaborators
+4. Other devs: Read memory bank + plan → continue with Phase 2
+
+---
+
+
+
 ## Elimination Mechanic Implemented ✅
 
 **Date:** 2026-01-14
