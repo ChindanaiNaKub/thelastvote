@@ -71,6 +71,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       body: JSON.stringify({
         model: OPENROUTER_MODEL,
         messages: messages,
+        max_tokens: 100, // Limit response length to control costs
+        temperature: 0.7, // Balance consistency and creativity
       }),
     })
     const duration = Date.now() - startTime

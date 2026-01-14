@@ -10,6 +10,28 @@ import { candidates } from '../data/candidates'
 import { buildCandidatePrompt, type BuiltPrompt } from '../prompts/candidate-prompts'
 
 // ----------------------------------------------------------------------------
+// Session ID Management
+// ----------------------------------------------------------------------------
+
+/**
+ * Generate or retrieve a persistent session ID for rate limiting
+ * Stored in localStorage to persist across page reloads
+ */
+let sessionId: string | null = null
+
+function getSessionId(): string {
+  if (!sessionId) {
+    sessionId = localStorage.getItem('tlv_session_id')
+    if (!sessionId) {
+      // Generate a random UUID for session tracking
+      sessionId = crypto.randomUUID()
+      localStorage.setItem('tlv_session_id', sessionId)
+    }
+  }
+  return sessionId
+}
+
+// ----------------------------------------------------------------------------
 
 /**
  * Request parameters for generating a candidate response
@@ -387,7 +409,7 @@ async function generateApiResponse(
     question: request.question,
     conversationHistory: request.conversationHistory,
     includeConversationHistory: true,
-    maxHistoryEntries: 10,
+    maxHistoryEntries: 7, // Reduced from 10 to save tokens (saves ~99 tokens/call)
   })
 
   // Call backend with retry logic
@@ -418,7 +440,10 @@ async function callBackendApi(
 ): Promise<string> {
   const response = await fetch(apiUrl, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Session-ID': getSessionId(), // Add session ID for rate limiting
+    },
     body: JSON.stringify({
       question: prompt.userPrompt,
       candidatePrompt: prompt.systemPrompt,

@@ -7,6 +7,7 @@
 
 import express from 'express'
 import cors from 'cors'
+import rateLimit from 'express-rate-limit'
 import dotenv from 'dotenv'
 
 // Load environment variables
@@ -16,8 +17,52 @@ const app = express()
 const PORT = process.env.API_PORT || 3001
 
 // Middleware
-app.use(cors())
+// Configure CORS to only allow specific origins
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
+  'https://thelastvote.vercel.app',
+  // Add your production domains here
+]
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true)
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  credentials: false, // Don't allow cookies
+  maxAge: 86400, // Cache preflight response for 24 hours
+}))
+
 app.use(express.json())
+
+// Security headers middleware
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff')
+  res.setHeader('X-Frame-Options', 'DENY')
+  res.setHeader('X-XSS-Protection', '1; mode=block')
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+  next()
+})
+
+// Rate limiting to prevent API abuse
+const chatRateLimit = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour window
+  max: 20, // Limit each IP to 20 requests per hour
+  message: { error: 'Too many requests, please try again later' },
+  standardHeaders: true, // Return rate limit info in headers
+  legacyHeaders: false,
+})
+
+// Apply rate limiting only to /api/chat endpoint
+app.use('/api/chat', chatRateLimit)
 
 // OpenRouter API configuration
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY
@@ -95,6 +140,8 @@ app.post('/api/chat', async (req, res) => {
           body: JSON.stringify({
             model: OPENROUTER_MODEL,
             messages: messages,
+            max_tokens: 100, // Limit response length to control costs
+            temperature: 0.7, // Balance consistency and creativity
           }),
           signal: controller.signal,
         })
