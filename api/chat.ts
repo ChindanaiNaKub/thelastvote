@@ -4,7 +4,6 @@
 // Handles AI-powered candidate responses for production deployment.
 // ============================================================================
 
-import Anthropic from '@anthropic-ai/sdk'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 export const config = {
@@ -27,19 +26,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       })
     }
 
-    // Initialize Anthropic client with server-side API key
-    const anthropic = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY,
-    })
+    const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY
+    const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'xiaomi/mimo-v2-flash:free'
+    const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions'
 
-    if (!process.env.ANTHROPIC_API_KEY) {
+    if (!OPENROUTER_API_KEY) {
       return res.status(500).json({
-        error: 'API key not configured'
+        error: 'OpenRouter API key not configured'
       })
     }
 
-    // Format conversation history for Claude
-    const messages: Anthropic.MessageParam[] = []
+    // Format conversation history for OpenRouter
+    const messages: Array<{ role: string; content: string }> = []
+
+    // Add system prompt at the beginning
+    if (candidatePrompt) {
+      messages.push({ role: 'system', content: candidatePrompt })
+    }
 
     // Add conversation history if present
     if (conversationHistory && conversationHistory.length > 0) {
@@ -55,19 +58,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Add current question
     messages.push({ role: 'user', content: question })
 
-    // Call Claude API
+    // Call OpenRouter API
     const startTime = Date.now()
-    const response = await anthropic.messages.create({
-      model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 150,
-      system: candidatePrompt,
-      messages: messages,
+    const response = await fetch(OPENROUTER_API_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': req.headers.referer || 'https://thelastvote.vercel.app',
+        'X-Title': 'The Last Vote',
+      },
+      body: JSON.stringify({
+        model: OPENROUTER_MODEL,
+        messages: messages,
+      }),
     })
     const duration = Date.now() - startTime
 
-    // Get text response from content blocks
-    const contentBlock = response.content[0]
-    const aiResponse = contentBlock.type === 'text' ? contentBlock.text : 'ไม่สามารถสร้างคำตอบได้'
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error('Vercel API Error - OpenRouter:', errorText)
+      throw new Error(`OpenRouter API error: ${response.status} ${response.statusText}`)
+    }
+
+    const data = await response.json()
+    const aiResponse = data.choices[0].message.content || 'ไม่สามารถสร้างคำตอบได้'
 
     // Return response
     res.json({
