@@ -22,9 +22,9 @@ export function VotingPhase() {
   const handleVote = (candidateId: string) => {
     // ------------------------------------------------------------------
     // SENATOR TWIST (สว. ปราบ) Implementation
-    // 60% chance to override user's vote
+    // 50% chance to override user's vote
     // ------------------------------------------------------------------
-    const SENATOR_TWIST_CHANCE = 0.6
+    const SENATOR_TWIST_CHANCE = 0.5
     let finalVoteId = candidateId
     let isIntervened = false
 

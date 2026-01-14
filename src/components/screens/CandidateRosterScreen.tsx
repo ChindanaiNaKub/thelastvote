@@ -36,29 +36,46 @@ export function CandidateRosterScreen() {
         <div
           className="candidate-card candidate-card--compact candidate-card--hidden-senator"
           style={{
-            opacity: 0.7,
-            filter: 'grayscale(100%) blur(2px)',
+            position: 'relative',
             pointerEvents: 'none',
-            position: 'relative'
+            // Remove filter from parent so child (stamp) is not affected
           }}
         >
-          <div className="candidate-card__portrait">🤴</div>
-          <h3 className="candidate-card__name">ท่าน สว. ปราบ</h3>
-          <p className="candidate-card__personality">
-            ผู้มีอำนาจเหนือกว่า... คอยจับตาดูอยู่
-          </p>
+          {/* Content Layer - Blurred & Grayscale */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 'var(--clinical-space-md)',
+            opacity: 0.6,
+            filter: 'grayscale(100%) blur(1px)', // Reduced blur slightly for legibility
+            width: '100%'
+          }}>
+            <div className="candidate-card__portrait">🤴</div>
+            <h3 className="candidate-card__name">ท่าน สว. ปราบ</h3>
+            <p className="candidate-card__personality">
+              ผู้มีอำนาจเหนือกว่า... คอยจับตาดูอยู่
+            </p>
+          </div>
+
+          {/* Overlay Stamp - Sharp & Visible */}
           <div style={{
             position: 'absolute',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%) rotate(-15deg)',
-            border: '4px solid red',
-            color: 'red',
-            padding: '10px',
+            border: '4px solid #ef4444', // Vivid Red
+            color: '#ef4444',
+            padding: '8px 16px',
             fontSize: '1.5rem',
-            fontWeight: 'bold',
-            opacity: 0.6,
-            textTransform: 'uppercase'
+            fontWeight: '800',
+            opacity: 1, // Full opacity
+            textTransform: 'uppercase',
+            zIndex: 10,
+            background: 'rgba(0,0,0,0.2)', // Semi-transparent background for contrast
+            boxShadow: '0 2px 10px rgba(0,0,0,0.3)', // Shadow for depth
+            textShadow: '0 1px 2px rgba(0,0,0,0.5)', // Text shadow for readability
+            backdropFilter: 'blur(0px)' // Ensure no blur leaks
           }}>
             LOCKED
           </div>
