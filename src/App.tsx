@@ -10,6 +10,7 @@ import { ThemeProvider } from './context/ThemeContext'
 import { IntroductionScreen } from './components/screens/IntroductionScreen'
 import { CandidateRosterScreen } from './components/screens/CandidateRosterScreen'
 import { QuestioningPhase } from './components/screens/QuestioningPhase'
+import { EliminationPhase } from './components/screens/EliminationPhase'
 import { VotingPhase } from './components/screens/VotingPhase'
 import { ConsequencePhase } from './components/screens/ConsequencePhase'
 import { CreditsScreen } from './components/screens/CreditsScreen'
@@ -50,6 +51,14 @@ function AppContent() {
       return (
         <>
           <QuestioningPhase />
+          <AppFooter />
+        </>
+      )
+
+    case 'elimination':
+      return (
+        <>
+          <EliminationPhase />
           <AppFooter />
         </>
       )

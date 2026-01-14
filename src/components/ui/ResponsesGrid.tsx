@@ -38,8 +38,12 @@ export function ResponsesGrid({ candidates, entries, isProcessing = false }: Res
   const responseEntries = entries.filter(entry => entry.type === 'response')
   console.log('[ResponsesGrid] Response entries:', responseEntries.length)
 
+  // CRITICAL: Filter out eliminated candidates from display
+  const activeCandidates = candidates.filter(c => !c.isEliminated)
+  console.log(`[ResponsesGrid] Displaying ${activeCandidates.length}/${candidates.length} candidates (eliminated: ${candidates.length - activeCandidates.length})`)
+
   // Group responses by candidate
-  const candidateResponses = candidates.map(candidate => {
+  const candidateResponses = activeCandidates.map(candidate => {
     // Get the most recent response from this candidate
     const candidateEntries = responseEntries
       .filter(entry => entry.speaker === candidate.id)

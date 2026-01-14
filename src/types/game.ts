@@ -15,6 +15,7 @@ export type GamePhase =
   | 'introduction' // Opening screen, sets the mood
   | 'roster' // Introduce the 5 candidates
   | 'questioning' // Player asks questions to candidates
+  | 'elimination' // Player eliminates one candidate
   | 'voting' // Player casts their final vote
   | 'consequence' // Reveal aftermath and create doubt
   | 'credits' // End screen with replay option
@@ -74,6 +75,13 @@ export interface Candidate {
   hasSpoken: boolean // Whether this candidate has responded yet
   trustLevel: number // 0-100, internal tracking for AI behavior
   relationships: Record<string, RelationshipType> // How they view other candidates
+
+  // ------------------------------------------------------------------
+  // Elimination State (for elimination mechanic)
+  // ------------------------------------------------------------------
+  isEliminated: boolean // Whether this candidate has been eliminated
+  eliminatedAtRound?: number // Which round they were eliminated (1 or 2)
+  eliminatedByPlayerChoice?: boolean // Whether player explicitly chose to eliminate them
 }
 
 // ----------------------------------------------------------------------------
@@ -169,6 +177,19 @@ export interface ConsequenceData {
 // ----------------------------------------------------------------------------
 
 /**
+ * EliminationEvent tracks when a candidate is eliminated by the player.
+ * Creates tension and irreversible decisions.
+ */
+export interface EliminationEvent {
+  round: number // Which round (1 or 2)
+  eliminatedCandidateId: string // Who was eliminated
+  remainingCandidates: string[] // IDs of candidates still in the game
+  timestamp: number // When the elimination happened
+}
+
+// ----------------------------------------------------------------------------
+
+/**
  * GameState is the central state object for the entire game.
  * Managed by React Context + useReducer pattern.
  */
@@ -177,7 +198,7 @@ export interface GameState {
   // Phase Management
   // ------------------------------------------------------------------
   phase: GamePhase // Current game phase
-  questionsRemaining: number // Starts at 3, decrements to 0
+  questionsRemaining: number // Starts at 2, decrements to 0 (reduced from 3 for elimination mechanic)
 
   // ------------------------------------------------------------------
   // Conversation
@@ -188,6 +209,12 @@ export interface GameState {
   // Candidates
   // ------------------------------------------------------------------
   candidates: Candidate[] // All 5 candidates with dynamic state
+
+  // ------------------------------------------------------------------
+  // Elimination Tracking
+  // ------------------------------------------------------------------
+  eliminatedCandidateIds: string[] // IDs of eliminated candidates
+  eliminationHistory: EliminationEvent[] // Record of all eliminations
 
   // ------------------------------------------------------------------
   // Player Choice
@@ -216,6 +243,7 @@ export type GameAction =
   | { type: 'SET_PHASE'; payload: GamePhase }
   | { type: 'DECREMENT_QUESTIONS' }
   | { type: 'ADD_CONVERSATION_ENTRY'; payload: Omit<ConversationEntry, 'id' | 'timestamp'> }
+  | { type: 'ELIMINATE_CANDIDATE'; payload: string } // Eliminate a candidate by ID
   | { type: 'SET_VOTE'; payload: string }
   | { type: 'SET_CONSEQUENCES'; payload: ConsequenceData }
   | { type: 'SET_PROCESSING'; payload: boolean }
@@ -229,9 +257,11 @@ export type GameAction =
  */
 export const initialGameState: GameState = {
   phase: 'introduction',
-  questionsRemaining: 3,
+  questionsRemaining: 3, // Start with 3 questions
   conversationHistory: [],
   candidates: [], // Populated from data/candidates.ts
+  eliminatedCandidateIds: [], // No eliminations at start
+  eliminationHistory: [], // Empty at start
   playerVote: null,
   consequences: null,
   isProcessing: false,

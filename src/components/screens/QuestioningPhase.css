@@ -414,3 +414,44 @@
     font-size: var(--clinical-size-sm);
   }
 }
+
+/* ============================================================================
+ * Elimination Required Notice
+ * ============================================================================ */
+
+.elimination-required-notice {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-radius: 12px;
+  border-left: 4px solid #f59e0b;
+  text-align: center;
+  animation: shake 0.5s ease-in-out;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.elimination-required-notice p {
+  margin: 0.5rem 0;
+}
+
+.elimination-required-notice p:first-child {
+  font-size: 1.25rem;
+  color: #92400e;
+  font-weight: 700;
+}
+
+.elimination-required-notice p:nth-child(2) {
+  font-size: 1rem;
+  color: #78350f;
+}
+
+.elimination-required-notice p:last-child {
+  font-size: 0.9rem;
+  color: #92400e;
+  font-style: italic;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}

@@ -14,6 +14,11 @@ export function VotingPhase() {
   const { state, dispatch } = useGame()
   const { generateConsequences } = useConsequences()
 
+  // CRITICAL: Filter out eliminated candidates - only show remaining 3
+  const activeCandidates = state.candidates.filter(c => !c.isEliminated)
+
+  console.log(`[VotingPhase] Final vote: ${activeCandidates.length} candidates remaining (should be 3)`)
+
   const handleVote = (candidateId: string) => {
     const confirmed = window.confirm(
       `คุณกำลังจะลงคะแนนให้ ${state.candidates.find(c => c.id === candidateId)?.name} การกระทำนี้ไม่สามารถย้อนกลับได้ คุณแน่ใจหรือไม่?`
@@ -38,7 +43,7 @@ export function VotingPhase() {
       </p>
 
       <div className="candidates-grid">
-        {state.candidates.map((candidate) => (
+        {activeCandidates.map((candidate) => (
           <CandidateCard
             key={candidate.id}
             candidate={candidate}

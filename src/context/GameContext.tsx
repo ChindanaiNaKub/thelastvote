@@ -20,8 +20,9 @@ import { candidates } from '../data/candidates'
  *
  * Action types handled:
  * - SET_PHASE: Transition to a new game phase
- * - DECREMENT_QUESTIONS: Decrease questions remaining (max 3)
+ * - DECREMENT_QUESTIONS: Decrease questions remaining (max 2)
  * - ADD_CONVERSATION_ENTRY: Add a conversation event to history
+ * - ELIMINATE_CANDIDATE: Mark a candidate as eliminated
  * - SET_VOTE: Record the player's final choice
  * - SET_CONSEQUENCES: Store aftermath data
  * - SET_PROCESSING: Toggle loading state for AI calls
@@ -52,6 +53,46 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...state,
         conversationHistory: [...state.conversationHistory, newEntry],
+      }
+    }
+
+    case 'ELIMINATE_CANDIDATE': {
+      const candidateId = action.payload
+
+      // Prevent duplicate elimination
+      if (state.eliminatedCandidateIds.includes(candidateId)) {
+        return state
+      }
+
+      // Calculate current round (questionsRemaining starts at 2)
+      // After Q1: questionsRemaining = 1, round = 1
+      // After Q2: questionsRemaining = 0, round = 2
+      const currentRound = 2 - state.questionsRemaining
+
+      return {
+        ...state,
+        eliminatedCandidateIds: [...state.eliminatedCandidateIds, candidateId],
+        eliminationHistory: [
+          ...state.eliminationHistory,
+          {
+            round: currentRound,
+            eliminatedCandidateId: candidateId,
+            remainingCandidates: state.candidates
+              .filter((c) => c.id !== candidateId && !state.eliminatedCandidateIds.includes(c.id))
+              .map((c) => c.id),
+            timestamp: Date.now(),
+          },
+        ],
+        candidates: state.candidates.map((c) =>
+          c.id === candidateId
+            ? {
+                ...c,
+                isEliminated: true,
+                eliminatedAtRound: currentRound,
+                eliminatedByPlayerChoice: true,
+              }
+            : c
+        ),
       }
     }
 
@@ -88,7 +129,12 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
           hasSpoken: false,
           trustLevel: 50,
           relationships: {},
+          isEliminated: false,
+          eliminatedAtRound: undefined,
+          eliminatedByPlayerChoice: undefined,
         })),
+        eliminatedCandidateIds: [],
+        eliminationHistory: [],
       }
     }
 
@@ -189,6 +235,11 @@ export const gameActions = {
   addConversationEntry: (entry: Omit<ConversationEntry, 'id' | 'timestamp'>): GameAction => ({
     type: 'ADD_CONVERSATION_ENTRY',
     payload: entry,
+  }),
+
+  eliminateCandidate: (candidateId: string): GameAction => ({
+    type: 'ELIMINATE_CANDIDATE',
+    payload: candidateId,
   }),
 
   setVote: (candidateId: string): GameAction => ({

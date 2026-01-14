@@ -57,6 +57,11 @@ export const candidate1: Candidate = {
   hasSpoken: false,
   trustLevel: 50,
   relationships: {},
+
+  // ------------------------------------------------------------------
+  // Elimination State (initial values)
+  // ------------------------------------------------------------------
+  isEliminated: false,
 }
 
 // ----------------------------------------------------------------------------
@@ -109,6 +114,11 @@ export const candidate2: Candidate = {
   hasSpoken: false,
   trustLevel: 50,
   relationships: {},
+
+  // ------------------------------------------------------------------
+  // Elimination State (initial values)
+  // ------------------------------------------------------------------
+  isEliminated: false,
 }
 
 // ----------------------------------------------------------------------------
@@ -161,6 +171,11 @@ export const candidate3: Candidate = {
   hasSpoken: false,
   trustLevel: 50,
   relationships: {},
+
+  // ------------------------------------------------------------------
+  // Elimination State (initial values)
+  // ------------------------------------------------------------------
+  isEliminated: false,
 }
 
 // ----------------------------------------------------------------------------
@@ -213,6 +228,11 @@ export const candidate4: Candidate = {
   hasSpoken: false,
   trustLevel: 50,
   relationships: {},
+
+  // ------------------------------------------------------------------
+  // Elimination State (initial values)
+  // ------------------------------------------------------------------
+  isEliminated: false,
 }
 
 // ----------------------------------------------------------------------------
@@ -265,6 +285,11 @@ export const candidate5: Candidate = {
   hasSpoken: false,
   trustLevel: 50,
   relationships: {},
+
+  // ------------------------------------------------------------------
+  // Elimination State (initial values)
+  // ------------------------------------------------------------------
+  isEliminated: false,
 }
 
 // ----------------------------------------------------------------------------

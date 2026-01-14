@@ -19,14 +19,51 @@ export function QuestioningPhase() {
   // Determine if game should feel tense (low on questions)
   const isTense = state.questionsRemaining <= 1
 
+  // Count how many questions have been asked
+  const questionsAsked = state.conversationHistory.filter(entry => entry.type === 'question').length
+
+  // CRITICAL: Check if player must eliminate someone before asking more questions
+  const totalEliminationsExpected = 2 // We expect 2 eliminations total (after Q1 and Q2)
+  const currentEliminationCount = state.eliminatedCandidateIds.length
+
+  // Player must eliminate if:
+  // 1. We have responses from the latest question AND
+  // 2. We haven't eliminated enough for the current round
+  const hasLatestResponses = state.conversationHistory.some(e => e.type === 'response')
+  const needsElimination = hasLatestResponses &&
+                         questionsAsked > currentEliminationCount &&
+                         currentEliminationCount < totalEliminationsExpected &&
+                         state.questionsRemaining > 0
+
   const handleVoteNow = () => {
+    // CRITICAL: Must have at least one round of responses before proceeding
+    const responseEntries = state.conversationHistory.filter(e => e.type === 'response')
+
+    if (responseEntries.length === 0) {
+      // Don't allow proceeding without seeing responses
+      alert('กรุณารอสักครู่ คำตอบจาก candidates ยังไม่ปรากฏ')
+      return
+    }
+
+    // After responses are shown, route to elimination phase
+    // (unless it's the final round, then go directly to voting)
     if (state.questionsRemaining === 0) {
+      // No more questions - go straight to voting (3 candidates remain)
       dispatch(gameActions.setPhase('voting'))
+    } else {
+      // Go to elimination phase to eliminate one candidate
+      dispatch(gameActions.setPhase('elimination'))
     }
   }
 
   // Handle question submission
   const handleQuestionSubmit = (question: string, targetCandidateId?: string) => {
+    // CRITICAL: Prevent asking more questions if elimination is needed
+    if (needsElimination) {
+      alert('⚠️ คุณต้องคัดคนออก 1 คนก่อนถึงจะถามคำถามต่อได้\n\nกด "ถัดไป - คัดคนออก" เพื่อไปยังหน้าคัดคนออก')
+      return
+    }
+
     // Add conversation entry
     dispatch(gameActions.addConversationEntry({
       type: 'question',
@@ -44,8 +81,16 @@ export function QuestioningPhase() {
     // Generate candidate response using API client
     const generateResponse = async () => {
       try {
-        // Generate responses from ALL 5 candidates simultaneously
-        const responsePromises = state.candidates.map(async (candidate) => {
+        // CRITICAL: Filter out eliminated candidates to save tokens
+        // This ensures we only generate responses for active candidates
+        const activeCandidates = state.candidates.filter(
+          (c) => !state.eliminatedCandidateIds.includes(c.id)
+        )
+
+        console.log(`[QuestioningPhase] Generating for ${activeCandidates.length} active candidates (eliminated: ${state.eliminatedCandidateIds.length})`)
+
+        // Generate responses from active candidates only
+        const responsePromises = activeCandidates.map(async (candidate) => {
           try {
             const response = await generateCandidateResponse({
               candidateId: candidate.id,
@@ -128,12 +173,9 @@ export function QuestioningPhase() {
     'คุณมีแผนอะไรสำหรับอนาคตเมืองนี้บ้าง',
   ]
 
-  // Count how many questions have been asked
-  const questionsAsked = state.conversationHistory.filter(entry => entry.type === 'question').length
-
   // Apply tense state to body as questions run out
   useEffect(() => {
-    if (questionsAsked >= 2 && state.questionsRemaining <= 1) {
+    if (questionsAsked >= 1 && state.questionsRemaining <= 1) {
       document.body.classList.add('tense')
     } else {
       document.body.classList.remove('tense')
@@ -155,7 +197,7 @@ export function QuestioningPhase() {
     <div className={`screen questioning-screen ${isTense ? 'questioning-screen--tense' : ''}`}>
       <div className="question-header">
         <h2>ถามคำถามของคุณ</h2>
-        <p className="subtitle">ทุกคนจะตอบคำถามของคุณ</p>
+        <p className="subtitle">ทุกคนจะตอบคำถามของคุณ (คนที่ไม่ถูกคัดออก)</p>
         <p className={`questions-remaining ${state.questionsRemaining <= 1 ? 'urgent' : ''}`}>
           คำถามที่เหลือ: <strong>{state.questionsRemaining}</strong>
         </p>
@@ -166,8 +208,17 @@ export function QuestioningPhase() {
         <div className="api-mode-notice">{apiModeNotice}</div>
       )}
 
-      {/* Suggested questions - show for first 3 rounds */}
-      {state.questionsRemaining > 0 && !state.isProcessing && questionsAsked < 3 && (
+      {/* CRITICAL: Warning message when elimination is required */}
+      {needsElimination && (
+        <div className="elimination-required-notice">
+          <p>⚠️ <strong>ต้องคัดคนออกก่อน!</strong></p>
+          <p>คุณต้องคัด 1 คนออกก่อนถึงจะถามคำถามต่อได้</p>
+          <p>กดปุ่ม "ถัดไป - คัดคนออก" ด้านล่าง</p>
+        </div>
+      )}
+
+      {/* Suggested questions - show for first 2 rounds */}
+      {state.questionsRemaining > 0 && !state.isProcessing && !needsElimination && questionsAsked < 2 && (
         <div className="suggested-questions">
           <p className="suggested-questions__title">💡 คำถามแนะนำ:</p>
           <div className="suggested-questions__list">
@@ -193,7 +244,7 @@ export function QuestioningPhase() {
 
       <QuestionInput
         onSubmit={handleQuestionSubmit}
-        disabled={state.questionsRemaining === 0}
+        disabled={state.questionsRemaining === 0 || needsElimination}
         isProcessing={state.isProcessing}
         questionsRemaining={state.questionsRemaining}
       />
@@ -201,10 +252,10 @@ export function QuestioningPhase() {
       <div className="actions">
         <button
           onClick={handleVoteNow}
-          disabled={state.questionsRemaining > 0}
+          disabled={state.isProcessing}
           className="btn-primary"
         >
-          {state.questionsRemaining > 0 ? 'ถามคำถามเพิ่มเติมก่อน' : 'ลงคะแนนทันที'}
+          {state.questionsRemaining === 0 ? 'ลงคะแนนทันที' : 'ถัดไป - คัดคนออก'}
         </button>
       </div>
     </div>

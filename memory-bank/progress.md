@@ -1946,3 +1946,211 @@ vercel --prod
 ---
 
 *Progress log last updated: 2026-01-14*
+
+---
+
+## Elimination Mechanic Implemented ✅
+
+**Date:** 2026-01-14
+
+**Entry:** Phase 2.5 - Elimination mechanic with 40% token cost reduction
+
+### Overview
+
+Implemented a creative new elimination mechanic that:
+1. **Increases tension** - Player actively eliminates candidates after each question
+2. **Creates doubt** - "Did I eliminate the honest one?"
+3. **Saves 40% tokens** - 9 AI responses vs 15 responses per game
+
+### Game Flow Changes
+
+**Old Flow:**
+```
+introduction → roster → questioning (Q1, Q2, Q3) → voting (5 candidates) → consequence → credits
+```
+
+**New Flow:**
+```
+introduction → roster → questioning (Q1) → elimination (5→4) → questioning (Q2) → elimination (4→3) → voting (3 candidates) → consequence → credits
+```
+
+### Key Changes
+
+**Questions Reduced:**
+- Old: 3 questions
+- New: 2 questions
+
+**Elimination Phases Added:**
+- After Q1: Player eliminates 1 candidate (5 → 4)
+- After Q2: Player eliminates 1 candidate (4 → 3)
+
+**Final Vote:**
+- Old: Choose from 5 candidates
+- New: Choose from 3 candidates
+
+### Token Cost Analysis
+
+| Phase | Old System | New System | Savings |
+|-------|-----------|-----------|---------|
+| Q1 | 5 responses | 5 responses | 0 |
+| Q2 | 5 responses | 4 responses | 1 response |
+| Q3 | 5 responses | - (eliminated) | 5 responses |
+| **Total** | **15 responses** | **9 responses** | **6 responses (40%)** |
+
+### Files Modified
+
+**Type Definitions:**
+- `src/types/game.ts`
+  - Added `'elimination'` to GamePhase type
+  - Added elimination fields to Candidate interface: `isEliminated`, `eliminatedAtRound`, `eliminatedByPlayerChoice`
+  - Added EliminationEvent interface
+  - Added elimination tracking to GameState: `eliminatedCandidateIds`, `eliminationHistory`
+  - Reduced `questionsRemaining` from 3 to 2
+  - Added `ELIMINATE_CANDIDATE` action type
+  - Updated `initialGameState`
+
+**State Management:**
+- `src/context/GameContext.tsx`
+  - Added `ELIMINATE_CANDIDATE` reducer case with duplicate prevention
+  - Updated `RESET_GAME` to reset elimination state
+  - Added `eliminateCandidate` action creator
+
+**New Components:**
+- `src/components/screens/EliminationPhase.tsx` (NEW)
+  - Shows active (non-eliminated) candidates
+  - Red/danger theme for tension
+  - Confirmation dialog before elimination
+  - Routes to next phase automatically
+
+- `src/components/screens/EliminationPhase.css` (NEW)
+  - High-tension red gradient theme
+  - Pulsing warning animations
+  - Responsive grid layout
+
+**Updated Components:**
+- `src/components/screens/QuestioningPhase.tsx`
+  - Filters eliminated candidates before generating AI responses (CRITICAL for token savings)
+  - Routes to elimination phase after responses
+  - Updated button text: "ถัดไป - คัดคนออก"
+  - Adjusted tense state detection for 2 questions
+  - Updated subtitle: "ทุกคนจะตอบคำถามของคุณ (คนที่ไม่ถูกคัดออก)"
+
+- `src/components/ui/ResponsesGrid.tsx`
+  - Filters eliminated candidates from display
+  - Logs candidate count for debugging
+
+- `src/components/screens/VotingPhase.tsx`
+  - Filters to show only 3 remaining candidates
+  - Logs final candidate count
+
+- `src/App.tsx`
+  - Added `'elimination'` case to phase routing
+  - Imported EliminationPhase component
+
+**Data Updates:**
+- `src/data/candidates.ts`
+  - Added `isEliminated: false` to all 5 candidates
+
+### Technical Implementation Details
+
+**Elimination Logic:**
+```typescript
+// In GameContext reducer
+case 'ELIMINATE_CANDIDATE': {
+  const candidateId = action.payload
+  
+  // Prevent duplicate elimination
+  if (state.eliminatedCandidateIds.includes(candidateId)) {
+    return state
+  }
+  
+  const currentRound = 2 - state.questionsRemaining
+  
+  return {
+    ...state,
+    eliminatedCandidateIds: [...state.eliminatedCandidateIds, candidateId],
+    eliminationHistory: [...state.eliminationHistory, {
+      round: currentRound,
+      eliminatedCandidateId: candidateId,
+      remainingCandidates: /* filtered IDs */,
+      timestamp: Date.now(),
+    }],
+    candidates: state.candidates.map(c =>
+      c.id === candidateId
+        ? { ...c, isEliminated: true, eliminatedAtRound: currentRound, eliminatedByPlayerChoice: true }
+        : c
+    ),
+  }
+}
+```
+
+**Token Saving Filter (CRITICAL):**
+```typescript
+// In QuestioningPhase - before generating responses
+const activeCandidates = state.candidates.filter(
+  (c) => !state.eliminatedCandidateIds.includes(c.id)
+)
+
+const responsePromises = activeCandidates.map(async (candidate) => {
+  // Generate response only for active candidates
+  ...
+})
+```
+
+### Build Status
+
+✅ **TypeScript:** All types compile successfully
+✅ **Build:** Production build successful (192.84 kB)
+✅ **Dev Server:** Running on http://localhost:5173/
+✅ **API Server:** Running on http://localhost:3001/
+
+### Testing Checklist
+
+- ✅ Game starts with 5 candidates
+- ✅ Q1: 5 candidates can respond
+- ✅ Elimination 1: Can eliminate 1, 4 remain
+- ✅ Q2: Only 4 candidates can respond (1 eliminated hidden)
+- ✅ Elimination 2: Can eliminate 1, 3 remain
+- ✅ Final vote: Only 3 candidates shown
+- ✅ Token reduction: 9 AI responses vs 15 (40% savings)
+- ✅ TypeScript compiles without errors
+- ✅ All elimination state resets on play again
+
+### Design Impact
+
+**Enhances Game Feelings:**
+- 🔥 **Increased Tension:** Player makes irreversible decisions
+- 😟 **Creates Doubt:** "Did I eliminate the right person?"
+- 💰 **Cost Savings:** 40% reduction in API costs
+- ❓ **Maintains Ambiguity:** No reveal about eliminated candidates
+
+**Player Experience:**
+1. After Q1, player sees responses from all 5 candidates
+2. Player must eliminate 1 candidate based on responses
+3. Confirmation dialog prevents accidental elimination
+4. After Q2, only 4 candidates respond (1 eliminated)
+5. Player eliminates another candidate
+6. Final vote from 3 candidates
+
+**Token Cost Per Game:**
+- Old: 15 responses × 100 tokens = 1,500 tokens
+- New: 9 responses × 100 tokens = 900 tokens
+- Savings: 600 tokens per game (40%)
+
+**Annual Savings (assuming 1,000 games):**
+- Old: 1,500,000 tokens
+- New: 900,000 tokens
+- Saved: 600,000 tokens
+
+### Next Steps
+
+- User testing to verify tension/doubt impact
+- Monitor API usage to confirm 40% reduction
+- Consider visual feedback for eliminated candidates in consequence phase
+
+### Plan File
+
+- Plan: `/home/prab/.claude/plans/woolly-spinning-diffie.md`
+- All implementation steps completed as planned
+
+---
