@@ -73,21 +73,47 @@ app.post('/api/chat', async (req, res) => {
     // Add current question
     messages.push({ role: 'user', content: question })
 
-    // Call OpenRouter API
+    // Call OpenRouter API with timeout and retry logic
     const startTime = Date.now()
-    const response = await fetch(OPENROUTER_API_URL, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'http://localhost:5173',
-        'X-Title': 'The Last Vote',
-      },
-      body: JSON.stringify({
-        model: OPENROUTER_MODEL,
-        messages: messages,
-      }),
-    })
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 60000) // 60 second timeout
+
+    let response
+    let retries = 0
+    const maxRetries = 2
+
+    while (retries <= maxRetries) {
+      try {
+        response = await fetch(OPENROUTER_API_URL, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+            'Content-Type': 'application/json',
+            'HTTP-Referer': 'http://localhost:5173',
+            'X-Title': 'The Last Vote',
+          },
+          body: JSON.stringify({
+            model: OPENROUTER_MODEL,
+            messages: messages,
+          }),
+          signal: controller.signal,
+        })
+        clearTimeout(timeout)
+        break // Success, exit retry loop
+      } catch (fetchError) {
+        clearTimeout(timeout)
+        retries++
+
+        if (retries > maxRetries) {
+          console.error(`[API] Fetch failed after ${maxRetries} retries:`, fetchError.message)
+          throw fetchError
+        }
+
+        console.log(`[API] Retry ${retries}/${maxRetries} for candidate ${candidateId}`)
+        // Wait before retry (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, 1000 * retries))
+      }
+    }
 
     if (!response.ok) {
       const errorText = await response.text()

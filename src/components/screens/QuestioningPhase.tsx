@@ -6,7 +6,7 @@
 
 import { useGame } from '../../context/GameContext'
 import { gameActions } from '../../context/GameContext'
-import { DialogueBox } from '../ui/DialogueBox'
+import { ResponsesGrid } from '../ui/ResponsesGrid'
 import { QuestionInput } from '../ui/QuestionInput'
 import { generateCandidateResponse } from '../../lib/api'
 import { useState, useEffect } from 'react'
@@ -46,24 +46,38 @@ export function QuestioningPhase() {
       try {
         // Generate responses from ALL 5 candidates simultaneously
         const responsePromises = state.candidates.map(async (candidate) => {
-          const response = await generateCandidateResponse({
-            candidateId: candidate.id,
-            question: question,
-            conversationHistory: state.conversationHistory,
-            mode: 'auto', // Automatically detect best mode
-          })
-          return {
-            candidateId: candidate.id,
-            content: response.content,
-            modeUsed: response.modeUsed,
+          try {
+            const response = await generateCandidateResponse({
+              candidateId: candidate.id,
+              question: question,
+              conversationHistory: state.conversationHistory,
+              mode: 'auto', // Automatically detect best mode
+            })
+            return {
+              success: true,
+              candidateId: candidate.id,
+              content: response.content,
+              modeUsed: response.modeUsed,
+            }
+          } catch (error) {
+            console.error(`[API] Error for ${candidate.id}:`, error)
+            // Return failed response for this candidate
+            return {
+              success: false,
+              candidateId: candidate.id,
+            }
           }
         })
 
         // Wait for all responses (parallel execution for speed)
         const allResponses = await Promise.all(responsePromises)
 
+        // Separate successful and failed responses
+        const successfulResponses = allResponses.filter((r) => r.success)
+        const failedResponses = allResponses.filter((r) => !r.success)
+
         // Show mode notice for transparency
-        const modesUsed = new Set(allResponses.map((r) => r.modeUsed))
+        const modesUsed = new Set(successfulResponses.map((r: any) => r.modeUsed))
         if (modesUsed.has('fallback')) {
           setApiModeNotice('📴 กำลังเล่นแบบออฟไลน์ - ใช้คำตอบที่เตรียมไว้')
           setTimeout(() => setApiModeNotice(null), 3000)
@@ -72,11 +86,9 @@ export function QuestioningPhase() {
           setTimeout(() => setApiModeNotice(null), 2000)
         }
 
-        // Clear processing state
-        dispatch(gameActions.setProcessing(false))
-
-        // Add all responses to conversation
-        allResponses.forEach((response) => {
+        // Add successful responses to conversation
+        successfulResponses.forEach((response: any) => {
+          console.log(`[QuestioningPhase] Adding successful response for ${response.candidateId}`)
           dispatch(gameActions.addConversationEntry({
             type: 'response',
             speaker: response.candidateId,
@@ -84,19 +96,25 @@ export function QuestioningPhase() {
           }))
         })
 
-        console.log(`[API] Generated ${allResponses.length} responses from all candidates`)
+        // Add fallback for failed responses
+        failedResponses.forEach((response: any) => {
+          console.log(`[QuestioningPhase] Adding fallback response for ${response.candidateId}`)
+          dispatch(gameActions.addConversationEntry({
+            type: 'response',
+            speaker: response.candidateId,
+            content: 'ขอโทษที่มีปัญหาทางเทคนิค แต่ฉันได้ยินคำถามของคุณ',
+          }))
+        })
+
+        // Clear processing state
+        dispatch(gameActions.setProcessing(false))
+
+        console.log(`[API] Generated ${successfulResponses.length} successful responses, ${failedResponses.length} failed`)
 
       } catch (error) {
         // This should rarely happen due to fallbacks, but handle gracefully
         console.error('[API] Fatal error:', error)
         dispatch(gameActions.setProcessing(false))
-
-        // Last resort: Use hardcoded fallback from first candidate
-        dispatch(gameActions.addConversationEntry({
-          type: 'response',
-          speaker: state.candidates[0].id,
-          content: 'ขอโทษที่มีปัญหาทางเทคนิค แต่ฉันได้ยินคำถามของคุณ',
-        }))
       }
     }
 
@@ -166,7 +184,8 @@ export function QuestioningPhase() {
         </div>
       )}
 
-      <DialogueBox
+      {/* Responses Grid - Shows all candidate responses */}
+      <ResponsesGrid
         entries={state.conversationHistory}
         candidates={state.candidates}
         isProcessing={state.isProcessing}
@@ -178,22 +197,6 @@ export function QuestioningPhase() {
         isProcessing={state.isProcessing}
         questionsRemaining={state.questionsRemaining}
       />
-
-      <div className="candidates-list">
-        <h3>ผู้สมัครทั้งหมด</h3>
-        <div className="candidates-list-grid">
-          {state.candidates.map((candidate) => (
-            <div
-              key={candidate.id}
-              className="candidate-item"
-              style={{ '--candidate-color': candidate.colorTheme } as React.CSSProperties}
-            >
-              <span className="candidate-emoji">{candidate.portrait}</span>
-              <span>{candidate.name}</span>
-            </div>
-          ))}
-        </div>
-      </div>
 
       <div className="actions">
         <button
