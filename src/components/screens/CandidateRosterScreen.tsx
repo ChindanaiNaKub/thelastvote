@@ -20,7 +20,7 @@ export function CandidateRosterScreen() {
     <div className="screen roster-screen">
       <h2>พบกับ Candidates</h2>
       <p className="subtitle">
-        5 คนที่ต่างตามหาคะแนนเสียงจากคุณ มารู้จักพวกเขา
+        5 คนที่ต่างตามหาคะแนนเสียงจากคุณ มารู้จักพวกเขา และอีกคนที่จะคอยจับตาดูอยู่
       </p>
 
       <div className="candidates-grid">
