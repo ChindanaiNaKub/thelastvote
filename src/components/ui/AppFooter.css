@@ -1,0 +1,98 @@
+/* ============================================================================
+   App Footer - Navigation and Theme Toggle
+   ============================================================================ */
+
+.app-footer {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--clinical-space-lg) var(--clinical-space-md);
+  border-top: 2px solid var(--clinical-border-medium);
+  background: var(--clinical-bg-primary);
+  transition: background-color var(--clinical-duration-base), border-color var(--clinical-duration-base);
+}
+
+.app-footer__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--clinical-space-md);
+  margin-bottom: var(--clinical-space-md);
+}
+
+.app-footer__brand {
+  display: flex;
+  align-items: baseline;
+  gap: var(--clinical-space-sm);
+}
+
+.app-footer__title {
+  font-family: var(--clinical-font-display);
+  font-size: var(--clinical-size-base);
+  font-weight: 700;
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
+  color: var(--clinical-text-primary);
+}
+
+.app-footer__version {
+  font-family: var(--clinical-font-display);
+  font-size: var(--clinical-size-xs);
+  color: var(--clinical-text-muted);
+  background: var(--clinical-bg-secondary);
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--clinical-radius-sm);
+  border: 1px solid var(--clinical-border-thin);
+}
+
+.app-footer__actions {
+  display: flex;
+  gap: var(--clinical-space-sm);
+  align-items: center;
+}
+
+.theme-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: transform var(--clinical-duration-base);
+}
+
+.btn-theme-toggle:hover .theme-icon {
+  transform: scale(1.1) rotate(15deg);
+}
+
+.theme-text {
+  font-family: var(--clinical-font-display);
+  font-size: var(--clinical-size-sm);
+  font-weight: 600;
+}
+
+.app-footer__meta {
+  text-align: center;
+  padding-top: var(--clinical-space-md);
+  border-top: 1px solid var(--clinical-border-thin);
+}
+
+.app-footer__copy {
+  font-family: var(--clinical-font-body);
+  font-size: var(--clinical-size-sm);
+  font-style: italic;
+  color: var(--clinical-text-muted);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .app-footer__content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .app-footer__brand {
+    justify-content: center;
+  }
+
+  .app-footer__actions {
+    width: 100%;
+    justify-content: center;
+  }
+}

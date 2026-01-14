@@ -1,220 +1,354 @@
-:root {
-  /* Thai font stack */
-  --font-thai: 'Sarabun', 'Kanit', Inter, system-ui, -apple-system, sans-serif;
-  font-family: var(--font-thai);
-  line-height: 1.5;
-  font-weight: 400;
+/* ============================================================================
+   The Last Vote - Cold & Clinical Theme
+   Global styles and CSS variable system with Dark/Light mode support
+   ============================================================================ */
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+/* LIGHT MODE - Clinical Light (Default) */
+:root, [data-theme="light"] {
+  /* === CLINICAL COLOR PALETTE === */
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Primary Backgrounds - Cold Sterile Surfaces */
+  --clinical-bg-primary: #E8EEF2;
+  --clinical-bg-secondary: #D1DCE5;
+  --clinical-bg-tertiary: #B8C8D4;
+  --clinical-bg-deep: #8FA5B5;
 
-  /* Candidate color themes */
-  --color-candidate-1: #8B5CF6; /* Purple - ดร. ธีรภัทร์ วีรวัฒน์ */
-  --color-candidate-2: #3B82F6; /* Blue - ผศ.ดร. ประดิษฐ์ นิรันดร์ */
-  --color-candidate-3: #10B981; /* Green - ดร. กนกวรรณ สิริมงคล */
-  --color-candidate-4: #6B7280; /* Gray - สมศักดิ์ 'สั้น' ทองมี */
-  --color-candidate-5: #F59E0B; /* Orange - วิชัย เสรีชัย */
+  /* Text Colors - Harsh Reading Experience */
+  --clinical-text-primary: #1A2633;
+  --clinical-text-secondary: #2D3E4F;
+  --clinical-text-muted: #5A6E7F;
+  --clinical-text-faint: #8A9FAF;
 
-  /* Mood colors */
-  --color-bg-primary: #1a1a2e;
-  --color-bg-secondary: #16213e;
-  --color-bg-card: rgba(255, 255, 255, 0.03);
-  --color-text: #e0e0e0;
-  --color-text-muted: #a0a0a0;
-  --color-accent: #646cff;
-  --color-accent-hover: #535bf2;
-  --color-urgent: #ff5722;
+  /* Accent Colors - Unsettling Icy Tones */
+  --clinical-accent-cyan: #4A9CB8;
+  --clinical-accent-steel: #5B7A8A;
+  --clinical-accent-glacial: #7AB8C8;
 
-  /* Typography scale */
-  --font-size-xl: 2rem;
-  --font-size-lg: 1.25rem;
-  --font-size-base: 1rem;
-  --font-size-sm: 0.875rem;
+  /* Alert/Urgency Colors - Harsh Red-orange */
+  --clinical-alert-primary: #C73E3A;
+  --clinical-alert-secondary: #E85A4F;
+  --clinical-alert-bg: #F5E6E6;
 
-  /* Spacing scale */
-  --space-xs: 0.5rem;
-  --space-sm: 1rem;
-  --space-md: 1.5rem;
-  --space-lg: 2rem;
+  /* Borders - Sharp, Defined Edges */
+  --clinical-border-thin: #B8C8D4;
+  --clinical-border-medium: #8FA5B5;
+  --clinical-border-heavy: #5A6E7F;
 
-  /* Thai typography optimization */
-  --line-height-thai: 1.6;
-  --letter-spacing-thai: 0.02em;
+  /* Shadows - Harsh, Not Soft */
+  --clinical-shadow-subtle: 0 2px 8px rgba(26, 38, 51, 0.08);
+  --clinical-shadow-medium: 0 4px 16px rgba(26, 38, 51, 0.12);
+  --clinical-shadow-harsh: 0 8px 32px rgba(26, 38, 51, 0.18);
 
-  /* Game state mood tracking */
-  --mood-tension: 0; /* 0 = calm, 1 = tense */
-  --mood-saturation: 1; /* 1 = full color, 0.8 = desaturated when tense */
-  --mood-brightness: 1; /* Brightness multiplier */
-  --ambient-duration: 20s; /* Breathing speed */
+  /* === TYPOGRAPHY === */
+  --clinical-font-display: 'Courier New', Courier, monospace;
+  --clinical-font-body: 'Georgia', 'Times New Roman', serif;
+  --clinical-font-ui: system-ui, -apple-system, sans-serif;
+
+  --clinical-size-xs: 0.75rem;
+  --clinical-size-sm: 0.875rem;
+  --clinical-size-base: 1rem;
+  --clinical-size-lg: 1.125rem;
+  --clinical-size-xl: 1.25rem;
+  --clinical-size-2xl: 1.5rem;
+  --clinical-size-3xl: 2rem;
+  --clinical-size-4xl: 2.5rem;
+
+  --clinical-leading-tight: 1.25;
+  --clinical-leading-normal: 1.5;
+  --clinical-leading-relaxed: 1.75;
+
+  --clinical-tracking-tight: -0.02em;
+  --clinical-tracking-normal: 0;
+  --clinical-tracking-wide: 0.05em;
+
+  /* === SPACING === */
+  --clinical-space-xs: 0.5rem;
+  --clinical-space-sm: 0.75rem;
+  --clinical-space-md: 1rem;
+  --clinical-space-lg: 1.5rem;
+  --clinical-space-xl: 2rem;
+  --clinical-space-2xl: 3rem;
+  --clinical-space-3xl: 4rem;
+
+  /* === BORDER RADIUS === */
+  --clinical-radius-sm: 2px;
+  --clinical-radius-md: 4px;
+  --clinical-radius-lg: 6px;
+
+  /* === ANIMATION === */
+  --clinical-duration-fast: 150ms;
+  --clinical-duration-base: 250ms;
+  --clinical-duration-slow: 400ms;
+  --clinical-ease-harsh: cubic-bezier(0.4, 0, 0.6, 1);
+  --clinical-ease-clinical: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* === Z-INDEX LAYERS === */
+  --clinical-z-base: 1;
+  --clinical-z-elevated: 10;
+  --clinical-z-overlay: 100;
+  --clinical-z-modal: 1000;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+/* DARK MODE - Cold Clinical Dark */
+[data-theme="dark"] {
+  /* Primary Backgrounds - Dark Clinical */
+  --clinical-bg-primary: #1A2633;
+  --clinical-bg-secondary: #243445;
+  --clinical-bg-tertiary: #2D3E4F;
+  --clinical-bg-deep: #3A4A5A;
+
+  /* Text Colors - Light Reading on Dark */
+  --clinical-text-primary: #E8EEF2;
+  --clinical-text-secondary: #D1DCE5;
+  --clinical-text-muted: #B8C8D4;
+  --clinical-text-faint: #8FA5B5;
+
+  /* Accent Colors - Cold Cyan Pops */
+  --clinical-accent-cyan: #5BB8D4;
+  --clinical-accent-steel: #7AB8C8;
+  --clinical-accent-glacial: #9AC8D8;
+
+  /* Alert/Urgency - Glowing Red */
+  --clinical-alert-primary: #E85A4F;
+  --clinical-alert-secondary: #FF6B5F;
+  --clinical-alert-bg: #4A2A2A;
+
+  /* Borders - Visible on Dark */
+  --clinical-border-thin: #3A4A5A;
+  --clinical-border-medium: #4A5A6A;
+  --clinical-border-heavy: #5A6A7A;
+
+  /* Shadows - Dark Subtle */
+  --clinical-shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --clinical-shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --clinical-shadow-harsh: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
-a:hover {
-  color: #535bf2;
+
+/* ============================================================================
+   Global Reset & Body Styles
+   ============================================================================ */
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
   min-height: 100vh;
-
-  /* Thai typography optimization */
-  line-height: var(--line-height-thai);
-  letter-spacing: var(--letter-spacing-thai);
-
-  /* Ambient breathing effect */
-  background: var(--color-bg-primary);
-  animation: ambient-breathing var(--ambient-duration) ease-in-out infinite;
+  background-color: var(--clinical-bg-primary);
+  color: var(--clinical-text-primary);
+  font-family: var(--clinical-font-body);
+  line-height: var(--clinical-leading-normal);
+  /* Subtle grain texture - lighter in dark mode */
+  background-image:
+    linear-gradient(90deg, rgba(138, 159, 175, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(138, 159, 175, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--clinical-duration-base), color var(--clinical-duration-base);
 }
 
-/* Ambient breathing animation */
-@keyframes ambient-breathing {
-  0%, 100% {
-    filter: brightness(var(--mood-brightness)) saturate(var(--mood-saturation));
-  }
-  50% {
-    filter: brightness(calc(var(--mood-brightness) + 0.02)) saturate(var(--mood-saturation));
-  }
+/* Dark mode grain adjustment */
+[data-theme="dark"] body {
+  background-image:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
 }
 
-/* Tense state (applied by JS when questions run out) */
-body.tense {
-  --mood-tension: 1;
-  --mood-saturation: 0.8;
-  --ambient-duration: 8s; /* Faster breathing when tense */
+/* Harsh, clinical text rendering */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--clinical-text-primary);
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: var(--clinical-size-4xl);
 }
+
+h2 {
+  font-size: var(--clinical-size-3xl);
+}
+
+h3 {
+  font-size: var(--clinical-size-2xl);
+}
+
+p {
+  margin: 0;
+}
+
+/* Remove default focus rings, add custom clinical focus */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--clinical-accent-cyan);
+  outline-offset: 2px;
+}
+
+/* ============================================================================
+   Links
+   ============================================================================ */
+
+a {
+  font-weight: 600;
+  color: var(--clinical-accent-cyan);
+  text-decoration: none;
+  transition: color var(--clinical-duration-fast);
+}
+
+a:hover {
+  color: var(--clinical-accent-steel);
+  text-decoration: underline;
+}
+
+/* ============================================================================
+   Buttons - Harsh, Clinical Style
+   ============================================================================ */
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  border-radius: var(--clinical-radius-sm);
+  border: 2px solid var(--clinical-border-medium);
+  padding: 0.75em 1.5em;
   font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  font-weight: 600;
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
+  background-color: var(--clinical-bg-secondary);
+  color: var(--clinical-text-primary);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Ripple effect on click */
-button::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-  pointer-events: none;
-}
-
-button:active::before {
-  width: 300px;
-  height: 300px;
+  transition: all var(--clinical-duration-base) var(--clinical-ease-harsh);
+  box-shadow: var(--clinical-shadow-subtle);
 }
 
 button:hover {
-  border-color: #646cff;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.3);
+  border-color: var(--clinical-accent-cyan);
+  background-color: var(--clinical-bg-tertiary);
+  box-shadow: var(--clinical-shadow-medium);
+  transform: translateY(-1px);
 }
 
 button:active {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(100, 108, 255, 0.2);
+  box-shadow: var(--clinical-shadow-subtle);
 }
 
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
-/* Primary button lift + glow */
-button.btn-primary {
-  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-hover));
-  border: none;
-  font-weight: 600;
+button:disabled:hover {
+  border-color: var(--clinical-border-medium);
+  background-color: var(--clinical-bg-secondary);
+  transform: none;
 }
 
-button.btn-primary:hover {
-  box-shadow: 0 6px 20px rgba(100, 108, 255, 0.4);
-  transform: translateY(-3px);
+/* Primary button variant */
+.btn-primary {
+  background-color: var(--clinical-text-primary);
+  color: var(--clinical-bg-primary);
+  border-color: var(--clinical-text-primary);
 }
 
-button.btn-primary:active {
-  transform: translateY(-1px);
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--clinical-accent-cyan);
+  border-color: var(--clinical-accent-cyan);
+  color: white;
 }
 
-/* Urgent button (voting phase) */
-button.btn-urgent {
-  background: linear-gradient(135deg, #ff5722, #f44336);
-  box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
-  animation: urgent-glow 2s ease-in-out infinite;
+/* Theme toggle button */
+.btn-theme-toggle {
+  background-color: var(--clinical-bg-secondary);
+  border: 2px solid var(--clinical-border-medium);
+  color: var(--clinical-text-primary);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-@keyframes urgent-glow {
+.btn-theme-toggle:hover {
+  border-color: var(--clinical-accent-cyan);
+}
+
+/* ============================================================================
+   Unsettling Scrollbar
+   ============================================================================ */
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--clinical-bg-secondary);
+  border-left: 1px solid var(--clinical-border-thin);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--clinical-bg-deep);
+  border: 2px solid var(--clinical-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--clinical-text-secondary);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-color: var(--clinical-bg-deep) var(--clinical-bg-secondary);
+  scrollbar-width: thin;
+}
+
+/* ============================================================================
+   Utility Classes
+   ============================================================================ */
+
+.screen {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  animation: screenFadeIn var(--clinical-duration-slow) var(--clinical-ease-clinical);
+}
+
+@keyframes screenFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pulse animation for urgent elements */
+@keyframes pulseUrgent {
   0%, 100% {
-    box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+    opacity: 1;
+    transform: scale(1);
   }
   50% {
-    box-shadow: 0 4px 25px rgba(255, 87, 34, 0.5);
+    opacity: 0.85;
+    transform: scale(1.02);
   }
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+@keyframes pulseText {
+  0%, 100% {
+    opacity: 1;
   }
-  a:hover {
-    color: #747bff;
+  50% {
+    opacity: 0.6;
   }
-  button {
-    background-color: #f9f9f9;
-  }
-}
-
-/* Thai text optimization for better readability */
-p {
-  line-height: 1.7;
-  word-spacing: 0.1em;
-}
-
-/* Long text blocks (consequences) */
-.consequence-section__content {
-  line-height: 1.8;
-  text-align: justify;
-  text-justify: inter-word;
-  max-width: 70ch; /* Optimal reading length */
-  margin: 0 auto;
-}
-
-/* Dialogue readability */
-.dialogue-entry__message {
-  text-align: left;
-  max-width: 60ch;
-  line-height: 1.7;
-  word-spacing: 0.1em;
 }

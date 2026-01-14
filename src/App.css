@@ -1,8 +1,13 @@
+/* ============================================================================
+   The Last Vote - Cold & Clinical Theme
+   App layout and screen transitions
+   ============================================================================ */
+
 #root {
-  max-width: 1280px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: var(--clinical-space-xl);
+  min-height: 100vh;
 }
 
 .App {
@@ -11,5 +16,24 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  gap: var(--clinical-space-xl);
+  background: var(--clinical-bg-primary);
+  position: relative;
+}
+
+/* Vignette effect for claustrophobia */
+.App::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(138, 159, 175, 0.08) 100%
+  );
+  z-index: var(--clinical-z-base);
 }

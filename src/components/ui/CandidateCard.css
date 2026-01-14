@@ -1,35 +1,46 @@
 /* ============================================================================
-   CandidateCard Component Styles
+   CandidateCard Component - Clinical Theme
+   Institutional file folder aesthetic
    ============================================================================ */
 
-/* Base card styles */
+/* Base card - institutional file folder aesthetic */
 .candidate-card {
-  border: 3px solid;
-  border-radius: 8px;
-  padding: 1.5rem;
+  border: 2px solid var(--clinical-border-medium);
+  border-radius: var(--clinical-radius-md);
+  padding: var(--clinical-space-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
-  transition: all 0.2s ease;
-  background: var(--color-bg-card, #1a1a1a);
+  gap: var(--clinical-space-md);
+  transition: all var(--clinical-duration-base) var(--clinical-ease-harsh);
+  background: var(--clinical-bg-primary);
+  box-shadow: var(--clinical-shadow-subtle);
+  position: relative;
 }
 
-/* Compact variant (for roster) */
+/* Add subtle border accent based on candidate color */
+.candidate-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--candidate-color, var(--clinical-border-medium));
+  border-radius: var(--clinical-radius-md) var(--clinical-radius-md) 0 0;
+}
+
+/* Compact variant (roster) */
 .candidate-card--compact {
   max-width: 280px;
 }
 
-/* Detailed variant (future use) */
+/* Detailed variant */
 .candidate-card--detailed {
   max-width: 400px;
 }
 
 /* Voting variant (clickable) */
-.candidate-card {
-  position: relative;
-}
-
 .candidate-card--voting {
   cursor: pointer;
   max-width: 300px;
@@ -37,89 +48,93 @@
 
 .candidate-card--voting:hover:not(.candidate-card--disabled) {
   transform: translateY(-6px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--clinical-shadow-harsh);
+  border-color: var(--clinical-accent-cyan);
 }
 
 .candidate-card--voting:active:not(.candidate-card--disabled) {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
-/* Colored inner glow effect based on candidate color */
-.candidate-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 8px;
-  padding: 3px;
-  background: linear-gradient(135deg, currentColor, transparent);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-
-.candidate-card--voting:hover::before {
-  opacity: 0.6;
-}
-
-/* Selected state */
+/* Selected state - harsh highlight */
 .candidate-card--selected {
-  box-shadow: 0 0 0 3px var(--color-accent, #fff);
+  box-shadow:
+    0 0 0 4px var(--clinical-bg-primary),
+    0 0 0 6px var(--clinical-accent-cyan);
   transform: scale(1.02);
+  border-color: var(--clinical-accent-cyan);
 }
 
-/* Disabled state */
+/* Disabled state - washed out */
 .candidate-card--disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
+  filter: grayscale(100%);
 }
 
 .candidate-card--disabled:hover {
   transform: none;
 }
 
-/* Portrait emoji */
+/* Portrait emoji - stark presentation */
 .candidate-card__portrait {
-  font-size: 4rem;
+  font-size: 5rem;
   line-height: 1;
+  filter: grayscale(20%);
+  transition: filter var(--clinical-duration-base);
 }
 
-/* Name */
+.candidate-card--voting:hover .candidate-card__portrait {
+  filter: grayscale(0%);
+}
+
+/* Name - clinical typography */
 .candidate-card__name {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: var(--clinical-size-xl);
+  font-weight: 700;
   margin: 0;
   text-align: center;
-  color: var(--color-text, #e0e0e0);
+  color: var(--clinical-text-primary);
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
 }
 
-/* Personality description */
+/* Personality description - institutional label */
 .candidate-card__personality {
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: var(--clinical-size-sm);
+  line-height: var(--clinical-leading-relaxed);
   margin: 0;
   text-align: center;
-  color: var(--color-text-muted, #a0a0a0);
+  color: var(--clinical-text-muted);
+  font-style: italic;
+  padding: var(--clinical-space-sm);
+  border-left: 2px solid var(--clinical-border-thin);
+  background: var(--clinical-bg-secondary);
 }
 
-/* Vote button */
+/* Vote button - harsh call to action */
 .candidate-card__vote-btn {
-  border: none;
-  border-radius: 6px;
-  padding: 0.75rem 1.25rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: white;
+  border: 2px solid var(--clinical-text-primary);
+  border-radius: var(--clinical-radius-sm);
+  padding: var(--clinical-space-sm) var(--clinical-space-lg);
+  font-size: var(--clinical-size-base);
+  font-weight: 700;
+  color: var(--clinical-text-primary);
   cursor: pointer;
-  transition: opacity 0.2s ease, transform 0.1s ease;
-  margin-top: 0.5rem;
+  transition: all var(--clinical-duration-base) var(--clinical-ease-harsh);
+  margin-top: var(--clinical-space-sm);
   width: 100%;
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
+  background: var(--clinical-bg-primary);
 }
 
 .candidate-card__vote-btn:hover:not(:disabled) {
-  opacity: 0.9;
+  background: var(--clinical-text-primary);
+  color: var(--clinical-bg-primary);
+  transform: scale(1.02);
 }
 
 .candidate-card__vote-btn:active:not(:disabled) {

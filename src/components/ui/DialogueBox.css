@@ -1,61 +1,90 @@
 /* ============================================================================
-   DialogueBox Component Styles
+   DialogueBox Component - Clinical Theme
+   Medical record style presentation
    ============================================================================ */
 
-/* Main dialogue container */
+/* Main dialogue container - medical record style */
 .dialogue-box {
-  background: var(--color-bg-card, #1a1a1a);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 1.5rem;
-  max-height: 400px;
+  background: var(--clinical-bg-primary);
+  border: 2px solid var(--clinical-border-medium);
+  border-radius: var(--clinical-radius-md);
+  padding: var(--clinical-space-lg);
+  max-height: 450px;
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: var(--clinical-space-md);
+  margin-bottom: var(--clinical-space-lg);
+  box-shadow: var(--clinical-shadow-medium);
+  position: relative;
 }
 
-/* Scrollbar styling */
+/* Add institutional header line */
+.dialogue-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--clinical-accent-cyan) 0%,
+    var(--clinical-accent-steel) 50%,
+    var(--clinical-accent-cyan) 100%
+  );
+}
+
+/* Scrollbar styling - cold and precise */
 .dialogue-box::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 .dialogue-box::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
+  background: var(--clinical-bg-secondary);
+  border-left: 1px solid var(--clinical-border-thin);
+  border-radius: 0 var(--clinical-radius-md) var(--clinical-radius-md) 0;
 }
 
 .dialogue-box::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+  background: var(--clinical-bg-deep);
+  border: 2px solid var(--clinical-bg-secondary);
+  border-radius: var(--clinical-radius-sm);
 }
 
 .dialogue-box::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--clinical-text-secondary);
 }
 
-/* Individual dialogue entries */
+/* Individual dialogue entries - clinical notes */
 .dialogue-entry {
   display: flex;
-  gap: 0.75rem;
+  gap: var(--clinical-space-sm);
   align-items: flex-start;
-  animation: slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: slideInClinical var(--clinical-duration-slow) var(--clinical-ease-clinical);
+  padding: var(--clinical-space-sm);
+  border-left: 2px solid transparent;
+  transition: border-color var(--clinical-duration-fast);
 }
 
-@keyframes slideIn {
+.dialogue-entry:hover {
+  border-left-color: var(--clinical-border-thin);
+  background: rgba(138, 159, 175, 0.03);
+}
+
+@keyframes slideInClinical {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.95);
+    transform: translateX(-10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateX(0);
   }
 }
 
-/* Player entries (right-aligned) */
+/* Player entries (right-aligned, harsh) */
 .dialogue-entry--player {
   flex-direction: row-reverse;
 }
@@ -65,11 +94,12 @@
 }
 
 .dialogue-entry--player .dialogue-entry__message {
-  background: rgba(100, 150, 255, 0.15);
-  border: 1px solid rgba(100, 150, 255, 0.3);
+  background: rgba(74, 156, 184, 0.1);
+  border: 1px solid var(--clinical-accent-cyan);
+  color: var(--clinical-text-primary);
 }
 
-/* Candidate entries (left-aligned) */
+/* Candidate entries (left-aligned, institutional) */
 .dialogue-entry--candidate {
   flex-direction: row;
 }
@@ -79,60 +109,17 @@
 }
 
 .dialogue-entry--candidate .dialogue-entry__message {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease;
+  background: var(--clinical-bg-secondary);
+  border: 1px solid var(--clinical-border-thin);
+  color: var(--clinical-text-secondary);
 }
 
-/* Candidate-specific coloring */
-.dialogue-entry--response[data-candidate="candidate-1"] .dialogue-entry__message {
-  background: rgba(139, 92, 246, 0.15);
-  border-color: rgba(139, 92, 246, 0.3);
-}
-
-.dialogue-entry--response[data-candidate="candidate-2"] .dialogue-entry__message {
-  background: rgba(59, 130, 246, 0.15);
-  border-color: rgba(59, 130, 246, 0.3);
-}
-
-.dialogue-entry--response[data-candidate="candidate-3"] .dialogue-entry__message {
-  background: rgba(16, 185, 129, 0.15);
-  border-color: rgba(16, 185, 129, 0.3);
-}
-
-.dialogue-entry--response[data-candidate="candidate-4"] .dialogue-entry__message {
-  background: rgba(107, 114, 128, 0.15);
-  border-color: rgba(107, 114, 128, 0.3);
-}
-
-.dialogue-entry--response[data-candidate="candidate-5"] .dialogue-entry__message {
-  background: rgba(245, 158, 11, 0.15);
-  border-color: rgba(245, 158, 11, 0.3);
-}
-
-/* Message hover effect */
-.dialogue-entry--candidate .dialogue-entry__message:hover {
-  transform: translateX(4px);
-}
-
-/* Entry type variations */
-.dialogue-entry--question {
-  /* Player question styling inherited from --player */
-}
-
-.dialogue-entry--response {
-  /* Candidate response styling inherited from --candidate */
-}
-
-.dialogue-entry--interruption {
-  /* Special styling for interruptions */
-}
-
+/* System/Interruption entries - unsettling */
 .dialogue-entry--interruption .dialogue-entry__message {
-  background: rgba(255, 150, 50, 0.1);
-  border: 1px solid rgba(255, 150, 50, 0.3);
+  background: rgba(199, 62, 58, 0.08);
+  border: 1px solid var(--clinical-alert-primary);
   font-style: italic;
+  color: var(--clinical-text-primary);
 }
 
 .dialogue-entry--system {
@@ -146,54 +133,70 @@
 .dialogue-entry--system .dialogue-entry__message {
   background: transparent;
   border: none;
-  color: var(--color-text-muted, #a0a0a0);
-  font-size: 0.85rem;
+  color: var(--clinical-text-muted);
+  font-size: var(--clinical-size-sm);
   text-align: center;
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
 }
 
-/* Portrait emoji */
+/* Portrait emoji - stark presentation */
 .dialogue-entry__portrait {
-  font-size: 2rem;
+  font-size: 2.5rem;
   line-height: 1;
   flex-shrink: 0;
+  filter: grayscale(30%);
 }
 
 /* Content container */
 .dialogue-entry__content {
   display: flex;
   flex-direction: column;
-  max-width: 70%;
+  max-width: 75%;
 }
 
-/* Speaker name */
+/* Speaker name - label style */
 .dialogue-entry__speaker {
-  font-weight: 600;
-  font-size: 0.9rem;
-  margin-bottom: 0.25rem;
+  font-weight: 700;
+  font-size: var(--clinical-size-sm);
+  margin-bottom: var(--clinical-space-xs);
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
+  color: var(--clinical-text-muted);
 }
 
-/* Message text */
+/* Message text - clinical note style */
 .dialogue-entry__message {
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  line-height: 1.5;
+  padding: var(--clinical-space-sm) var(--clinical-space-md);
+  border-radius: var(--clinical-radius-md);
+  line-height: var(--clinical-leading-relaxed);
   word-wrap: break-word;
+  font-family: var(--clinical-font-body);
+  font-size: var(--clinical-size-base);
 }
 
-/* Timestamp */
+/* Timestamp - precise, sterile */
 .dialogue-entry__timestamp {
-  font-size: 0.7rem;
-  color: var(--color-text-muted, #a0a0a0);
-  margin-top: 0.25rem;
+  font-size: var(--clinical-size-xs);
+  color: var(--clinical-text-faint);
+  margin-top: var(--clinical-space-xs);
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-tight);
 }
 
 /* Empty state hint */
 .dialogue-box__empty-hint {
   text-align: center;
-  color: var(--color-text-muted, #a0a0a0);
+  color: var(--clinical-text-muted);
   font-style: italic;
-  padding: 2rem;
-  animation: fadeIn 0.5s ease-out;
+  padding: var(--clinical-space-2xl);
+  font-family: var(--clinical-font-display);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
+  font-size: var(--clinical-size-sm);
+  animation: fadeIn var(--clinical-duration-slow) var(--clinical-ease-clinical);
 }
 
 @keyframes fadeIn {
@@ -205,32 +208,26 @@
   }
 }
 
-/* Thinking indicator */
+/* Thinking indicator - unsettling pulse */
 .dialogue-box__thinking {
   display: flex;
-  gap: 0.5rem;
-  padding: 1.5rem;
+  gap: var(--clinical-space-xs);
+  padding: var(--clinical-space-md);
   justify-content: center;
   align-items: center;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
-  margin: 1rem 0;
-}
-
-.dialogue-box__thinking::before {
-  content: 'กำลังคิด...';
-  margin-right: 0.75rem;
-  font-size: 0.9rem;
-  opacity: 0.7;
+  font-family: var(--clinical-font-display);
+  color: var(--clinical-text-muted);
+  font-size: var(--clinical-size-sm);
+  letter-spacing: var(--clinical-tracking-wide);
+  text-transform: uppercase;
 }
 
 .thinking-dot {
-  width: 10px;
-  height: 10px;
-  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-hover));
-  box-shadow: 0 0 10px rgba(100, 108, 255, 0.5);
+  width: 6px;
+  height: 6px;
+  background: var(--clinical-text-muted);
   border-radius: 50%;
-  animation: bounce 1.4s infinite ease-in-out both;
+  animation: bounceClinical 1.2s infinite ease-in-out both;
 }
 
 .thinking-dot:nth-child(1) {
@@ -241,11 +238,13 @@
   animation-delay: -0.16s;
 }
 
-@keyframes bounce {
+@keyframes bounceClinical {
   0%, 80%, 100% {
     transform: scale(0);
+    opacity: 0.5;
   }
   40% {
     transform: scale(1);
+    opacity: 1;
   }
 }

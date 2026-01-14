@@ -1,154 +1,202 @@
 /* ============================================================================
-   Voting Phase Screen - Tense Atmosphere
-   ============================================================================ */
+ * Voting Phase Screen - Clinical Theme (Enterprise Edition)
+ * ============================================================================ */
 
-.screen.voting-screen {
-  background: radial-gradient(circle at center, rgba(255, 87, 34, 0.05) 0%, transparent 70%),
-              linear-gradient(180deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
-  animation: voting-tension 4s ease-in-out infinite;
-}
-
-@keyframes voting-tension {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-.screen.voting-screen h2 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+.voting-screen {
   text-align: center;
-  animation: title-urgency 2s ease-in-out infinite;
+  padding: var(--clinical-space-2xl) var(--clinical-space-xl);
+  max-width: 1100px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-@keyframes title-urgency {
-  0%, 100% {
-    text-shadow: 0 0 20px rgba(255, 87, 34, 0.3);
-  }
-  50% {
-    text-shadow: 0 0 30px rgba(255, 87, 34, 0.5);
-  }
+/* Header Section */
+.voting-screen__header {
+  padding: var(--clinical-space-lg) var(--clinical-space-xl);
+  background: linear-gradient(
+    180deg,
+    var(--clinical-bg-secondary) 0%,
+    transparent 100%
+  );
+  border-radius: var(--clinical-radius-lg);
+  margin-bottom: var(--clinical-space-xl);
+  position: relative;
 }
 
-.screen.voting-screen .subtitle {
-  text-align: center;
-  color: var(--color-text-muted);
-  margin-bottom: 2rem;
-}
-
-.screen.voting-screen .voting-warning {
-  text-align: center;
-  background: rgba(255, 87, 34, 0.1);
-  border-left: 4px solid var(--color-urgent);
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  margin: 0 auto 2rem;
-  max-width: 700px;
-}
-
-.screen.voting-screen .candidates-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  margin: 2rem 0;
-}
-
-/* Enhance hover state for tension */
-.screen.voting-screen .candidate-card--voting:hover {
-  animation: hover-wobble 0.3s ease-in-out;
-}
-
-@keyframes hover-wobble {
-  0%, 100% {
-    transform: translateY(-6px) rotate(0deg);
-  }
-  25% {
-    transform: translateY(-8px) rotate(-1deg);
-  }
-  75% {
-    transform: translateY(-8px) rotate(1deg);
-  }
-}
-
-.screen.voting-screen .vote-actions {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-.screen.voting-screen .confirmation-dialog {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+.voting-screen__header::after {
+  content: '';
+  position: absolute;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--clinical-border-medium) 50%,
+    transparent 100%
+  );
+}
+
+.voting-screen h2 {
+  font-size: var(--clinical-size-3xl);
+  font-weight: 800;
+  margin: 0 0 var(--clinical-space-sm) 0;
+  color: var(--clinical-text-primary);
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.voting-screen .subtitle {
+  font-size: var(--clinical-size-lg);
+  color: var(--clinical-text-muted);
+  margin: 0;
+  font-family: var(--clinical-font-body);
+  font-style: italic;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+/* Urgency Badge */
+.voting-screen__urgency {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: dialog-appear 0.3s ease-out;
+  gap: var(--clinical-space-sm);
+  padding: var(--clinical-space-sm) var(--clinical-space-lg);
+  background: var(--clinical-alert-bg);
+  border: 2px solid var(--clinical-alert-primary);
+  border-radius: var(--clinical-radius-full);
+  color: var(--clinical-alert-primary);
+  font-size: var(--clinical-size-sm);
+  font-weight: 700;
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: var(--clinical-space-md);
+  animation: pulseUrgent 2s infinite;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
 }
 
-@keyframes dialog-appear {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+@keyframes pulseUrgent {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.02); }
 }
 
-.screen.voting-screen .confirmation-dialog-content {
-  background: var(--color-bg-secondary);
-  padding: 2rem;
-  border-radius: 12px;
-  max-width: 500px;
-  text-align: center;
-  border: 2px solid var(--color-urgent);
-  animation: dialog-scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-@keyframes dialog-scale {
-  from {
-    transform: scale(0.8);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-
-.screen.voting-screen .confirmation-dialog-content h3 {
-  color: var(--color-urgent);
-  margin-bottom: 1rem;
-}
-
-.screen.voting-screen .confirmation-dialog-content p {
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-}
-
-.screen.voting-screen .confirmation-dialog-actions {
+/* Candidates Grid - Flexbox Centered with Equal Sizing */
+.voting-screen .candidates-grid {
   display: flex;
-  gap: 1rem;
+  flex-wrap: wrap;
   justify-content: center;
+  align-items: stretch;
+  gap: var(--clinical-space-lg);
+  margin: var(--clinical-space-xl) auto var(--clinical-space-2xl);
+  max-width: 1000px;
+  flex: 1;
 }
 
-/* Responsive design */
+.voting-screen .candidates-grid > * {
+  flex: 0 0 280px;
+  width: 280px;
+  max-width: 280px;
+}
+
+/* Confirmation Section */
+.voting-screen__confirmation {
+  background: linear-gradient(
+    135deg,
+    var(--clinical-bg-secondary) 0%,
+    var(--clinical-bg-primary) 100%
+  );
+  border: 2px solid var(--clinical-accent-cyan);
+  border-radius: var(--clinical-radius-lg);
+  padding: var(--clinical-space-xl);
+  margin: var(--clinical-space-xl) auto;
+  max-width: 500px;
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    0 0 0 1px var(--clinical-accent-cyan);
+}
+
+.voting-screen__confirmation h3 {
+  font-size: var(--clinical-size-lg);
+  font-weight: 700;
+  margin: 0 0 var(--clinical-space-md) 0;
+  color: var(--clinical-text-primary);
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.voting-screen__confirmation p {
+  font-size: var(--clinical-size-sm);
+  color: var(--clinical-text-muted);
+  margin: 0 0 var(--clinical-space-lg) 0;
+  font-style: italic;
+}
+
+/* Action Buttons */
+.voting-screen__actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--clinical-space-md);
+  margin-top: auto;
+  padding: var(--clinical-space-lg) 0;
+}
+
+.voting-screen__actions .btn-primary,
+.voting-screen__actions .btn-secondary {
+  min-width: 160px;
+  font-size: var(--clinical-size-sm);
+  padding: var(--clinical-space-sm) var(--clinical-space-xl);
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .screen.voting-screen h2 {
-    font-size: 2rem;
+  .voting-screen {
+    padding: var(--clinical-space-lg) var(--clinical-space-md);
   }
 
-  .screen.voting-screen .candidates-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .voting-screen__header {
+    padding: var(--clinical-space-md);
   }
 
-  .screen.voting-screen .confirmation-dialog-content {
-    margin: 1rem;
-    padding: 1.5rem;
+  .voting-screen h2 {
+    font-size: var(--clinical-size-xl);
+    letter-spacing: 0.1em;
+  }
+
+  .voting-screen .subtitle {
+    font-size: var(--clinical-size-base);
+  }
+
+  .voting-screen .candidates-grid {
+    gap: var(--clinical-space-md);
+  }
+
+  .voting-screen .candidates-grid > * {
+    flex: 0 0 260px;
+    width: 260px;
+    max-width: 100%;
+  }
+
+  .voting-screen__confirmation {
+    padding: var(--clinical-space-lg);
+    margin: var(--clinical-space-lg) auto;
+  }
+
+  .voting-screen__actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .voting-screen__actions .btn-primary,
+  .voting-screen__actions .btn-secondary {
+    width: 100%;
+    max-width: 280px;
   }
 }

@@ -181,16 +181,18 @@ export function QuestioningPhase() {
 
       <div className="candidates-list">
         <h3>ผู้สมัครทั้งหมด</h3>
-        {state.candidates.map((candidate) => (
-          <div
-            key={candidate.id}
-            className="candidate-item"
-            style={{ borderLeft: `4px solid ${candidate.colorTheme}` }}
-          >
-            <span className="candidate-emoji">{candidate.portrait}</span>
-            <span>{candidate.name}</span>
-          </div>
-        ))}
+        <div className="candidates-list-grid">
+          {state.candidates.map((candidate) => (
+            <div
+              key={candidate.id}
+              className="candidate-item"
+              style={{ '--candidate-color': candidate.colorTheme } as React.CSSProperties}
+            >
+              <span className="candidate-emoji">{candidate.portrait}</span>
+              <span>{candidate.name}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="actions">

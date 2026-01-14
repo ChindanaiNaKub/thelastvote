@@ -4,6 +4,7 @@
 // Introduces all 5 candidates to the player.
 // ============================================================================
 
+import './CandidateRosterScreen.css'
 import { useGame } from '../../context/GameContext'
 import { gameActions } from '../../context/GameContext'
 import { CandidateCard } from '../ui/CandidateCard'
@@ -19,7 +20,7 @@ export function CandidateRosterScreen() {
     <div className="screen roster-screen">
       <h2>พบกับ Candidates</h2>
       <p className="subtitle">
-        ห้าคนที่ต่างตามหาคะแนนเสียงจากคุณ มารู้จักพวกเขา
+        5 คนที่ต่างตามหาคะแนนเสียงจากคุณ มารู้จักพวกเขา
       </p>
 
       <div className="candidates-grid">

@@ -1,90 +1,123 @@
 /* ============================================================================
-   Candidate Roster Screen - Staggered Entrance Animations
-   ============================================================================ */
+ * Candidate Roster Screen - Clinical Theme (Enterprise Edition)
+ * ============================================================================ */
 
-.screen.roster-screen {
-  animation: roster-entrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-@keyframes roster-entrance {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.screen.roster-screen h2 {
+.roster-screen {
   text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  padding: var(--clinical-space-2xl) var(--clinical-space-xl);
+  max-width: 1100px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.screen.roster-screen .subtitle {
-  text-align: center;
-  color: var(--color-text-muted);
-  margin-bottom: 2rem;
+/* Header Section */
+.roster-screen__header {
+  padding: var(--clinical-space-lg) var(--clinical-space-xl);
+  background: linear-gradient(
+    180deg,
+    var(--clinical-bg-secondary) 0%,
+    transparent 100%
+  );
+  border-radius: var(--clinical-radius-lg);
+  margin-bottom: var(--clinical-space-xl);
+  position: relative;
 }
 
-.screen.roster-screen .candidates-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
+.roster-screen__header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--clinical-border-medium) 50%,
+    transparent 100%
+  );
 }
 
-.screen.roster-screen .candidate-card {
-  animation: card-entrance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+.roster-screen h2 {
+  font-size: var(--clinical-size-3xl);
+  font-weight: 800;
+  margin: 0 0 var(--clinical-space-sm) 0;
+  color: var(--clinical-text-primary);
+  font-family: var(--clinical-font-display);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Staggered entrance delays for each candidate */
-.screen.roster-screen .candidate-card:nth-child(1) {
-  animation-delay: 0.1s;
+.roster-screen .subtitle {
+  font-size: var(--clinical-size-base);
+  color: var(--clinical-text-muted);
+  margin: 0;
+  font-family: var(--clinical-font-body);
+  font-style: italic;
+  opacity: 0.8;
 }
 
-.screen.roster-screen .candidate-card:nth-child(2) {
-  animation-delay: 0.2s;
+/* Candidates Grid - Flexbox Centered */
+.candidates-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: var(--clinical-space-lg);
+  margin: var(--clinical-space-xl) auto var(--clinical-space-2xl);
+  max-width: 1000px;
+  flex: 1;
 }
 
-.screen.roster-screen .candidate-card:nth-child(3) {
-  animation-delay: 0.3s;
+.candidates-grid > * {
+  flex: 0 0 280px;
+  width: 280px;
+  max-width: 280px;
 }
 
-.screen.roster-screen .candidate-card:nth-child(4) {
-  animation-delay: 0.4s;
+/* Action Button */
+.roster-screen .btn-primary {
+  font-size: var(--clinical-size-base);
+  padding: var(--clinical-space-md) var(--clinical-space-2xl);
+  margin-top: auto;
+  min-width: 240px;
 }
 
-.screen.roster-screen .candidate-card:nth-child(5) {
-  animation-delay: 0.5s;
-}
-
-@keyframes card-entrance {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.screen.roster-screen .roster-actions {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-/* Responsive design */
+/* Responsive */
 @media (max-width: 768px) {
-  .screen.roster-screen h2 {
-    font-size: 2rem;
+  .roster-screen {
+    padding: var(--clinical-space-lg) var(--clinical-space-md);
   }
 
-  .screen.roster-screen .candidates-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .roster-screen__header {
+    padding: var(--clinical-space-md);
+  }
+
+  .roster-screen h2 {
+    font-size: var(--clinical-size-xl);
+    letter-spacing: 0.1em;
+  }
+
+  .roster-screen .subtitle {
+    font-size: var(--clinical-size-sm);
+  }
+
+  .candidates-grid {
+    gap: var(--clinical-space-md);
+  }
+
+  .candidates-grid > * {
+    flex: 0 0 260px;
+    width: 260px;
+    max-width: 100%;
+  }
+
+  .roster-screen .btn-primary {
+    min-width: 200px;
+    font-size: var(--clinical-size-sm);
   }
 }
