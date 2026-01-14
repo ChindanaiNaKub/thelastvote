@@ -61,6 +61,73 @@ export function VotingPhase() {
             candidate={candidate}
             variant="voting"
             onClick={() => handleVote(candidate.id)}
+            customContent={
+              (() => {
+                const responses = state.conversationHistory.filter(
+                  (entry) => entry.speaker === candidate.id && entry.type === 'response'
+                )
+
+                if (responses.length === 0) {
+                  return (
+                    <div style={{ opacity: 0.9 }}>
+                      <div
+                        style={{
+                          fontSize: '0.8rem',
+                          textTransform: 'uppercase',
+                          letterSpacing: '1px',
+                          marginBottom: '4px',
+                          opacity: 0.7,
+                        }}
+                      >
+                        จุดยืน:
+                      </div>
+                      "{candidate.publicStance}"
+                    </div>
+                  )
+                }
+
+                return (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
+                    <div
+                      style={{
+                        fontSize: '0.8rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                        opacity: 0.7,
+                        marginBottom: '4px',
+                      }}
+                    >
+                      คำตอบทั้งหมด:
+                    </div>
+                    {responses.map((response, index) => (
+                      <div
+                        key={response.id}
+                        style={{
+                          fontSize: '0.85rem',
+                          padding: '8px',
+                          background: 'var(--clinical-bg-secondary)',
+                          borderRadius: '4px',
+                          textAlign: 'left',
+                          fontStyle: 'normal',
+                          border: '1px solid var(--clinical-border-thin)',
+                        }}
+                      >
+                        <span style={{
+                          display: 'block',
+                          fontSize: '0.7rem',
+                          opacity: 0.6,
+                          marginBottom: '2px',
+                          textTransform: 'uppercase'
+                        }}>
+                          ตอบครั้งที่ {index + 1}
+                        </span>
+                        "{response.content}"
+                      </div>
+                    ))}
+                  </div>
+                )
+              })()
+            }
           />
         ))}
       </div>
