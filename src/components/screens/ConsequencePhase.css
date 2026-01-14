@@ -16,11 +16,9 @@
 /* Header */
 .consequence-screen__header {
   padding: var(--clinical-space-lg) var(--clinical-space-xl);
-  background: linear-gradient(
-    180deg,
-    var(--clinical-bg-secondary) 0%,
-    transparent 100%
-  );
+  background: linear-gradient(180deg,
+      var(--clinical-bg-secondary) 0%,
+      transparent 100%);
   border-radius: var(--clinical-radius-lg);
   position: relative;
 }
@@ -33,12 +31,10 @@
   transform: translateX(-50%);
   width: 40%;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--clinical-border-medium) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      var(--clinical-border-medium) 50%,
+      transparent 100%);
 }
 
 .consequence-screen h2 {
@@ -61,12 +57,10 @@
   padding: var(--clinical-space-xl) var(--clinical-space-2xl);
   border: 3px solid;
   border-radius: var(--clinical-radius-lg);
-  background: linear-gradient(
-    135deg,
-    var(--clinical-bg-secondary) 0%,
-    var(--clinical-bg-primary) 100%
-  );
-  box-shadow: 
+  background: linear-gradient(135deg,
+      var(--clinical-bg-secondary) 0%,
+      var(--clinical-bg-primary) 100%);
+  box-shadow:
     var(--clinical-shadow-harsh),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
   margin: 0 auto;
@@ -88,7 +82,8 @@
   font-family: var(--clinical-font-display);
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--clinical-bg-deep);
+  color: #FFFFFF;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .chosen-candidate__portrait {
@@ -115,11 +110,9 @@
 
 /* Consequence Sections - Clinical Report Style */
 .consequence-section {
-  background: linear-gradient(
-    135deg,
-    var(--clinical-bg-primary) 0%,
-    var(--clinical-bg-secondary) 100%
-  );
+  background: linear-gradient(135deg,
+      var(--clinical-bg-primary) 0%,
+      var(--clinical-bg-secondary) 100%);
   border: 1px solid var(--clinical-border-medium);
   border-radius: var(--clinical-radius-lg);
   padding: var(--clinical-space-xl);
@@ -137,11 +130,9 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(
-    90deg,
-    var(--clinical-accent-cyan) 0%,
-    var(--clinical-accent-steel) 100%
-  );
+  background: linear-gradient(90deg,
+      var(--clinical-accent-cyan) 0%,
+      var(--clinical-accent-steel) 100%);
 }
 
 .consequence-section__title {
@@ -182,11 +173,9 @@
 }
 
 .consequence-section__content.secret {
-  background: linear-gradient(
-    135deg,
-    rgba(199, 62, 58, 0.1) 0%,
-    rgba(199, 62, 58, 0.05) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(199, 62, 58, 0.1) 0%,
+      rgba(199, 62, 58, 0.05) 100%);
   border: 1px solid rgba(199, 62, 58, 0.3);
   border-left: 4px solid var(--clinical-alert-primary);
   border-radius: var(--clinical-radius-md);
@@ -276,16 +265,17 @@
 
 /* Alternative Paths Section */
 .consequence-section--alternatives {
-  background: rgba(251, 191, 36, 0.1); /* Yellow tint for caution */
-  border-color: #f59e0b; /* Orange/yellow border */
+  background: rgba(251, 191, 36, 0.1);
+  /* Yellow tint for caution */
+  border-color: #f59e0b;
+  /* Orange/yellow border */
 }
 
 .consequence-section--alternatives::before {
-  background: linear-gradient(
-    90deg,
-    #f59e0b 0%, /* Orange-yellow gradient */
-    #fbbf24 100%
-  );
+  background: linear-gradient(90deg,
+      #f59e0b 0%,
+      /* Orange-yellow gradient */
+      #fbbf24 100%);
 }
 
 /* Enhanced alternative path card - Priority 4.4.2 */
@@ -294,7 +284,8 @@
   padding: var(--clinical-space-md) var(--clinical-space-lg);
   margin-bottom: var(--clinical-space-sm);
   background: rgba(255, 255, 255, 0.9);
-  border: 2px solid #f59e0b; /* Orange/yellow border for caution */
+  border: 2px solid #f59e0b;
+  /* Orange/yellow border for caution */
   border-radius: var(--clinical-radius-md);
   font-family: var(--clinical-font-body);
   line-height: var(--clinical-leading-relaxed);
@@ -304,8 +295,10 @@
 }
 
 .consequence-section__alternative:hover {
-  background: rgba(251, 191, 36, 0.2); /* Stronger yellow tint on hover */
-  transform: translateX(4px); /* Subtle movement to draw attention */
+  background: rgba(251, 191, 36, 0.2);
+  /* Stronger yellow tint on hover */
+  transform: translateX(4px);
+  /* Subtle movement to draw attention */
   box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
 }
 
@@ -345,7 +338,8 @@
 }
 
 .alternative-prefix {
-  color: #f59e0b; /* Orange for the "if you chose" part */
+  color: #f59e0b;
+  /* Orange for the "if you chose" part */
   font-weight: 600;
   font-style: italic;
 }
@@ -408,8 +402,15 @@
 }
 
 @keyframes pulseText {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 /* Responsive */
@@ -501,6 +502,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -511,6 +513,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -522,10 +525,12 @@
     opacity: 0;
     transform: scale(0.95) translateY(10px);
   }
+
   50% {
     opacity: 0;
     transform: scale(0.98) translateY(5px);
   }
+
   100% {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -537,6 +542,7 @@
     opacity: 0;
     transform: scale(0.9);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
@@ -545,6 +551,7 @@
 
 /* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
+
   .consequence-section--fade,
   .consequence-section--slide,
   .consequence-section--dramatic-pause,

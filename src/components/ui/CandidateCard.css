@@ -145,3 +145,15 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* Custom content area (e.g. for showing last answer in voting phase) */
+.candidate-card__custom-content {
+  margin-top: var(--clinical-space-md);
+  padding-top: var(--clinical-space-md);
+  border-top: 1px dashed var(--clinical-border-thin);
+  text-align: center;
+  font-style: italic;
+  color: var(--clinical-text-primary);
+  width: 100%;
+  font-size: var(--clinical-size-sm);
+}

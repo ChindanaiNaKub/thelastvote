@@ -325,6 +325,7 @@ function checkAllyDefenseTrigger(state: GameState, activeCandidates: Candidate[]
 
           return generateClashEvent({
             initiator: candidate.id,
+            initiatorName: candidate.name,
             target: target.id,
             triggerType,
             topic: 'การคัดคนออก',
@@ -344,6 +345,7 @@ function checkAllyDefenseTrigger(state: GameState, activeCandidates: Candidate[]
       if (rival) {
         return generateClashEvent({
           initiator: candidate.id,
+          initiatorName: candidate.name,
           target: rival.id,
           triggerType: 'ally_defense',
           topic: 'การคัดคนออก',
@@ -411,6 +413,7 @@ function checkRivalAttackTrigger(state: GameState, activeCandidates: Candidate[]
 
               return generateClashEvent({
                 initiator: candidate.id,
+                initiatorName: candidate.name,
                 target: speaker.id,
                 triggerType: relationship.type === 'enemy' ? 'ally_defense' : 'rival_attack',
                 topic: 'ความขัดแย้งส่วนตัว',
@@ -426,6 +429,7 @@ function checkRivalAttackTrigger(state: GameState, activeCandidates: Candidate[]
           if (pressure && pressure.pressureLevel > 50) {
             return generateClashEvent({
               initiator: candidate.id,
+              initiatorName: candidate.name,
               target: speaker.id,
               triggerType: 'rival_attack',
               topic: 'ความขัดแย้งส่วนตัว',
@@ -468,6 +472,7 @@ function checkPressureTrigger(state: GameState, activeCandidates: Candidate[]): 
 
   return generateClashEvent({
     initiator: initiator.id,
+    initiatorName: initiator.name,
     target: target.id,
     triggerType: 'pressure',
     topic: 'การถูกกดดัน',
@@ -480,6 +485,7 @@ function checkPressureTrigger(state: GameState, activeCandidates: Candidate[]): 
  */
 function generateClashEvent(params: {
   initiator: string
+  initiatorName: string
   target: string
   triggerType: 'contradiction' | 'ally_defense' | 'rival_attack' | 'pressure'
   topic: string
@@ -494,7 +500,7 @@ function generateClashEvent(params: {
     dialogueExchange: [
       {
         speaker: params.target,
-        content: `[Interrupted by ${params.initiator}]`,
+        content: `ถูกขัดจังหวะโดย ${params.initiatorName}`,
         emotion: 'defensive',
       },
       {

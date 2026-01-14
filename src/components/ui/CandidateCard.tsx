@@ -21,6 +21,7 @@ export interface CandidateCardProps {
   selected?: boolean
   disabled?: boolean
   showDescription?: boolean
+  customContent?: React.ReactNode
 }
 
 // ----------------------------------------------------------------------------
@@ -36,6 +37,7 @@ export function CandidateCard({
   selected = false,
   disabled = false,
   showDescription = true,
+  customContent,
 }: CandidateCardProps) {
   // Build CSS classes based on props
   const cardClasses = [
@@ -105,6 +107,9 @@ export function CandidateCard({
           ลงคะแนนให้ {firstName}
         </button>
       )}
+
+      {/* Custom Content (e.g. Last Answer in Voting Phase) */}
+      {customContent && <div className="candidate-card__custom-content">{customContent}</div>}
     </div>
   )
 }
