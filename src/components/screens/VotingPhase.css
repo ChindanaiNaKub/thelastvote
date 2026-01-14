@@ -29,11 +29,19 @@
 }
 
 .voting-screen .candidates-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
   gap: var(--clinical-space-lg);
-  margin: var(--clinical-space-2xl) 0;
-  justify-items: center;
+  margin: var(--clinical-space-2xl) auto;
+  max-width: 1000px;
+}
+
+.voting-screen .candidates-grid > * {
+  flex: 0 0 280px;
+  width: 280px;
+  max-width: 280px;
 }
 
 @media (max-width: 768px) {

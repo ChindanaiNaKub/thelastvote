@@ -28,11 +28,18 @@
 }
 
 .candidates-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
   gap: var(--clinical-space-lg);
-  margin: var(--clinical-space-2xl) 0;
-  justify-items: center;
+  margin: var(--clinical-space-2xl) auto;
+  max-width: 1000px;
+}
+
+.candidates-grid > * {
+  flex: 0 1 280px;
+  max-width: 300px;
 }
 
 .roster-screen .btn-primary {

@@ -34,7 +34,7 @@ export function AppFooter() {
 
       <div className="app-footer__meta">
         <span className="app-footer__copy">
-          A psychological game about trust, doubt, and irreversible decisions
+          ในโลกที่เต็มไปด้วยหน้ากาก 'ความจริง' คืออาวุธที่อันตรายที่สุด
         </span>
       </div>
     </footer>
