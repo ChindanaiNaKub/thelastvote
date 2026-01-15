@@ -19,6 +19,7 @@ You may ask only **three questions** before your vote becomes final.
 - **🛡️ ขนุน (Khanun)** — Protective healer who cares about people's well-being. Best friend of ป่า.
 - **😏 กัน (Kan)** — Cynical realist who sees through everyone's facades. Friendly rival of แบม.
 - **🔥 ทาม (Tam)** — Radical outsider who challenges the status quo. A lone wolf with no allies.
+- **ปราบ ( Prab )** - Extra ; p
 
 ### Dynamic Relationships
 
